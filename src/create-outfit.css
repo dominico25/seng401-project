@@ -1,1 +1,125 @@
+#createoutfitnav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+  }
 
+  #otherlinks {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  #fullbody {
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #mainbody {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #page-title {
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    
+  }
+
+  #top-page-title-and-info {
+    display: flex;
+    flex-direction: row;
+    margin-left: 43%;
+    
+  }
+
+  #info {
+    margin-left: 67%;
+    height: 40px;
+    align-items: center;
+    margin-top: 2%;
+  }
+
+  hr {
+    width: 1400px;
+    border:1px solid purple;
+    padding-bottom: 0%;
+  }
+
+  #rest-of-page {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  #vl {
+    border-left: 2px solid purple;
+    height: 530px;
+    width:2px;
+    
+   
+  }
+
+  #left_side {
+    display: flex;
+    flex-direction:column;
+   align-items: center;
+  
+  }
+
+  #right_side {
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #tops {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #url-label-and-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height:30px;
+  }
+
+  #placeholder-tops {
+    width: 150px;
+    height: 50px;
+    font-size: 30px;
+    padding-top:2px;
+    height: 30px;
+
+  }
+
+  #bottoms {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #accessories {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shoes {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  
