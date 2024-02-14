@@ -5,6 +5,24 @@ import { Link } from 'react-router-dom';
 import './create-outfit.css';
 
 function CreateOutfit() {
+
+    const [saveOutfitClicked, setsaveOutfitClicked] = useState(false);
+
+
+
+    const saveOutfitClickedResult = () => {
+        //add logic to maybe display a message indicating that the outfit has been saved.
+        // could add other things as well
+        //maybe add logic to display an overlay where the user can enter the category to which each item in the outfit belongs to
+
+        setsaveOutfitClicked(true);
+    }
+
+
+
+
+
+
     return (
 
         <body id = "fullbody">
@@ -50,7 +68,9 @@ function CreateOutfit() {
                     </div>
                 </div>
                 <hr></hr>
-                <div id = "page-bottom"></div>
+                <div id = "page-bottom">
+                    <button onClick={() => setsaveOutfitClicked()} id = "saveoutfit">Save Outfit</button>
+                </div>
                 
             </div>
 
