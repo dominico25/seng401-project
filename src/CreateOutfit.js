@@ -46,7 +46,7 @@ function CreateOutfit() {
                     <div id = "vl"></div>
                     <div id = "right-side">
                         <div id = "accessories"><h2>Accessories</h2><div id = "url-label-and-box"><label for="image-url">Image-URL:</label><input type="text" id="image-url" name="fname" value="Enter Image URL here..."/><p>&nbsp;or <button id="browse-images"><b>+ Browse Photos</b></button></p></div><p><i>Your accessories should appear here</i></p><p id = "placeholder-tops">&nbsp;&nbsp;&nbsp;&#128083;&nbsp;&nbsp;&#129506;&nbsp;&nbsp;&#128092;</p></div>
-                        <div id = "shoes"><h2>Tops</h2><div id = "url-label-and-box"><label for="image-url">Image-URL:</label><input type="text" id="image-url" name="fname" value="Enter Image URL here..."/><p>&nbsp;or <button id="browse-images"><b>+ Browse Photos</b></button></p></div><p><i>Your shoes should appear here</i></p><p id = "placeholder-tops">&nbsp;&nbsp;&nbsp;&#128094;&nbsp;&nbsp;&#128096;&nbsp;&nbsp;&#129406;</p></div>
+                        <div id = "shoes"><h2>Shoes</h2><div id = "url-label-and-box"><label for="image-url">Image-URL:</label><input type="text" id="image-url" name="fname" value="Enter Image URL here..."/><p>&nbsp;or <button id="browse-images"><b>+ Browse Photos</b></button></p></div><p><i>Your shoes should appear here</i></p><p id = "placeholder-tops">&nbsp;&nbsp;&nbsp;&#128094;&nbsp;&nbsp;&#128096;&nbsp;&nbsp;&#129406;</p></div>
                     </div>
                 </div>
                 <hr></hr>
