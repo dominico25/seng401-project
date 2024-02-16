@@ -12,6 +12,7 @@ code {
     monospace;
 }
 
+/*HEADER STYLES*/
 header {
   background-color: #282c34;
   height: fit-content;
@@ -47,15 +48,14 @@ header {
   
 }
 
-.activator{
+#activator{
   width: 200px;
   
 
 }
 
-.activator:hover{
+#activator:hover{
   cursor: pointer;
-
 }
 
 .navbar_container{
@@ -65,7 +65,7 @@ header {
   flex-direction: row;
 }
 
-.navbar{
+#navbar{
   position: absolute;
   background-color: #282c34;
   width: 1000px;
@@ -77,7 +77,7 @@ header {
 }
 
 .navbar:active{
-  left: 0;
+  left: 1000px;
 }
 
 .navbar ul li{
@@ -87,5 +87,17 @@ header {
   padding: 20px 24px;
   border-color: aliceblue;
   border: 1px;
-
+  cursor: pointer;
+  transition: background-color 0.5s ease;
 }
+
+.navbar ul li:hover{
+  background-color: #413838;
+}
+
+.navbar ul{
+  padding: 0;
+  margin: 0;
+}
+
+

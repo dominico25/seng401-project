@@ -1,35 +1,56 @@
-import { useState } from "react";
+
+import { useEffect } from "react";
+import {Link} from 'react-router-dom';
 import React from "react";
-import Navigation from './Navigation';
-import logo from './images/logo.gif';
+import './home.css';
+import Header from "./Header";
 
-
-
-function show() {
-    document.getElementById("navbar").classList.toggle("active");
-}
 
 function Home() {
+    useEffect(() => {
+        function show() {
+            document.getElementById("navbar").classList.toggle("active");
+        }   
+        document.getElementById("activator").addEventListener("click", show);
+        return () => {
+            document.getElementById("activator").removeEventListener("click", show);
+        }
+    }, []);
+    
     return (
-        <header>
-            
-            <div class = "header_container">
-                
-                <div class = "title_container">
-
-                    <img src = {logo} alt = "DC" class = "logo"></img>
-                    <h1>Dream Closet</h1>
-
-                </div>
-                <div class = "navbar_container">
-                    <img class="activator" id="activator" src="//s.svgbox.net/hero-outline.svg?fill=fff#menu-alt-1" alt="" onClick="show()"></img>
-                    <div class = "navbar"><Navigation/></div>
-                    
-                </div>
-                
+        <div className="container">
+        <Header />
+        <body className="main">
+            <div className="main_container">
+            <section className="intro">
+                    <h2>Your Virtual Closet</h2>
+                    <p>Effortlessly organize, plan, and create outfits with Dream Closet.</p>
+                    <Link to="/Login">Get Started</Link>
+                </section>
+                <section className="features">
+                    <div className="feature_header">
+                        <h2>Features</h2>
+                    </div>
+                    <div className="feature">
+                        <h3>Upload Your Wardrobe</h3>
+                        <p>Digitize your clothing items and accessories.</p>
+                    </div>
+                    <div className="feature">
+                        <h3>Create Outfits</h3>
+                        <p>Mix and match your items to create stylish outfits.</p>
+                    </div>
+                    <div className="feature">
+                        <h3>Random Outfit Generator</h3>
+                        <p>Get inspiration with a single click.</p>
+                    </div>
+                </section>
             </div>
-        
-        </header>
+        </body>
+        <footer >
+                <p>&copy; 2024 Dream Closet. All rights reserved.</p>
+        </footer>
+         </div>
+
     )
 }
 
