@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from "react";
 import Navigation from './Navigation';
 import Display from './Display';
+import Header from "./Header";
 
 function GenerateOutfit() {
     const [displayScreen, setDisplayScreen] = useState(false);
@@ -18,9 +19,7 @@ function GenerateOutfit() {
 
     return (
         <div>
-            <header>
-                <Navigation/>
-            </header>
+           <Header/>
             {!displayScreen &&
                 <form onSubmit={handleForm}>
                     <label htmlFor="colour-choice">Colour:</label>
