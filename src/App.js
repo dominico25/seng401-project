@@ -11,10 +11,12 @@ import BrowseOutfit from "./BrowseOutfit";
 import CreateOutfit from "./CreateOutfit";
 import GenerateOutfit from "./GenerateOutfit";
 import Navigation from "./Navigation";
+import { ChakraProvider } from '@chakra-ui/react'
 
 function App() {
   return (
-    <Router>
+    <ChakraProvider>
+      <Router>
       {/* <Navigation /> */}
       <Routes>
         <Route path="/" element={<Main />}/>
@@ -27,6 +29,9 @@ function App() {
         <Route path="/GenerateOutfit" element={<GenerateOutfit />}/>
       </Routes>
     </Router>
+    </ChakraProvider>
+    
+
   );
 }
 

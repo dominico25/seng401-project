@@ -6,7 +6,6 @@ import "./login.css";
 
 const clientId = '52196466868-3n2nemknh184a6nsp6vp900g77jqd0ak.apps.googleusercontent.com';
 
-
 const Login = () => {
   const onSuccess = (credentialResponse) => {
     console.log('Login Success:', credentialResponse);
