@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Main from "./Main";
 import Home from "./Home";
 import Login from "./Login";
 import UploadItem from "./UploadItem";
@@ -16,7 +17,8 @@ function App() {
     <Router>
       {/* <Navigation /> */}
       <Routes>
-        <Route path="/" element={<Home />}/>
+        <Route path="/" element={<Main />}/>
+        <Route path = "/Home" element={<Home />}/>
         <Route path="/Login" element={<Login />}/>
         <Route path="/UploadItem" element={<UploadItem />}/>
         <Route path="/BrowseItem" element={<BrowseItem />}/>
