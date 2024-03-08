@@ -1,0 +1,46 @@
+
+.background {
+    background-image: url("./images/background1.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-color: #282c34;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    width : 100vw;
+    position: fixed;
+    filter: blur(3px);
+  
+}
+
+
+
+
+.login_container {
+    filter: blur(0px);
+    margin: 20px;
+    height : 85vh;
+    width : 30vw;
+    background-color: white;
+    color: black;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+    width: fit-content;
+    height: 300px;
+    margin-top: 35vh;
+    margin-left: 35vw;
+}
+
+#login_form {
+    background-color: white;
+    color: black;
+
+    
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+}
