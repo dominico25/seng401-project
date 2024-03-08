@@ -3,6 +3,7 @@ import React from "react";
 import Navigation from './Navigation';
 import { Link } from 'react-router-dom';
 import './create-outfit.css';
+import Header from "./Header";
 
 function CreateOutfit() {
 
@@ -24,7 +25,8 @@ function CreateOutfit() {
 
 
     return (
-
+       
+        
         <body id = "fullbody">
             <div id = "createoutfitnav">
 
