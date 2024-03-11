@@ -14,6 +14,7 @@ def lambda_handler(event, context):
     # Extract outfit information from the event data
     top_id = data['top_id']
     bottom_id = data['bottom_id']
+    dress_id = data['dress_id']
     outerwear_id = data['outerwear_id']
     accessories_id = data['accessories_id']
     shoes_id = data['shoes_id']
