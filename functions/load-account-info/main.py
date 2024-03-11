@@ -5,13 +5,16 @@ dynamodb = boto3.resource('dynamodb')
 accounts_table = dynamodb.Table('accounts')
 
 def lambda_handler(event, context):
-    # Extract unique ID from the incoming event data
-    account_id = event['pathParameters']['id']
+    # Parse incoming event data
+    data = json.loads(event['body'])
+    
+    # Extract account information from the event data
+    email = data['email']
     
     # Retrieve account details from the DynamoDB table
     response = accounts_table.get_item(
         Key={
-            'id': account_id
+            'id': email
         }
     )
     
@@ -26,11 +29,11 @@ def lambda_handler(event, context):
                 'Access-Control-Allow-Origin': '*'
             }
         }
-    # If account doesn't exist, return error response
+    # If account doesn't exist, return a specific response
     else:
         return {
             'statusCode': 404,
-            'body': json.dumps({'message': 'Account not found'}),
+            'body': json.dumps({'message': 'Account does not exist'}),
             'headers': {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*'
