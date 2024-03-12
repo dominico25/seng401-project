@@ -34,13 +34,31 @@ function Display({ formValues, setDisplayScreen }) {
     return (
         <div>
             <Container mb={4}>
-                <Flex direction="column" alignItems="center" mt={4}>
-
-                    <p>Colour: {selectedColour}</p>
-                    <p>Season: {selectedSeason}</p>
-                    <Image boxSize='200px' src='https://bit.ly/dan-abra' alt='Top' />
-                    <Image boxSize='200px' src='https://bit.ly/dan-abra' alt='Bottom' />
-                    <Image boxSize='200px' src='https://bit.ly/dan-abra' alt='Shoes' />
+                <p>Colour: {selectedColour}</p>
+                <p>Season: {selectedSeason}</p>
+                <Flex direction="row" alignItems="center" mt={4}>
+                    <Flex direction="column" alignItems="center">
+                        <h1>Top</h1>
+                        <Image boxSize='200px' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlyG6nAdKXe4OsY7Un96eqGuC7XxxSBaUKZQ&usqp=CAU' alt='Top' />
+                        <h1>Dress</h1>
+                        <Image boxSize='200px' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlyG6nAdKXe4OsY7Un96eqGuC7XxxSBaUKZQ&usqp=CAU' alt='Dress' />
+                        <h1>Hat</h1>
+                        <Image boxSize='200px' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlyG6nAdKXe4OsY7Un96eqGuC7XxxSBaUKZQ&usqp=CAU' alt='Hat' />
+                    </Flex>
+                    <Flex direction="column" alignItems="center">
+                        <h1>Bottom</h1>
+                        <Image boxSize='200px' src='https://kawaiialley.ca/cdn/shop/collections/224-2246129_totoro-and-little-totoros.jpg?v=1644298877' alt='Bottom' />
+                        <h1>Outerwear</h1>
+                        <Image boxSize='200px' src='https://kawaiialley.ca/cdn/shop/collections/224-2246129_totoro-and-little-totoros.jpg?v=1644298877' alt='Outerwear' />
+                        <h1>Bag</h1>
+                        <Image boxSize='200px' src='https://kawaiialley.ca/cdn/shop/collections/224-2246129_totoro-and-little-totoros.jpg?v=1644298877' alt='Bag' />
+                    </Flex>
+                    <Flex direction="column" alignItems="center">
+                        <h1>Shoes</h1>
+                        <Image boxSize='200px' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlyG6nAdKXe4OsY7Un96eqGuC7XxxSBaUKZQ&usqp=CAU' alt='Shoes' />
+                        <h1>Accessory</h1>
+                        <Image boxSize='200px' src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlyG6nAdKXe4OsY7Un96eqGuC7XxxSBaUKZQ&usqp=CAU' alt='Accessory' />
+                    </Flex>
                 </Flex>
             </Container>
             
