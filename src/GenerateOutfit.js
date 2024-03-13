@@ -7,6 +7,16 @@ import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text } from
 
 
 function GenerateOutfit() {
+    const [chosenItems, setChosenItems] = useState({
+        top: null,
+        bottom: null,
+        dress: null,
+        outerwear: null,
+        accessory: null,
+        shoe: null,
+        hat: null,
+        bag: null
+    });
     const [previewScreen, setPreviewScreen] = useState(false);
     const [items, setItems] = useState([]);
     const [chosenTop, setChosenTop] = useState(null);
@@ -17,15 +27,20 @@ function GenerateOutfit() {
     const [chosenShoe, setChosenShoe] = useState(null);
     const [chosenHat, setChosenHat] = useState(null);
     const [chosenBag, setChosenBag] = useState(null);
+    const [account, setAccount] = useState(null);
+    
     const loadItems = async () => {
-        const res = await fetch(
-            `https://tqeurpmxqzlzvdgtjj42swi57m0rswbr.lambda-url.ca-central-1.on.aws/`,
-            {
-                method: "GET",
-            }
-        );
-        const data = await res.json();
-        setItems(data);
+        // const inputData = new FormData();
+        // inputData.append("account_id", "0");
+        setAccount("0");
+
+        const res = await fetch(`https://tqeurpmxqzlzvdgtjj42swi57m0rswbr.lambda-url.ca-central-1.on.aws?account_id=${account}`);
+        if (res.status === 200) {
+            const data = await res.json();
+            setItems(data);
+            console.log("Items:", data);
+        }
+        
     }
     const colourOptions = {
         "colour1": "Random",
@@ -132,7 +147,7 @@ function GenerateOutfit() {
             style: values.style
         });
         console.log("Form Values:", values);
-        // loadItems();
+        loadItems();
 
         // let topItems = [];
         // let bottomItems = [];
@@ -143,76 +158,89 @@ function GenerateOutfit() {
         // let hatItems = [];
         // let bagItems = [];
 
-        // if (formValues.color === colour1 && formValues.style === style1) {
-        //     let topItems = items.filter(item => item.type === "top");
-        //     let bottomItems = items.filter(item => item.type === "bottom");
-        //     let dressItems = items.filter(item => item.type === "dress");
-        //     let outerwearItems = items.filter(item => item.type === "outerwear");
-        //     let accessoryItems = items.filter(item => item.type === "accessory");
-        //     let shoeItems = items.filter(item => item.type === "shoe");
-        //     let hatItems = items.filter(item => item.type === "hat");
-        //     let bagItems = items.filter(item => item.type === "bag");
+        
+
+        // if (formValues.color === colourOptions[1] && formValues.style === styleOptions[1]) {
+        //     topItems = items.filter(item => item.type === "top");
+        //     bottomItems = items.filter(item => item.type === "bottom");
+        //     dressItems = items.filter(item => item.type === "dress");
+        //     outerwearItems = items.filter(item => item.type === "outerwear");
+        //     accessoryItems = items.filter(item => item.type === "accessory");
+        //     shoeItems = items.filter(item => item.type === "shoe");
+        //     hatItems = items.filter(item => item.type === "hat");
+        //     bagItems = items.filter(item => item.type === "bag");
         // }
-        // else if (formValues.color != colour1 && formValues.style === style1) {
-        //     let topItems = items.filter(item => item.type === "top" && item.colour === formValues.color);
-        //     let bottomItems = items.filter(item => item.type === "bottom" && item.colour === formValues.color);
-        //     let dressItems = items.filter(item => item.type === "dress" && item.colour === formValues.color);
-        //     let outerwearItems = items.filter(item => item.type === "outerwear" && item.colour === formValues.color);
-        //     let accessoryItems = items.filter(item => item.type === "accessory" && item.colour === formValues.color);
-        //     let shoeItems = items.filter(item => item.type === "shoe" && item.colour === formValues.color);
-        //     let hatItems = items.filter(item => item.type === "hat" && item.colour === formValues.color);
-        //     let bagItems = items.filter(item => item.type === "bag" && item.colour === formValues.color);
+        // else if (formValues.color !== colourOptions[1] && formValues.style === styleOptions[1]) {
+        //     topItems = items.filter(item => item.type === "top" && item.colour === formValues.color);
+        //     bottomItems = items.filter(item => item.type === "bottom" && item.colour === formValues.color);
+        //     dressItems = items.filter(item => item.type === "dress" && item.colour === formValues.color);
+        //     outerwearItems = items.filter(item => item.type === "outerwear" && item.colour === formValues.color);
+        //     accessoryItems = items.filter(item => item.type === "accessory" && item.colour === formValues.color);
+        //     shoeItems = items.filter(item => item.type === "shoe" && item.colour === formValues.color);
+        //     hatItems = items.filter(item => item.type === "hat" && item.colour === formValues.color);
+        //     bagItems = items.filter(item => item.type === "bag" && item.colour === formValues.color);
         // }
-        // else if (formValues.color === colour1 && formValues.style != style1) {
-        //     let topItems = items.filter(item => item.type === "top" && item.style === formValues.style);
-        //     let bottomItems = items.filter(item => item.type === "bottom" && item.style === formValues.style);
-        //     let dressItems = items.filter(item => item.type === "dress" && item.style === formValues.style);
-        //     let outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formValues.style);
-        //     let accessoryItems = items.filter(item => item.type === "accessory" && item.style === formValues.style);
-        //     let shoeItems = items.filter(item => item.type === "shoe" && item.style === formValues.style);
-        //     let hatItems = items.filter(item => item.type === "hat" && item.style === formValues.style);
-        //     let bagItems = items.filter(item => item.type === "bag" && item.style === formValues.style);
+        // else if (formValues.color === colourOptions[1] && formValues.style !== styleOptions[1]) {
+        //     topItems = items.filter(item => item.type === "top" && item.style === formValues.style);
+        //     bottomItems = items.filter(item => item.type === "bottom" && item.style === formValues.style);
+        //     dressItems = items.filter(item => item.type === "dress" && item.style === formValues.style);
+        //     outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formValues.style);
+        //     accessoryItems = items.filter(item => item.type === "accessory" && item.style === formValues.style);
+        //     shoeItems = items.filter(item => item.type === "shoe" && item.style === formValues.style);
+        //     hatItems = items.filter(item => item.type === "hat" && item.style === formValues.style);
+        //     bagItems = items.filter(item => item.type === "bag" && item.style === formValues.style);
         // }
         
 
 
 
         // const randomOutfitValue = Math.floor(Math.random() * 1);
-        // if (randomOutfitValue == 0) {
+        // if (randomOutfitValue === 0) {
         //     setChosenDress(chooseRandomItem(dressItems));
-        //     if ((Math.floor(Math.random() * 1)) == 1) {
+        //     chosenItems.dress = chooseRandomItem(dressItems);
+        //     if ((Math.floor(Math.random() * 1)) === 1) {
         //         setChosenTop(chooseRandomItem(topItems));
+        //         chosenItems.top = chooseRandomItem(topItems);
         //     }
-        //     if ((Math.floor(Math.random() * 1)) == 1) {
+        //     if ((Math.floor(Math.random() * 1)) === 1) {
         //         setChosenBottom(chooseRandomItem(bottomItems));
+        //         chosenItems.bottom = chooseRandomItem(bottomItems);
         //     }
         // }
 
-        // else if (randomOutfitValue == 1) { 
+        // else if (randomOutfitValue === 1) { 
         //     setChosenTop(chooseRandomItem(topItems));
-        //     setChosenBottom(chooseRandomItem(bottomItems));
-        //     if ((Math.floor(Math.random() * 1)) == 1) {
+        //     setChosenBottom(chooseRandomItem(bottomItems))
+        //     chosenItems.top = chooseRandomItem(topItems);
+        //     chosenItems.bottom = chooseRandomItem(bottomItems);
+        //     if ((Math.floor(Math.random() * 1)) === 1) {
         //         setChosenDress(chooseRandomItem(dressItems));
+        //         chosenItems.dress = chooseRandomItem(dressItems);
         //     }
         // }
-        // if ((Math.floor(Math.random() * 1)) == 1) {
+        // if ((Math.floor(Math.random() * 1)) === 1) {
         //     setChosenOuterwear(chooseRandomItem(outerwearItems));
+        //     chosenItems.outerwear = chooseRandomItem(outerwearItems);
         // }
 
-        // if ((Math.floor(Math.random() * 1)) == 1) {
+        // if ((Math.floor(Math.random() * 1)) === 1) {
         //     setChosenAccessory(chooseRandomItem(accessoryItems));
+        //     chosenItems.accessory = chooseRandomItem(accessoryItems);
         // }
 
-        // if ((Math.floor(Math.random() * 1)) == 1) {
+        // if ((Math.floor(Math.random() * 1)) === 1) {
         //     setChosenShoe(chooseRandomItem(shoeItems));
+        //     chosenItems.shoe = chooseRandomItem(shoeItems);
         // }
 
-        // if ((Math.floor(Math.random() * 1)) == 1) {
+        // if ((Math.floor(Math.random() * 1)) === 1) {
         //     setChosenHat(chooseRandomItem(hatItems));
+        //     chosenItems.hat = chooseRandomItem(hatItems);
         // }
 
-        // if ((Math.floor(Math.random() * 1)) == 1) {
+        // if ((Math.floor(Math.random() * 1)) === 1) {
         //     setChosenBag(chooseRandomItem(bagItems));
+        //     chosenItems.bag = chooseRandomItem(bagItems);
         // }
 
         
@@ -299,6 +327,7 @@ function GenerateOutfit() {
                     chosenBag={chosenBag}
                     saveOutfit={saveOutfit}
                     outfitSavedNotification={outfitSavedNotification}
+                    chosenItems={chosenItems} 
                 />
             )}
             {displayScreen && <Display formValues={formValues} setDisplayScreen={setDisplayScreen} chosenTop={chosenTop} chosenBottom={chosenBottom}

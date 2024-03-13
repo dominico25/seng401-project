@@ -9,8 +9,8 @@ def lambda_handler(event, context):
     account_id = event['pathParameters']['id']
     
     # Query items associated with the given account ID from the DynamoDB table
-    response = items_table.scan(
-        FilterExpression='account_id = :val',
+    response = items_table.query(
+        KeyConditionExpression='account_id = :val',
         ExpressionAttributeValues={':val': account_id}
     )
     

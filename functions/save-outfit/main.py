@@ -46,6 +46,7 @@ def lambda_handler(event, context):
             'id': generate_unique_id(),  # Generating a unique ID for the outfit
             'top_id': top_id,
             'bottom_id': bottom_id,
+            'dress_id': dress_id,
             'outerwear_id': outerwear_id,
             'accessories_id': accessories_id,
             'shoes_id': shoes_id,
