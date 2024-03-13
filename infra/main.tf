@@ -11,8 +11,8 @@ terraform {
 provider "aws" {
   region = "ca-central-1"
   ## dont wanna add access key here
-  # access_key = "add here"
-  # secret_key = "add here"
+  # access_key = ""
+  # secret_key = ""
 }
 
 # two lambda functions w/ function url
@@ -395,7 +395,8 @@ resource "aws_iam_policy" "load_items_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Query"
+        "dynamodb:Query",
+        "dynamodb:Scan"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.items.arn}"],
       "Effect": "Allow"
