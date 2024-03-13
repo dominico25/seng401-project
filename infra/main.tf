@@ -370,7 +370,7 @@ resource "aws_iam_policy" "load_acc_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Scan"
+        "dynamodb:Query"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.accounts.arn}"],
       "Effect": "Allow"
@@ -395,7 +395,7 @@ resource "aws_iam_policy" "load_items_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Scan"
+        "dynamodb:Query"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.items.arn}"],
       "Effect": "Allow"
@@ -420,7 +420,7 @@ resource "aws_iam_policy" "load_outfits_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Scan"
+        "dynamodb:Query"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.outfits.arn}"],
       "Effect": "Allow"
@@ -606,13 +606,13 @@ resource "aws_dynamodb_table" "accounts" {
 
   # we only need a student id to find an item in the table; therefore, we
   # don't need a sort key here
-  hash_key = "id" # ADD RIGHT VARIABLE
+  hash_key = "account_id" # ADD RIGHT VARIABLE
   #range_key = "id"
 
 
   # the hash_key data type is string
   attribute {
-    name = "id"
+    name = "account_id"
     type = "S" #string type?
   }
 
@@ -633,13 +633,13 @@ resource "aws_dynamodb_table" "items" {
 
   # we only need a student id to find an item in the table; therefore, we
   # don't need a sort key here
-  hash_key = "id" # ADD RIGHT VARIABLE
+  hash_key = "item_id" # ADD RIGHT VARIABLE
   #range_key = "id"
 
 
   # the hash_key data type is string
   attribute {
-    name = "id"
+    name = "item_id"
     type = "S" #string type?
   }
 
@@ -660,13 +660,13 @@ resource "aws_dynamodb_table" "outfits" {
 
   # we only need a student id to find an item in the table; therefore, we
   # don't need a sort key here
-  hash_key = "id" # ADD RIGHT VARIABLE
+  hash_key = "outfit_id" # ADD RIGHT VARIABLE
   #range_key = "id"
 
 
   # the hash_key data type is string
   attribute {
-    name = "id"
+    name = "outfit_id"
     type = "S" #string type?
   }
 
