@@ -27,14 +27,15 @@ function GenerateOutfit() {
     const [chosenShoe, setChosenShoe] = useState(null);
     const [chosenHat, setChosenHat] = useState(null);
     const [chosenBag, setChosenBag] = useState(null);
-    const [account, setAccount] = useState(null);
+    // const [account, setAccount] = useState(null);
+    const account = {id: "1"};
     
     const loadItems = async () => {
         // const inputData = new FormData();
         // inputData.append("account_id", "0");
-        setAccount("0");
+        // setAccount("1");
 
-        const res = await fetch(`https://tqeurpmxqzlzvdgtjj42swi57m0rswbr.lambda-url.ca-central-1.on.aws?account_id=${account}`);
+        const res = await fetch(`https://m2oix425im7g7excljwmjh7zua0qnamp.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
