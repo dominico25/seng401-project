@@ -22,8 +22,7 @@ def lambda_handler(event, context):
                 'statusCode': 200,
                 'body': json.dumps(items),
                 'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             }
         # If no items associated with the account ID are found, return empty list
@@ -32,8 +31,7 @@ def lambda_handler(event, context):
                 'statusCode': 200,
                 'body': json.dumps([]),
                 'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
+                    'Content-Type': 'application/json'
                 }
             }
     except Exception as e:
@@ -46,7 +44,6 @@ def lambda_handler(event, context):
                 'message': str(e)
             }),
             'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json'
             }
         }
