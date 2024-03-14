@@ -35,7 +35,7 @@ function GenerateOutfit() {
         // inputData.append("account_id", "0");
         // setAccount("1");
 
-        const res = await fetch(`https://m2oix425im7g7excljwmjh7zua0qnamp.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        const res = await fetch(`https://vfvlyq4omee3u6pw67eqzku7au0zooqj.lambda-url.ca-central-1.on.aws/?id=${account.id}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -43,6 +43,22 @@ function GenerateOutfit() {
         }
         
     }
+    // const loadItems = async () => {
+    //     try {
+    //         const res = await fetch(`https://ivwaxc5lvbp6t5f6h44krw3vqm0xkike.lambda-url.ca-central-1.on.aws/?id=${account.id}`);
+            
+    //         if (res.status === 200) {
+    //             const data = await res.json();
+    //             setItems(data);
+    //             console.log("Items:", data);
+    //         } else {
+    //             console.error("Failed to fetch items:", res.status);
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to fetch items:", error);
+    //     }
+    // }
+    
     const colourOptions = {
         "colour1": "Random",
         "colour2": "Red",

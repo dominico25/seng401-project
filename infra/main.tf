@@ -396,7 +396,8 @@ resource "aws_iam_policy" "load_items_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Query"
+        "dynamodb:Query",
+        "dynamodb:Scan"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.items.arn}"],
       "Effect": "Allow"
