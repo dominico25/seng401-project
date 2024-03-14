@@ -1,3 +1,74 @@
+import React, { useState } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import { Box, Button, Flex, Heading } from '@chakra-ui/react';
+import Header from './Header';
+import { useNavigate } from 'react-router-dom';
+
+const Login = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+
+  const onSuccess = async (credentialResponse) => {
+    console.log(credentialResponse);
+    const decodedToken = jwtDecode(credentialResponse.credential);
+    const userEmail = decodedToken.email;
+    console.log('Logged in User Email:', userEmail);
+
+    // Call lambda function to check if the user exists
+    // fetch using "load-acc-info" lambda
+    const response = await fetch(`https://3v5owmywkqg6g3brxfqqhno65y0lvtfs.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const data = await response.json();
+
+    // If account doesn't exist, call lambda function to save the account
+    // fetch using "save-account" lambda
+    if (response.status === 404) {
+      await fetch(`https://i3n6dghdj4er3m5stsnt3fr5ru0ayomz.lambda-url.ca-central-1.on.aws/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: userEmail
+          // Add other necessary user data here
+        })
+      });
+    }
+
+    // Call lambda function to retrieve account details
+    // fetch using "load-acc-info" lambda
+    const accountResponse = await fetch(`https://3v5owmywkqg6g3brxfqqhno65y0lvtfs.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const accountData = await accountResponse.json();
+
+    // Set the user object to state
+    setUser(accountData);
+    navigate('/Home'); // Redirect to Home page
+  };
+
+  return (
+    <Box>
+      <Header />
+      <GoogleLogin
+        onSuccess={onSuccess}
+        onError={() => {
+          console.log('Login Failed');
+        }}
+      >
+        <Flex align="center" justify="center" h="100vh">
+          <Box textAlign="center">
+            <Heading mb={8}>Log in to Dream Closet with Google</Heading>
+            <Button size="lg">Log in with Google</Button>
+          </Box>
+        </Flex>
+      </GoogleLogin>
+    </Box>
+  );
+};
+
+export default Login;
+
+
+
 // import React, { useState, useEffect } from "react";
 // import { useNavigate } from 'react-router-dom';
 // import { useGoogleLogin, googleLogout } from '@react-oauth/google';
@@ -98,69 +169,3 @@
 // };
 
 // export default Login;
-
-import React, { useState } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from "jwt-decode";
-import { Box, Button, Flex, Heading } from '@chakra-ui/react';
-import Header from './Header';
-
-const Login = () => {
-  const [user, setUser] = useState(null);
-
-  const onSuccess = async (credentialResponse) => {
-    console.log(credentialResponse);
-    const decodedToken = jwtDecode(credentialResponse.credential);
-    const userEmail = decodedToken.email;
-    console.log('Logged in User Email:', userEmail);
-
-    // Call lambda function to check if the user exists
-    const response = await fetch('YOUR_SAVE_ACCOUNT_LAMBDA_ENDPOINT', {
-      method: 'POST',
-      body: JSON.stringify({ email: userEmail }),
-    });
-    const data = await response.json();
-
-    // If account doesn't exist, call lambda function to save the account
-    if (response.status === 404) {
-      await fetch('YOUR_SAVE_ACCOUNT_LAMBDA_ENDPOINT', {
-        method: 'POST',
-        body: JSON.stringify({
-          email: userEmail,
-          // Add other necessary user data here
-        }),
-      });
-    }
-
-    // Call lambda function to retrieve account details
-    const accountResponse = await fetch('YOUR_LOAD_ACCOUNT_DETAILS_LAMBDA_ENDPOINT', {
-      method: 'POST',
-      body: JSON.stringify({ email: userEmail }),
-    });
-    const accountData = await accountResponse.json();
-
-    // Set the user object to state
-    setUser(accountData);
-  };
-
-  return (
-    <Box>
-      <Header />
-      <GoogleLogin
-        onSuccess={onSuccess}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      >
-        <Flex align="center" justify="center" h="100vh">
-          <Box textAlign="center">
-            <Heading mb={8}>Log in to Dream Closet with Google</Heading>
-            <Button size="lg">Log in with Google</Button>
-          </Box>
-        </Flex>
-      </GoogleLogin>
-    </Box>
-  );
-};
-
-export default Login;
