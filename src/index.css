@@ -27,9 +27,7 @@ h1.web_title{
   font-size: 1em;
   margin: 10px;
   text-align: center;
- 
 
-  
 }
 
 
@@ -45,9 +43,10 @@ h1.web_title{
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
   padding-left: 5%;
   height: 20vh;
-  width : 30vw;
+  width : 100%;
 }
 
 
@@ -62,47 +61,7 @@ h1.web_title{
   cursor: pointer;
 }
 
-.navbar_container{
-  
-  padding-left: 100px;
-  display: flex;
-  flex-direction: row;
-}
 
-#navbar{
-  position: absolute;
-  background-color: #282c34;
-  width: 1000px;
-  height: 100%;
-  left: -1000px;
-  top: 0;
-  transition: 0.5s;
-
-}
-
-.navbar:active{
-  left: 1000px;
-}
-
-.navbar ul li{
-  list-style: none;
-  color: white;
-  font-size: 100px;
-  padding: 20px 24px;
-  border-color: aliceblue;
-  border: 1px;
-  cursor: pointer;
-  transition: background-color 0.5s ease;
-}
-
-.navbar ul li:hover{
-  background-color: #413838;
-}
-
-.navbar ul{
-  padding: 0;
-  margin: 0;
-}
 
 @media screen and (min-width: 540px) {
    

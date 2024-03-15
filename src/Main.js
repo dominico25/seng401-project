@@ -4,22 +4,26 @@ import {Link} from 'react-router-dom';
 import React from "react";
 import './main.css';
 import Header from "./Header";
-
+import home_logo from "./images/homepage_logo.png";
 
 function Main() {
- 
-    
     return (
         <div className="container">
-        <Header />
         <body className="main_page">
-            <div className="main_container">
-            <section className="intro">
-                    <h2>Your Virtual Closet</h2>
-                    <p>Effortlessly organize, plan, and create outfits with Dream Closet.</p>
-                    <Link to="/Login">Get Started</Link>
-                </section>
-                <section className="features">
+        <div className = "navbar">
+            <a href="/"><img src = {home_logo} alt = "Dream Closet" className = "home_logo"></img></a>
+            <ul>
+                <li><a href="/Login">Login</a></li>
+                <li><a href="/Login">Sign Up</a></li>
+            </ul>
+            </div>
+            <div className="main_content">
+                <div className="intro">
+                        <h1>Build Your Virtual Closet</h1>
+                        <p>Effortlessly organize, plan, and create outfits with Dream Closet.</p>
+                        <Link to="/Login">Get Started</Link>
+                </div>
+                <div className="features">
                     <div className="feature_header">
                         <h2>Features</h2>
                     </div>
@@ -35,7 +39,7 @@ function Main() {
                         <h3>Random Outfit Generator</h3>
                         <p>Get inspiration with a single click.</p>
                     </div>
-                </section>
+                </div>
             </div>
         </body>
         <footer >
