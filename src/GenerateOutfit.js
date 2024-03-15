@@ -98,7 +98,7 @@ function GenerateOutfit() {
     const account = {id: "1"};
     
     const loadItems = async () => {
-        const res = await fetch(`https://wdjm3hpfxabxmhbgyrwmt3cf2y0suqcr.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        const res = await fetch(`https://t64hqfgtdzf44vxq7gdeylnqxm0femrx.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -179,6 +179,8 @@ function GenerateOutfit() {
 
 
     };
+
+    const [showInvalidNotification, setShowInvalidNotification] = useState(false);
 
     // useEffect(() => {
     //     let topItems = [];
@@ -304,7 +306,6 @@ function GenerateOutfit() {
 
     async function handleForm(event) {
         event.preventDefault();
-
         if (!formValues.colour || !formValues.style) {
             setShowNotification(true);
             setTimeout(() => {
@@ -393,19 +394,68 @@ function GenerateOutfit() {
         console.log("Bag items:", bagItems);
 
 
-        const randomOutfitValue = Math.floor(Math.random() * 2);
+       
+
+
+        let randomOutfitValue = 1000000;
         // const randomOutfitValue = 1;
+        const topItemsLength = topItems?.length ?? 0;
+        const bottomItemsLength = bottomItems?.length ?? 0;
+        const dressItemsLength = dressItems?.length ?? 0;
+        const outerwearItemsLength = outerwearItems?.length ?? 0;
+        const accessoryItemsLength = accessoryItems?.length ?? 0;
+        const shoeItemsLength = shoeItems?.length ?? 0;
+        const hatItemsLength = hatItems?.length ?? 0;
+        const bagItemsLength = bagItems?.length ?? 0;
+        // if (dressItemsLength !== 0 && bottomItemsLength !== 0 && topItemsLength !==0) {
+        //     randomOutfitValue = Math.floor(Math.random() * 2);
+        // }
+        // else if (dressItemsLength !== 0 && bottomItemsLength === 0 && topItemsLength ===0) {
+        //     randomOutfitValue = 0;
+        // }
+        // else if (dressItemsLength === 0 && bottomItemsLength !== 0 && topItemsLength !==0) {
+        //     randomOutfitValue = 1;
+        // }
+        // else {
+        //     setShowInvalidNotification(true);
+        //     setTimeout(() => {
+        //         setShowInvalidNotification(false); // Hide notification after 3 seconds
+        //     }, 3000); // 3000 milliseconds = 3 seconds
+        //     return;
+        // }
+        if (dressItemsLength > 0 && bottomItemsLength > 0 && topItemsLength > 0) {
+            randomOutfitValue = Math.floor(Math.random() * 2);
+        } else if (dressItemsLength > 0 && (bottomItemsLength === 0 || topItemsLength === 0)) {
+            randomOutfitValue = 0;
+        } else if ((dressItemsLength === 0 || topItemsLength === 0) && bottomItemsLength > 0) {
+            randomOutfitValue = 1;
+        } else {
+            setShowInvalidNotification(true);
+                setTimeout(() => {
+                setShowInvalidNotification(false); // Hide notification after 3 seconds
+            }, 3000); // 3000 milliseconds = 3 seconds
+            return;
+        }
+        
+        
+        
+        console.log(randomOutfitValue);
         if (randomOutfitValue === 0) {
             setChosenDress(chooseRandomItem(dressItems));
             chosenItems.dress = chooseRandomItem(dressItems);
             // console.log("fdiosvoildjsovdfjsop", chosenItems.dress)
-            if ((Math.floor(Math.random() * 1)) === 1) {
+            if ((Math.floor(Math.random() * 2)) === 1 && topItems !== null) {
                 setChosenTop(chooseRandomItem(topItems));
                 chosenItems.top = chooseRandomItem(topItems);
             }
-            if ((Math.floor(Math.random() * 1)) === 1) {
+            if ((Math.floor(Math.random() * 2)) === 1 && bottomItems !== null) {
                 setChosenBottom(chooseRandomItem(bottomItems));
                 chosenItems.bottom = chooseRandomItem(bottomItems);
+            }
+            try {
+                setPreviewScreen(true);
+            } catch (error) {
+                console.error("Error:", error);
             }
         }
 
@@ -414,46 +464,50 @@ function GenerateOutfit() {
             setChosenBottom(chooseRandomItem(bottomItems))
             chosenItems.top = chooseRandomItem(topItems);
             chosenItems.bottom = chooseRandomItem(bottomItems);
-            if ((Math.floor(Math.random() * 1)) === 1) {
+            if ((Math.floor(Math.random() * 2) && dressItems !== null) === 1) {
                 setChosenDress(chooseRandomItem(dressItems));
                 chosenItems.dress = chooseRandomItem(dressItems);
             }
+            try {
+                setPreviewScreen(true);
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
-        if ((Math.floor(Math.random() * 1)) === 1) {
+
+
+        if ((Math.floor(Math.random() * 2)) === 1 && outerwearItemsLength !== 0) {
             setChosenOuterwear(chooseRandomItem(outerwearItems));
             chosenItems.outerwear = chooseRandomItem(outerwearItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1) {
+        if ((Math.floor(Math.random() * 1)) === 1 && accessoryItemsLength !== 0) {
             setChosenAccessory(chooseRandomItem(accessoryItems));
             chosenItems.accessory = chooseRandomItem(accessoryItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1) {
+        if ((Math.floor(Math.random() * 1)) === 1 && shoeItemsLength !== 0) {
             setChosenShoe(chooseRandomItem(shoeItems));
             chosenItems.shoe = chooseRandomItem(shoeItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1) {
+        if ((Math.floor(Math.random() * 1)) === 1 && hatItemsLength !== 0) {
             setChosenHat(chooseRandomItem(hatItems));
             chosenItems.hat = chooseRandomItem(hatItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1) {
+        if ((Math.floor(Math.random() * 1)) === 1 && bagItemsLength !== 0) {
             setChosenBag(chooseRandomItem(bagItems));
             chosenItems.bag = chooseRandomItem(bagItems);
         }
-
-        console.log(chosenItems);
-        
-        
         
 
-        try {
-            setPreviewScreen(true);
-        } catch (error) {
-            console.error("Error:", error);
-        }
+        console.log("CHOSEN ITEMSSSSS", chosenItems);
+        
+        
+        
+
+        
     }
 
     function handleSelectChange(event) {
@@ -505,6 +559,12 @@ function GenerateOutfit() {
                             <Alert status="warning" mt={4}>
                                 <AlertIcon />
                                 Please make selections for both colour and style.
+                            </Alert>
+                        )}
+                        {showInvalidNotification && (
+                            <Alert status="warning" mt={4}>
+                                <AlertIcon />
+                                No items of specified choice. Upload more items or select valid options.
                             </Alert>
                         )}
                     </Flex>
