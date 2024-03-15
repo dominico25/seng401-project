@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import b1 from './background_images/img1.jpeg';
 import b2 from './background_images/img2.jpeg';
