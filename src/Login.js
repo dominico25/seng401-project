@@ -90,7 +90,7 @@ const Login = () => {
         <div className="Inputs">
           <div className="input">
             <img src={email_icom} alt="email" className="icon"></img>
-            <input type='text' id='email' placeholder='Email' onChange={(e) => setUserEmail(e.target.value)}>
+            <input type='text' id='email' placeholder='Email'>
           </input></div>
 
           <div className="input">
