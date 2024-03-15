@@ -11,6 +11,7 @@ import b6 from './background_images/img6.jpg';
 import b7 from './background_images/img7.jpg';
 import home_logo from "./images/homepage_logo.png";
 
+
 import email_icom from "./icons/email.png";
 import password_icon from "./icons/password.png";
 
@@ -113,12 +114,14 @@ const Login = () => {
           <div className="signin"> <button type='submit' id='signin_button'>Login in</button></div>
         </div>
 
-    
         <form id='login_form'>
           <GoogleOAuthProvider clientId={clientId} id = 'google_login'>
             <GoogleLogin
               onSuccess={onSuccess}
               onFailure={onFailure}
+              onError={() => {
+                console.log('Login Failed');
+              }}
               clientId={clientId}
               buttonText='Login with Google'
               cookiePolicy={'single_host_origin'}
