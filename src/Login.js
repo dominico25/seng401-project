@@ -15,8 +15,6 @@ import home_logo from "./images/homepage_logo.png";
 
 import email_icom from "./icons/email.png";
 import password_icon from "./icons/password.png";
-
-
 import './login.css';
 
 const clientId = '52196466868-3n2nemknh184a6nsp6vp900g77jqd0ak.apps.googleusercontent.com';
