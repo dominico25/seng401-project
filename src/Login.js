@@ -35,43 +35,39 @@ const Login = () => {
   }, []);
   
   const onSuccess = async (credentialResponse) => {
-    try {
-      const response = await fetch('YOUR_GET_ACCOUNT_DETAILS_LAMBDA_ENDPOINT', {
-        method: 'POST',
+    console.log(credentialResponse);
+    const decodedToken = jwtDecode(credentialResponse.credential);
+    const userEmail = decodedToken.email;
+    console.log('Logged in User Email:', userEmail);
+
+    // Call lambda function to check if the user exists
+    // fetch using "load-acc-info" lambda
+    const response = await fetch(`https://3v5owmywkqg6g3brxfqqhno65y0lvtfs.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const data = await response.json();
+
+    // If account doesn't exist, call lambda function to save the account
+    // fetch using "save-account" lambda
+    if (response.status === 404) {
+      await fetch(`https://i3n6dghdj4er3m5stsnt3fr5ru0ayomz.lambda-url.ca-central-1.on.aws/`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email: userEmail }),
+        body: JSON.stringify({
+          email: userEmail
+          // Add other necessary user data here
+        })
       });
-
-      if (response.ok) {
-        const userDetails = await response.json();
-        console.log('Account exists:', userDetails);
-      } else if (response.status === 404) {
-        // Account doesn't exist, save the account details
-        const saveAccountResponse = await fetch('YOUR_SAVE_ACCOUNT_LAMBDA_ENDPOINT', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: userEmail }),
-        });
-
-        if (saveAccountResponse.ok) {
-          const savedAccountDetails = await saveAccountResponse.json();
-          console.log('Account saved successfully:', savedAccountDetails);
-        } else {
-          console.error('Failed to save account:', saveAccountResponse);
-        }
-      } else {
-        console.error('Error checking account details:', response);
-      }
-    } catch (error) {
-      console.error('Error during login:', error);
     }
 
-    // Redirect to the Home page
-    navigate('/Home');
+    // Call lambda function to retrieve account details
+    // fetch using "load-acc-info" lambda
+    const accountResponse = await fetch(`https://3v5owmywkqg6g3brxfqqhno65y0lvtfs.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const accountData = await accountResponse.json();
+
+    // Set the user object to state
+    setUser(accountData);
+    navigate('/Home'); // Redirect to Home page
   };
   
   const onFailure = (error) => {
@@ -119,9 +115,6 @@ const Login = () => {
             <GoogleLogin
               onSuccess={onSuccess}
               onFailure={onFailure}
-              onError={() => {
-                console.log('Login Failed');
-              }}
               clientId={clientId}
               buttonText='Login with Google'
               cookiePolicy={'single_host_origin'}
