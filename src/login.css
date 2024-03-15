@@ -249,7 +249,7 @@ footer p{
         width: 300px !important; /* Adjust the width as needed */
         height: 60px !important;
         border: 1px solid #282c34 !important;
-        display:
+        display: flex;
     }
     
 }
