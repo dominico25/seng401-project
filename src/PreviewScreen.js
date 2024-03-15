@@ -28,7 +28,7 @@ function PreviewScreen(props) {
         props.previewOff();
     };
 
-    const [accountID, setAccountID] = useState(1);
+    // const [accountID, setAccountID] = useState("");
 
     const handleSaveOutfit = async () => {
         props.saveOutfit();
@@ -52,7 +52,7 @@ function PreviewScreen(props) {
         const shoesID = props.chosenItems.shoes ? props.chosenItems.shoes['item_id'] : null;
         const hatID = props.chosenItems.hat ? props.chosenItems.hat['item_id'] : null;
         const bagID = props.chosenItems.bag ? props.chosenItems.bag['item_id'] : null;
-
+        let accountID;
         
         // const data = new FormData();
         // clothingCategories.forEach(category => {
@@ -62,16 +62,22 @@ function PreviewScreen(props) {
         //     // Append null if accessor is null, otherwise append accessor
         //     data.append(category.key, category.accessor !== null ? category.accessor : null);
         // });
-        if (props.chosenItems.bottom != null) {
-            setAccountID(props.chosenItems.bottom['account_id']);
+        if (props.chosenItems.bottom !== null && props.chosenItems.bottom !== undefined) {
+            // setAccountID(props.chosenItems.bottom['account_id']);
+            accountID = props.chosenItems.bottom['account_id']
             // data.append("account_id", props.chosenBottom.account_id);
         }
-        else if (props.chosenItems.top != null) {
-            setAccountID(props.chosenItems.top['account_id']);
+        else if (props.chosenItems.top !== null && props.chosenItems.top !== undefined) {
+            // setAccountID(props.chosenItems.top['account_id']);
+            accountID = props.chosenItems.top['account_id']
             // data.append("account_id", props.chosenTop.account_id);
         }
-        else if (props.chosenItems.dress != null) {
-            setAccountID(props.chosenItems.dress['account_id']);
+        else if (props.chosenItems.dress !== null && props.chosenItems.dress !== null) {
+            console.log("ACCCCCCOUUUUNNTTT", props.chosenItems.dress['account_id']);
+
+            // setAccountID(props.chosenItems.dress['account_id']);
+            accountID = props.chosenItems.dress['account_id']
+            console.log(accountID);
             // data.append("account_id", props.chosenDress.account_id);
         }
         const data = JSON.stringify ({
@@ -86,7 +92,7 @@ function PreviewScreen(props) {
             account_id: accountID
         });
         console.log("DATAAAAAAAAAAAA", data);
-        const res = await fetch(`https://lg3jm275kdxbtsb6ssywawxmfa0hydrb.lambda-url.ca-central-1.on.aws/`,
+        const res = await fetch(`https://cgmjrmocy3sk4uxcmighoudj7e0sxtsa.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: data
@@ -177,39 +183,39 @@ function PreviewScreen(props) {
                 <Flex direction="row" alignItems="center" mt={4}>
                 <Flex direction="column" alignItems="center">
                     <h1>Top</h1>
-                    {props.chosenTop!==null && (
+                    {props.chosenTop!==null && props.chosenTop!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.top['image_url']} alt='Top' />
                     )}
                     <h1>Dress</h1>
-                    {props.chosenDress!==null && (
+                    {props.chosenDress!==null && props.chosenDress!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.dress['image_url']} alt='Dress' />
                     )}
                     <h1>Hat</h1>
-                    {props.chosenHat!==null && (
+                    {props.chosenHat!==null && props.chosenHat!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.hat['image_url']} alt='Hat' />
                     )}
                 </Flex>
                 <Flex direction="column" alignItems="center">
                     <h1>Bottom</h1>
-                    {props.chosenBottom!==null && (
+                    {props.chosenBottom!==null && props.chosenBottom!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.bottom['image_url']} alt='Bottom' />
                     )}
                     <h1>Outerwear</h1>
-                    {props.chosenOuterwear!==null && (
+                    {props.chosenOuterwear!==null && props.chosenOuterwear!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.outerwear['image_url']} alt='Outerwear' />
                     )}
                     <h1>Bag</h1>
-                    {props.chosenBag!==null && (
+                    {props.chosenBag!==null && props.chosenBag!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.bag['image_url']} alt='Bag' />
                     )}
                 </Flex>
                 <Flex direction="column" alignItems="center">
                     <h1>Shoes</h1>
-                    {props.chosenShoe!==null && (
+                    {props.chosenShoe!==null && props.chosenShoe!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.shoe['image_url']} alt='Shoes' />
                     )}
                     <h1>Accessory</h1>
-                    {props.chosenAccessory!==null && (
+                    {props.chosenAccessory!==null && props.chosenAccessory!== undefined && (
                         <Image boxSize='200px' src={props.chosenItems.accessory['image_url']} alt='Accessory' />
                     )}
                 </Flex>
