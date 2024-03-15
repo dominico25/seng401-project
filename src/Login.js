@@ -24,8 +24,7 @@ const images = [b1, b2, b3, b4, b5, b6, b7];
 
 const Login = () => {
   const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState(""); // Declare and initialize userEmail state
-  const [userPassword, setUserPassword] = useState(""); // Declare and initialize userPassword state
+  const [user, setUser] = useState(null);
   const [backgroundImage, setBackgroundImage] = useState(""); // Declare and initialize background state
   
 

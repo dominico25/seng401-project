@@ -20,6 +20,7 @@ function Header(){
 
         }   
         document.getElementById("activator").addEventListener("click", show);
+
         return () => {
             document.getElementById("activator").removeEventListener("click", show);
         }
