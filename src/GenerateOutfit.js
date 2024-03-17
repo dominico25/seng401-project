@@ -6,7 +6,7 @@ import Header from "./Header";
 import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text } from '@chakra-ui/react'
 
 
-function GenerateOutfit() {
+function GenerateOutfit(props) {
     const [chosenItems, setChosenItems] = useState({
         top: null,
         bottom: null,
@@ -32,7 +32,8 @@ function GenerateOutfit() {
     const account = {id: "dominicomendes@gmail.com"};
     
     const loadItems = async () => {
-        const res = await fetch(`https://7tiwn5fhpevvw25px476uovooy0nckmy.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        console.log("hfdkwnfdnsklnfkdslf")
+        const res = await fetch(`https://7o4pxu4wej3eeeplakb7ywge5y0laqdz.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -130,7 +131,7 @@ function GenerateOutfit() {
 
     useEffect(() => {
         loadItems();
-    }, [account.id, loadItems]);
+    }, [account.id]);
 
     async function handleForm(event) {
         event.preventDefault();

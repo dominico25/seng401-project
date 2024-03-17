@@ -11,8 +11,8 @@ terraform {
 provider "aws" {
   region = "ca-central-1"
   ## dont wanna add access key here
-  access_key = 
-  secret_key = 
+  access_key = ""
+  secret_key = ""
 }
 
 # two lambda functions w/ function url
@@ -78,6 +78,16 @@ locals {
   delete_item_handler  = "main.lambda_handler"
   delete_item_artifact = "../functions/${local.delete_item_func}/delete_item_artifact.zip"
   delete_item_source_file = "../functions/${local.delete_item_func}"
+
+  delete_item_from_outfit_func = "delete-item-from-outfit"
+  delete_item_from_outfit_handler  = "main.lambda_handler"
+  delete_item_from_outfit_artifact = "../functions/${local.delete_item_from_outfit_func}/delete_item_from_outfit_artifact.zip"
+  delete_item_from_outfit_source_file = "../functions/${local.delete_item_from_outfit_func}"
+
+  delete_outfit_func = "delete-outfit"
+  delete_outfit_handler  = "main.lambda_handler"
+  delete_outfit_artifact = "../functions/${local.delete_outfit_func}/delete_outfit_artifact.zip"
+  delete_outfit_source_file = "../functions/${local.delete_outfit_func}"
 }
 
 
@@ -155,6 +165,25 @@ resource "aws_lambda_function" "delete_item_lambda" {
   timeout = 20
 }
 
+resource "aws_lambda_function" "delete_item_from_outfit_lambda" {
+  role          = aws_iam_role.delete_item_from_outfit_role.arn
+  function_name = local.delete_item_from_outfit_func
+  handler       = local.delete_item_from_outfit_handler
+  filename      = local.delete_item_from_outfit_artifact
+  source_code_hash = data.archive_file.delete_item_from_outfit_file.output_base64sha256
+  runtime = "python3.9"
+  timeout = 20
+}
+
+resource "aws_lambda_function" "delete_outfit_lambda" {
+  role          = aws_iam_role.delete_outfit_role.arn
+  function_name = local.delete_outfit_func
+  handler       = local.delete_outfit_handler
+  filename      = local.delete_outfit_artifact
+  source_code_hash = data.archive_file.delete_outfit_file.output_base64sha256
+  runtime = "python3.9"
+  timeout = 20
+}
 
 #roles
 
@@ -288,6 +317,48 @@ EOF
 
 resource "aws_iam_role" "delete_item_role" {
   name               = "iam-for-delete-item-${local.delete_item_func}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+
+
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "delete_item_from_outfit_role" {
+  name               = "iam-for-delete-item-from-outfit-${local.delete_item_from_outfit_func}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+
+
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "delete_outfit_role" {
+  name               = "iam-for-delete-outfit-${local.delete_outfit_func}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -498,6 +569,66 @@ resource "aws_iam_policy" "delete_item_logs" {
 EOF
 }
 
+resource "aws_iam_policy" "delete_item_from_outfit_logs" {
+  name        = "lambda-logging-${local.delete_item_from_outfit_func}"
+  description = "IAM policy for logging from a lambda"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "dynamodb:UpdateItem",
+        "dynamodb:Scan",
+        "ssm:GetParameter",
+        "polly:SynthesizeSpeech"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:*",
+        "${aws_dynamodb_table.outfits.arn}",
+        "*"
+      ],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "delete_outfit_logs" {
+  name        = "lambda-logging-${local.delete_outfit_func}"
+  description = "IAM policy for logging from a lambda"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DeleteLogGroup",
+        "logs:DeleteLogStream",
+        "dynamodb:DeleteItem",
+        "ssm:GetParameter",
+        "polly:SynthesizeSpeech"
+      ],
+      "Resource": [
+        "arn:aws:logs:*:*:*",
+        "${aws_dynamodb_table.outfits.arn}",
+        "*"
+      ],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
 
 
 # attach policies to roles for lambda functions
@@ -539,6 +670,15 @@ resource "aws_iam_role_policy_attachment" "delete_item_role_logs_a" {
   policy_arn = aws_iam_policy.delete_item_logs.arn
 }
 
+resource "aws_iam_role_policy_attachment" "delete_item_from_outfit_role_logs_a" {
+  role       = aws_iam_role.delete_item_from_outfit_role.name
+  policy_arn = aws_iam_policy.delete_item_from_outfit_logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "delete_outfit_role_logs_a" {
+  role       = aws_iam_role.delete_outfit_role.name
+  policy_arn = aws_iam_policy.delete_outfit_logs.arn
+}
 
 # creating function urls for lambda functions
 
@@ -638,6 +778,32 @@ resource "aws_lambda_function_url" "delete_item_url" {
   }
 }
 
+resource "aws_lambda_function_url" "delete_item_from_outfit_url" {
+  function_name      = aws_lambda_function.delete_item_from_outfit_lambda.function_name
+  authorization_type = "NONE"
+
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["PATCH"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+resource "aws_lambda_function_url" "delete_outfit_url" {
+  function_name      = aws_lambda_function.delete_outfit_lambda.function_name
+  authorization_type = "NONE"
+
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["DELETE"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
 # creating archive zip files for lambda function, idk if were supposed to zip them together or apart
 
 # create archive files for loads
@@ -682,6 +848,18 @@ data "archive_file" "delete_item_file" {
   type = "zip"
   source_dir = local.delete_item_source_file
   output_path = local.delete_item_artifact
+}
+
+data "archive_file" "delete_item_from_outfit_file" {
+  type = "zip"
+  source_dir = local.delete_item_from_outfit_source_file
+  output_path = local.delete_item_from_outfit_artifact
+}
+
+data "archive_file" "delete_outfit_file" {
+  type = "zip"
+  source_dir = local.delete_outfit_source_file
+  output_path = local.delete_outfit_artifact
 }
 
 # creating dynamodb table
@@ -790,6 +968,18 @@ output "lambda_save_item_url" {
 
 output "lambda_save_outfit_url" {
   value = aws_lambda_function_url.save_outfit_url.function_url
+}
+
+output "lambda_delete_item_url" {
+  value = aws_lambda_function_url.delete_item_url.function_url
+}
+
+output "lambda_delete_item_from_outfit_url" {
+  value = aws_lambda_function_url.delete_item_from_outfit_url.function_url
+}
+
+output "lambda_delete_outfit_url" {
+  value = aws_lambda_function_url.delete_outfit_url.function_url
 }
 
 
