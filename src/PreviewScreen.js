@@ -92,7 +92,7 @@ function PreviewScreen(props) {
             account_id: accountID
         });
         console.log("DATAAAAAAAAAAAA", data);
-        const res = await fetch(`https://ealxouwmd6yvz7g3rewdhotzau0ztrsp.lambda-url.ca-central-1.on.aws/`,
+        const res = await fetch(`https://ydc3xidlgow5ra2lb3bvekyhhi0rwcec.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: data

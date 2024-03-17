@@ -19,9 +19,9 @@ function BrowseItem() {
         console.log("Items", items)
     });
 
-    const deleteItems = async () => {
+    const deleteItem = async () => {
         try {
-            const res = await fetch(`https://p22vt5expgswih6qpzngkaja4q0hgxpq.lambda-url.ca-central-1.on.aws?account_id=${account.id}&item_id=${itemToDelete.item_id}`, {
+            const res = await fetch(`https://2teflbiarsoaanuis6xjnfe5wu0dgidd.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -34,10 +34,42 @@ function BrowseItem() {
             console.error("Error deleting item:", error);
         }
     }
+
+    const deleteItemFromOutfits = async () => {
+        try {
+            const res = await fetch(`https://kvfmhv3dmza23osqcbabj5ot5u0kqpge.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+                method: 'PATCH'
+            });
+            
+            if (res.status === 200) {
+                console.log("Item deleted successfully");
+            } else {
+                console.error("Failed to delete item");
+            }
+        } catch (error) {
+            console.error("Error deleting item:", error);
+        }
+    }
+
+    const deleteOutfit = async () => {
+        try {
+            const res = await fetch(`https://j2cm3y3o3efo7xntsl3chff2nq0katdt.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&outfit_id=OUTFIT_TO_DELETE`, {
+                method: 'DELETE'
+            });
+            
+            if (res.status === 200) {
+                console.log("Outfit deleted successfully");
+            } else {
+                console.error("Failed to delete outfit");
+            }
+        } catch (error) {
+            console.error("Error deleting outfit:", error);
+        }
+    }
     
 
     const loadItems = async () => {
-        const res = await fetch(`https://7tiwn5fhpevvw25px476uovooy0nckmy.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        const res = await fetch(`https://7o4pxu4wej3eeeplakb7ywge5y0laqdz.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -255,7 +287,10 @@ function BrowseItem() {
 
     const handleDeleteItem = (event) => {
         // console.log(itemToDelete.item_id);
-        deleteItems();
+        deleteItem();
+        deleteItemFromOutfits();
+        deleteOutfit();
+        // window.location.reload();
     }
 
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
@@ -271,8 +306,18 @@ function BrowseItem() {
         setIsDeleteConfirmationOpen(false);
     };
 
+
+    const [itemDeletedNotification, setItemDeletedNotification] = useState(false);
+
     const cancelRef = useRef();
 
+    const deleteItemNotification = () => {
+        console.log("Your item has been deleted!");
+        setItemDeletedNotification(true);
+        setTimeout(() => {
+            setItemDeletedNotification(false);
+        }, 3000);
+    };
 
     const renderModalContent = () => {
         if (!selectedItem) return null;
@@ -332,7 +377,7 @@ function BrowseItem() {
                     <AlertDialogOverlay />
                     <AlertDialogContent>
                         <AlertDialogHeader>Delete Item</AlertDialogHeader>
-                        <AlertDialogBody>
+                        <AlertDialogBody bg="rgb(40,44,52)" textColor="white">
                             Are you sure you want to delete this item?
                         </AlertDialogBody>
                         <AlertDialogFooter>
@@ -340,6 +385,7 @@ function BrowseItem() {
                                 Cancel
                             </Button>
                             <Button colorScheme="red" onClick={() => {
+                                deleteItemNotification();
                                 handleDeleteItem(itemToDelete);
                                 setIsDeleteConfirmationOpen(false);
                                 setSelectedItem(null);
@@ -354,10 +400,17 @@ function BrowseItem() {
         );
     };
     
+    
 
     return (
         <div>
             <Header />
+            {itemDeletedNotification && (
+                <Alert status="success" >
+                    <AlertIcon />
+                    Your item has been deleted successfully !
+                </Alert>
+            )}
             {/* <Button
                 mt={4}
                 colorScheme='teal'
