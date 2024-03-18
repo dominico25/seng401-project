@@ -10,6 +10,7 @@ function Home(){
     // Define a logout function
     const logout = () => {
         googleLogout(); // Logout using googleLogout
+        console.log("Logged out")
         navigate('/'); // Navigate back to the '/Main' page
     };
 
