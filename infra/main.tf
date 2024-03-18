@@ -73,6 +73,12 @@ locals {
   save_outfit_handler  = "main.lambda_handler"
   save_outfit_artifact = "../functions/${local.save_outfit_func}/load_outfits_artifact.zip"
   save_outfit_source_file = "../functions/${local.save_outfit_func}"
+
+  load_item_info_func = "load-item-info"
+  load_item_info_handler  = "main.lambda_handler"
+  load_item_info_artifact = "../functions/${local.load_item_info_func}/load_item_info_artifact.zip"
+  load_item_info_source_file = "../functions/${local.load_item_info_func}"
+
 }
 
 
@@ -105,6 +111,16 @@ resource "aws_lambda_function" "load_outfits_lambda" {
   handler       = local.load_outfits_handler
   filename      = local.load_outfits_artifact
   source_code_hash = data.archive_file.load_outfits_file.output_base64sha256
+  runtime = "python3.9"
+  timeout = 20
+}
+
+resource "aws_lambda_function" "load_item_info_lambda" {
+  role          = aws_iam_role.load_item_info_role.arn
+  function_name = local.load_item_info_func
+  handler       = local.load_item_info_handler
+  filename      = local.load_item_info_artifact
+  source_code_hash = data.archive_file.load_item_info_file.output_base64sha256
   runtime = "python3.9"
   timeout = 20
 }
@@ -189,6 +205,27 @@ EOF
 
 resource "aws_iam_role" "load_outfits_role" {
   name               = "iam-for-load-outfits-${local.load_outfits_func}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+
+
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role" "load_item_info_role" {
+  name               = "iam-for-load-item-info-${local.load_item_info_func}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -421,9 +458,36 @@ resource "aws_iam_policy" "load_outfits_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Query"
+        "dynamodb:Query",
+        "dynamodb:Scan"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.outfits.arn}"],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "load_item_info_logs" {
+  name        = "lambda-logging-${local.load_item_info_func}"
+  description = "IAM policy for logging from a lambda"
+
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "dynamodb:GetItem",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
+      "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.items.arn}"],
       "Effect": "Allow"
     }
   ]
@@ -448,6 +512,11 @@ resource "aws_iam_role_policy_attachment" "load_items_role_logs_a" {
 resource "aws_iam_role_policy_attachment" "load_outfits_role_logs_a" {
   role       = aws_iam_role.load_outfits_role.name
   policy_arn = aws_iam_policy.load_outfits_logs.arn
+}
+
+resource "aws_iam_role_policy_attachment" "load_item_info_role_logs_a" {
+  role       = aws_iam_role.load_item_info_role.name
+  policy_arn = aws_iam_policy.load_item_info_logs.arn
 }
 
 # attach get policy to the saves function role
@@ -553,6 +622,19 @@ resource "aws_lambda_function_url" "load_outfits_url" {
   }
 }
 
+resource "aws_lambda_function_url" "load_item_info_url" {
+  function_name      = aws_lambda_function.load_item_info_lambda.function_name
+  authorization_type = "NONE"
+
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["GET"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
 
 # creating archive zip files for lambda function, idk if were supposed to zip them together or apart
 
@@ -573,6 +655,12 @@ data "archive_file" "load_outfits_file" {
   type = "zip"
   source_dir = local.load_outfits_source_file
   output_path = local.load_outfits_artifact
+}
+
+data "archive_file" "load_item_info_file" {
+  type = "zip"
+  source_dir = local.load_item_info_source_file
+  output_path = local.load_item_info_artifact
 }
 
 # create archive file for gets
@@ -701,6 +789,10 @@ output "lambda_save_item_url" {
 
 output "lambda_save_outfit_url" {
   value = aws_lambda_function_url.save_outfit_url.function_url
+}
+
+output "lambda_load_item_info_url" {
+  value = aws_lambda_function_url.load_item_info_url.function_url
 }
 
 
