@@ -809,8 +809,8 @@ resource "aws_lambda_function_url" "load_acc_url" {
   }
 }
 
-resource "aws_lambda_function_url" "load_items_url" {
-  function_name      = aws_lambda_function.load_items_lambda.function_name
+resource "aws_lambda_function_url" "load_item_info_url" {
+  function_name      = aws_lambda_function.load_item_info_lambda.function_name
   authorization_type = "NONE"
 
 
