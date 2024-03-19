@@ -74,6 +74,12 @@ locals {
   save_outfit_artifact = "../functions/${local.save_outfit_func}/load_outfits_artifact.zip"
   save_outfit_source_file = "../functions/${local.save_outfit_func}"
 
+
+  edit_account_func = "edit-account-details"
+  edit_account_handler  = "main.lambda_handler"
+  edit_account_artifact = "../functions/${local.edit_account_func}/edit_account_artifact.zip"
+  edit_account_source_file = "../functions/${local.edit_account_func}"
+
   load_item_info_func = "load-item-info"
   load_item_info_handler  = "main.lambda_handler"
   load_item_info_artifact = "../functions/${local.load_item_info_func}/load_item_info_artifact.zip"
@@ -93,7 +99,6 @@ locals {
   delete_outfit_handler  = "main.lambda_handler"
   delete_outfit_artifact = "../functions/${local.delete_outfit_func}/delete_outfit_artifact.zip"
   delete_outfit_source_file = "../functions/${local.delete_outfit_func}"
-
 }
 
 
@@ -167,6 +172,16 @@ resource "aws_lambda_function" "save_outfit_lambda" {
   handler       = local.save_outfit_handler
   filename      = local.save_outfit_artifact
   source_code_hash = data.archive_file.save_outfit_file.output_base64sha256
+  runtime = "python3.9"
+  timeout = 20
+}
+
+resource "aws_lambda_function" "edit_account_lambda" {
+  role          = aws_iam_role.edit_account_role.arn
+  function_name = local.edit_account_func
+  handler       = local.edit_account_handler
+  filename      = local.edit_account_artifact
+  source_code_hash = data.archive_file.edit_account_file.output_base64sha256
   runtime = "python3.9"
   timeout = 20
 }
@@ -352,6 +367,27 @@ resource "aws_iam_role" "save_outfit_role" {
 EOF
 }
 
+resource "aws_iam_role" "edit_account_role" {
+  name               = "iam-for-edit-account-${local.edit_account_func}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+
+
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_role" "delete_item_role" {
   name               = "iam-for-delete-item-${local.delete_item_func}"
   assume_role_policy = <<EOF
@@ -460,6 +496,7 @@ resource "aws_iam_policy" "save_item_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:PutItem",
+        "dynamodb:GetItem",
         "ssm:GetParameter",
         "polly:SynthesizeSpeech"
       ],
@@ -539,8 +576,7 @@ resource "aws_iam_policy" "load_items_logs" {
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "dynamodb:GetItem",
-        "dynamodb:Query",
-        "dynamodb:Scan"
+        "dynamodb:Query"
       ],
       "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.items.arn}"],
       "Effect": "Allow"
@@ -576,6 +612,35 @@ resource "aws_iam_policy" "load_outfits_logs" {
 EOF
 }
 
+
+resource "aws_iam_policy" "edit_account_logs" {
+  name        = "lambda-logging-${local.edit_account_func}"
+  description = "IAM policy for logging from a lambda"
+
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "ssm:GetParameter",
+        "dynamodb:UpdateItem",
+        "polly:SynthesizeSpeech"
+      ],
+      "Resource": ["arn:aws:logs:*:*:*", "${aws_dynamodb_table.items.arn}", "*"],
+      "Effect": "Allow"
+    }
+  ]
+}
+EOF
+}
+
 resource "aws_iam_policy" "load_item_info_logs" {
   name        = "lambda-logging-${local.load_item_info_func}"
   description = "IAM policy for logging from a lambda"
@@ -601,7 +666,6 @@ resource "aws_iam_policy" "load_item_info_logs" {
 }
 EOF
 }
-
 
 resource "aws_iam_policy" "delete_item_logs" {
   name        = "lambda-logging-${local.delete_item_func}"
@@ -735,6 +799,12 @@ resource "aws_iam_role_policy_attachment" "save_outfit_role_logs_a" {
   policy_arn = aws_iam_policy.save_outfit_logs.arn
 }
 
+resource "aws_iam_role_policy_attachment" "edit_account_role_logs_a" {
+  role       = aws_iam_role.edit_account_role.name
+  policy_arn = aws_iam_policy.edit_account_logs.arn
+}
+
+=======
 resource "aws_iam_role_policy_attachment" "delete_item_role_logs_a" {
   role       = aws_iam_role.delete_item_role.name
   policy_arn = aws_iam_policy.delete_item_logs.arn
@@ -831,6 +901,20 @@ resource "aws_lambda_function_url" "load_outfits_url" {
     allow_credentials = true
     allow_origins     = ["*"]
     allow_methods     = ["GET"]
+    expose_headers    = ["keep-alive", "date"]
+  }
+}
+
+resource "aws_lambda_function_url" "edit_account_url" {
+  function_name      = aws_lambda_function.edit_account_lambda.function_name
+  authorization_type = "NONE"
+
+
+  cors {
+    allow_credentials = true
+    allow_origins     = ["*"]
+    allow_methods     = ["POST"]
+    allow_headers     = ["*"]
     expose_headers    = ["keep-alive", "date"]
   }
 }
@@ -939,6 +1023,13 @@ data "archive_file" "save_outfit_file" {
   output_path = local.save_outfit_artifact
 }
 
+data "archive_file" "edit_account_file" {
+  type = "zip"
+  source_dir = local.edit_account_source_file
+  output_path = local.edit_account_artifact
+}
+
+=======
 data "archive_file" "delete_item_file" {
   type = "zip"
   source_dir = local.delete_item_source_file
@@ -1065,6 +1156,9 @@ output "lambda_save_outfit_url" {
   value = aws_lambda_function_url.save_outfit_url.function_url
 }
 
+output "lambda_edit_account_url" {
+  value = aws_lambda_function_url.edit_account_url.function_url
+}
 
 output "lambda_load_item_info_url" {
   value = aws_lambda_function_url.load_item_info_url.function_url

@@ -26,6 +26,9 @@ function Navigation() {
                 <li>
                     <Link to="/GenerateOutfit">GenerateOutfit</Link>
                 </li>
+                <li>
+                    <Link to="/AccountInfo">AccountInfo</Link>
+                </li>
             </ul>
         </nav>
     );
