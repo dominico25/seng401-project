@@ -11,8 +11,8 @@ terraform {
 provider "aws" {
   region = "ca-central-1"
   ## dont wanna add access key here
-  access_key = ""
-  secret_key = ""
+  access_key = "YOUR ACCESS KEY HERE"
+  secret_key = "YOUR SECRET KEY HERE"
 }
 
 # two lambda functions w/ function url
@@ -804,7 +804,6 @@ resource "aws_iam_role_policy_attachment" "edit_account_role_logs_a" {
   policy_arn = aws_iam_policy.edit_account_logs.arn
 }
 
-=======
 resource "aws_iam_role_policy_attachment" "delete_item_role_logs_a" {
   role       = aws_iam_role.delete_item_role.name
   policy_arn = aws_iam_policy.delete_item_logs.arn
@@ -1029,7 +1028,6 @@ data "archive_file" "edit_account_file" {
   output_path = local.edit_account_artifact
 }
 
-=======
 data "archive_file" "delete_item_file" {
   type = "zip"
   source_dir = local.delete_item_source_file
@@ -1176,6 +1174,3 @@ output "lambda_delete_outfit_url" {
   value = aws_lambda_function_url.delete_outfit_url.function_url
 
 }
-
-
-
