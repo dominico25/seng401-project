@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Heading, Container, Flex, Avatar } from "@chakra-ui/react"; // Import Chakra UI components
 import Header from "./Header";
 import { googleLogout } from '@react-oauth/google';
 import Navigation from "./Navigation";
+import { AccountContext, useAccount } from "./AccountContext";
+
 
 function Home(){
     const navigate = useNavigate();
     const [accountDetails, setAccountDetails] = useState(null);
+    const { account } = useAccount();
+    const { setAccount } = useContext(AccountContext);
+
+    window.addEventListener('load', async function() {
+      console.log("YOOOO", localStorage.getItem('account'))
+      setAccount(localStorage.getItem('account'));
+      setTimeout(() => {
+        fetchAccountDetails();
+      }, 1500);
+      
+      console.log("Account", accountDetails)
+    });
 
     useEffect(() => {
         // Fetch account details when the component mounts
@@ -23,8 +37,8 @@ function Home(){
 
     const fetchAccountDetails = async () => {
         try {
-          const userEmail = "rjugdev@gmail.com"; // Set the email for fetching account details
-          const response = await fetch(`https://dhu6lzgfxt2mvshygjjmvho5qa0ftclg.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+          const userEmail = account; // Set the email for fetching account details
+          const response = await fetch(`https://yduraosk52s64z3h5wjg7vq67m0nitip.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
           const data = await response.json();
           if (response.ok) {
             setAccountDetails(data);

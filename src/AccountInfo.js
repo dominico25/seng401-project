@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Flex, Button, Heading, Text, Box, Avatar, Container } from "@chakra-ui/react";
 import Header from './Header';
+import { AccountContext, useAccount } from "./AccountContext";
 
 function AccountInfo() {
   const [accountDetails, setAccountDetails] = useState(null);
@@ -9,6 +10,7 @@ function AccountInfo() {
   const [fileName, setFileName] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const { account } = useAccount();
 
   useEffect(() => {
     // Fetch account details when the component mounts
@@ -18,7 +20,7 @@ function AccountInfo() {
   const fetchAccountDetails = async () => {
     try {
       const userEmail = "rjugdev@gmail.com"; // Set the email for fetching account details
-      const response = await fetch(`https://dhu6lzgfxt2mvshygjjmvho5qa0ftclg.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+      const response = await fetch(`https://yduraosk52s64z3h5wjg7vq67m0nitip.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
       const data = await response.json();
       if (response.ok) {
         setAccountDetails(data);
@@ -45,10 +47,10 @@ function AccountInfo() {
   const handleEdit = async (field, newValue) => {
     try {
       const formData = new FormData();
-      formData.append("email", "rjugdev@gmail.com");
+      formData.append("email", account);
       formData.append("edited_field", field);
       formData.append("new_value", newValue);
-      const response = await fetch('https://hwoaw7biqd5kwmla3keupre45q0iigdp.lambda-url.ca-central-1.on.aws/', {
+      const response = await fetch('https://egrolm7s7rg6yzot6go34sd3qi0tjuxw.lambda-url.ca-central-1.on.aws/', {
         method: 'POST',
     
         body: formData, // Pass FormData directly as the body

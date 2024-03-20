@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from './Navigation';
 import {
@@ -12,6 +12,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Header from "./Header";
+import { AccountContext, useAccount } from "./AccountContext";
 
 function UploadItem() {
   const [uploadComplete, setUploadComplete] = useState(false);
@@ -22,12 +23,23 @@ function UploadItem() {
   const [type, setType] = useState(""); // Separate state for type
   const [classification, setClassification] = useState(""); // Separate state for classification
   const navigate = useNavigate();
+  const { account } = useAccount();
+  const { setAccount } = useContext(AccountContext);
 
   const onFileChange = (e) => {
     console.log(e.target.files);
     setFile(e.target.files[0])
     setFileName(e.target.files[0].name);
   };
+
+  window.addEventListener('load', async function() {
+    console.log("YOOOO", localStorage.getItem('account'))
+    setAccount(localStorage.getItem('account'));
+    setTimeout(() => {
+
+    }, 1500);
+    
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -86,10 +98,10 @@ function UploadItem() {
         formData.append("style", style);
         formData.append("type", type);
         formData.append("classification", classification)
-        formData.append("account_id", "rjugdev@gmail.com");
+        formData.append("account_id", account);
 
         // Make an HTTP request to the API Gateway endpoint
-        const response = await fetch("https://qz5aiizurgevktjutpwocrpulu0llydo.lambda-url.ca-central-1.on.aws/", {
+        const response = await fetch("https://o7vqtnfwfxwc2ykjno4tfbuheq0zvfza.lambda-url.ca-central-1.on.aws/", {
             method: "POST",
 
             body: formData, // Pass FormData directly as the body

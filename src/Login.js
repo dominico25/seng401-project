@@ -6,20 +6,21 @@ import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useAccount, AccountContext } from './AccountContext';
 
-
-
 const Login = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null);
   const { setAccount } = useContext(AccountContext); // Access setAccount from AccountContext
 
   const onSuccess = async (credentialResponse) => {
     const decodedToken = jwtDecode(credentialResponse.credential);
     const userEmail = decodedToken.email;
 
+    // Call lambda function to check if the user exists
+    // fetch using "load-acc-info" lambda
+    const response = await fetch(`https://yduraosk52s64z3h5wjg7vq67m0nitip.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const data = await response.json();
 
     console.log('Logged in User Email:', userEmail);
-    const response = await fetch(`https://ebiqi3pv4uq56kjhqiyefy2yji0miujf.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
-    const data = await response.json();
     
     if (response.status === 404) { 
       try {
@@ -31,6 +32,7 @@ const Login = () => {
         formData.append("bio", "Add a bio!");
 
         // Make an HTTP request to the API Gateway endpoint
+
 
         const response = await fetch("https://r43ocqjnksk6yi7afg4h5twnom0qznkp.lambda-url.ca-central-1.on.aws/", {
 
@@ -56,13 +58,17 @@ const Login = () => {
     // Call lambda function to retrieve account details
     // fetch using "load-acc-info" lambda
 
-    const accountResponse = await fetch(`https://ebiqi3pv4uq56kjhqiyefy2yji0miujf.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
-
+    const accountResponse = await fetch(`https://yduraosk52s64z3h5wjg7vq67m0nitip.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
     const accountData = await accountResponse.json();
-    
+
+    // Set the user object to state
+    setUser(accountData);
     setAccount(accountData.email);
+    navigate('/Home'); // Redirect to Home page
+
     
     navigate('/Home');
+
   };
 
   return (
