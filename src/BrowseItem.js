@@ -1,10 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import React from "react";
 import Display from './Display';
 import PreviewScreen from './PreviewScreen';
 import Header from "./Header";
 import Empty from "./Empty";
+import { AccountContext } from "./AccountContext";
 import { Link } from 'react-router-dom';
+import { useAccount} from './AccountContext';
 import { Wrap, WrapItem, Box, Image, Select, Button, Container, Alert, AlertIcon, AlertDialog, AlertDialogOverlay, AlertDialogBody, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, Heading, Flex, Text } from '@chakra-ui/react'
 import { Input, Modal, ModalOverlay, ModalContent, ModalBody, ModalHeader, ModalFooter, ModalCloseButton } from "@chakra-ui/react";
 
@@ -13,15 +15,25 @@ function BrowseItem() {
     const [createScreen, setCreateScreen] = useState(false);
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
-    const account = {id: "dominicomendes@gmail.com"};
+    // const account = {id: "dominicomendes@gmail.com"};
+    const { account } = useAccount();
     window.addEventListener('load', async function() {
-        loadItems();
+        console.log("YOOOO", localStorage.getItem('account'))
+        setAccount(localStorage.getItem('account'));
+        setTimeout(() => {
+            loadItems();
+        }, 1500);
+        
         console.log("Items", items)
     });
+    // useEffect(() => {
+    //     console.log("AAAAA");
+    //     loadItems();
+    // }, []); 
 
     const deleteItem = async () => {
         try {
-            const res = await fetch(`https://2teflbiarsoaanuis6xjnfe5wu0dgidd.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&item_id=${itemToDelete.item_id}`, {
+            const res = await fetch(`https://p5ewvqgvp7p26uihr4whhaiswe0grljn.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -37,7 +49,7 @@ function BrowseItem() {
 
     const deleteItemFromOutfits = async () => {
         try {
-            const res = await fetch(`https://kvfmhv3dmza23osqcbabj5ot5u0kqpge.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+            const res = await fetch(`https://4cs6j4uj25oa5p2zi5b5hkcg640npfxo.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
                 method: 'PATCH'
             });
             
@@ -53,7 +65,7 @@ function BrowseItem() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://j2cm3y3o3efo7xntsl3chff2nq0katdt.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&outfit_id=OUTFIT_TO_DELETE`, {
+            const res = await fetch(`https://77nhenqydpmbmc7qf2uvgxdr6e0lqjbe.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
                 method: 'DELETE'
             });
             
@@ -69,7 +81,7 @@ function BrowseItem() {
     
 
     const loadItems = async () => {
-        const res = await fetch(`https://7o4pxu4wej3eeeplakb7ywge5y0laqdz.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        const res = await fetch(`https://fdgghaajku3craiseg6522g37e0mumff.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -103,7 +115,22 @@ function BrowseItem() {
     //     loadItems();
     // }, [account.id, loadItems]);
 
+    // useEffect(() => {
+    //     const storedAccount = localStorage.getItem('account');
+    //     if (storedAccount) {
+    //       setAccount(storedAccount);
+    //     }
+    //     loadItems();
+    //   }, []);
 
+    // useEffect(() => {
+    //     // Save account to local storage whenever it changes
+    //     localStorage.setItem('account', account);
+    // }, [account]);
+
+
+
+    const { setAccount } = useContext(AccountContext);
     const createOn = () => {
         setCreateScreen(true);
     }
@@ -235,25 +262,18 @@ function BrowseItem() {
 
         let filtered = items;
 
-        // if (classFilter === 'ClosetOnly') {
-        //     filtered = filtered.filter(outfit =>
-        //         !outfit.items.some(item =>
-        //             item.classification.toLowerCase() === 'wishlist'
-        //         )
-        //     );
-        // } 
         
-        // if (classFilter === 'Wishlist') {
-        //     filtered = filtered.filter(outfit =>
-        //         outfit.items.some(item =>
-        //             item.classification.toLowerCase() === 'wishlist'
-        //         )
-        //     );
-        // }
+        if (classFilter.trim() !== '') {
+            filtered = filtered.filter(item =>
+                item.classification.toLowerCase() === classFilter.toLowerCase() ||
+                (item.classification.toLowerCase() === classFilter.toLowerCase()) ||
+                (item["classification"].toLowerCase() === classFilter.toLowerCase())
+            );
+
+        }
 
 
-        
-
+    
         if (colorFilter.trim() !== '') {
             filtered = filtered.filter(item =>
                 item.colour.toLowerCase() === colorFilter.toLowerCase() ||
@@ -290,7 +310,9 @@ function BrowseItem() {
         deleteItem();
         deleteItemFromOutfits();
         deleteOutfit();
-        // window.location.reload();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000); // 2000 milliseconds = 2 seconds
     }
 
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
@@ -318,7 +340,10 @@ function BrowseItem() {
             setItemDeletedNotification(false);
         }, 3000);
     };
-
+    
+    useEffect(() => {
+        loadItems();
+    }, [account]);
     const renderModalContent = () => {
         if (!selectedItem) return null;
     
@@ -347,6 +372,10 @@ function BrowseItem() {
                                 <WrapItem>
                                     <Text fontSize="xl" fontWeight="bold">Style:</Text>
                                     <Text fontSize="xl" ml={1}>{selectedItem.style}</Text>
+                                </WrapItem>
+                                <WrapItem>
+                                    <Text fontSize="xl" fontWeight="bold">Class:</Text>
+                                    <Text fontSize="xl" ml={1}>{selectedItem.classification}</Text>
                                 </WrapItem>
                             </Flex>
 
@@ -466,11 +495,11 @@ function BrowseItem() {
                             <option value="Formal">Formal</option>
                             <option value="Sporty">Sporty</option>
                         </Select>
-                        {/* <Select onChange={handleClassFilterChange} value={classFilter} mr={2}>
+                        <Select onChange={handleClassFilterChange} value={classFilter} mr={2}>
                             <option value="">All Items</option>
-                            <option value="Wishlist">Contains Wishlist Items</option>
-                            <option value="ClosetOnly">Contains Closet Items</option>
-                        </Select> */}
+                            <option value="Wishlist">Wishlist Items</option>
+                            <option value="Closet">Closet Items</option>
+                        </Select>
                         <Button onClick={filterItems} fontSize="sm" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" width="400px">Apply Filters</Button>
                     </Flex>
 

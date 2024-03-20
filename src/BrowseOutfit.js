@@ -10,6 +10,7 @@ import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text, Box, 
 function convertToOutfitsArray(outputArray) {
     const outfitsArray = outputArray.map(outfit => ({
         name: outfit.name,
+        id: outfit.outfit_id,
         items: Object.values(outfit).filter(value => typeof value === 'object').map(item => ({
             id: item.item_id,
             imageUrl: item.imageUrl,
@@ -23,6 +24,7 @@ function convertToOutfitsArray(outputArray) {
 }
 
 
+
 function BrowseOutfit() {
     
     const [searchQuery, setSearchQuery] = useState('');
@@ -34,6 +36,9 @@ function BrowseOutfit() {
     const [isOpen, setIsOpen] = useState(false);
     const [baseOutfits, setBaseOutfits] = useState([]);
     const [outfits, setOutfits] = useState([]);
+
+    const [outfitToDelete, setOutfitToDelete] = useState('');
+
     // const [outfitsArray, setOutfitsArray] = useState([]);
     const [outfitNames, setOutfitNames] = useState([]);
     const [outfitItemIds, setOutfitItemIds] = useState({});
@@ -115,23 +120,24 @@ function BrowseOutfit() {
     const loadBaseOutfits = async () => {
 
         // ADD LOAD OUTFITS URL
-        const res = await fetch(`https://cyyxumtt2r5fxsvoguf46k4bmu0mzvso.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        const res = await fetch(`https://iverpq7yvswmh3es23gwsq54qm0scigt.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
         if (res.status === 200) {
             const data = await res.json();
             setBaseOutfits(data);
+            // console.log(baseOutfits)
         }
         
     }
 
     const loadOutfits = async () => {
         // ADD LOAD ITEM INFO URL
-        const res = await fetch(`https://jstgc25rhus32kblpp2uw4mt3q0ylixl.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
+        const res = await fetch(`https://53nw7q3ct3gkskmiuppeztfbt40awhyh.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
         if (res.status === 200) {
             const data = await res.json();
             
-            console.log(data.output_array)
+            // console.log(data.output_array)
             const convertedOutfits = convertToOutfitsArray(data.output_array);
-            console.log(convertedOutfits)
+            // console.log(convertedOutfits)
             setOutfits(convertedOutfits);
             // console.log(outfits)
         
@@ -139,10 +145,28 @@ function BrowseOutfit() {
 
     }
 
+
+    const deleteOutfit = async () => {
+        try {
+            const res = await fetch(`https://ia3c3cs5ihnkxormvqrlk52wem0yxohx.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&outfit_id=${outfitToDelete}`, {
+                method: 'DELETE'
+            });
+            
+            if (res.status === 200) {
+                console.log("Outfit deleted successfully");
+            } else {
+                console.error("Failed to delete outfit");
+            }
+        } catch (error) {
+            console.error("Error deleting outfit:", error);
+        }
+    }
+
+
     useEffect(() => {
         loadBaseOutfits();
         loadOutfits();
-        console.log(outfits)
+        // console.log(outfits)
         setFilteredOutfits(outfits);
     }, [account.id]);
 
@@ -173,7 +197,7 @@ const filterOutfits = () => {
     if (colorFilter.trim() !== '') {
         filtered = filtered.filter(outfit =>
             outfit.items.some(item => {
-                console.log("Item color:", item.color);
+                // console.log("Item color:", item.color);
                 return item.color.toLowerCase().includes(colorFilter.toLowerCase());
             })
         );
@@ -182,7 +206,7 @@ const filterOutfits = () => {
     if (styleFilter.trim() !== '') {
         filtered = filtered.filter(outfit =>
             outfit.items.some(item => {
-                console.log("Item style:", item.style);
+                // console.log("Item style:", item.style);
                 return item.style.toLowerCase().includes(styleFilter.toLowerCase());
             })
         );
@@ -275,11 +299,26 @@ const filterOutfits = () => {
 
     const handleOutfitClick = (outfit) => {
         setSelectedOutfit(outfit);
+        
         setIsOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsOpen(false);
+    };
+
+    const handleDeleteOutfit = () => {
+        try{
+            setOutfitToDelete(selectedOutfit.id);
+            // console.log(outfitToDelete)
+            // console.log(selectedOutfit)
+            // console.log(selectedOutfit.id)
+            deleteOutfit();
+            handleCloseModal();
+        } catch (error) {
+            console.error("Error deleting outfit:", error);
+        }
+        
     };
 
     const renderModalContent = () => {
@@ -306,12 +345,10 @@ const filterOutfits = () => {
                     <ModalFooter>
                         <Flex justify="space-between" width="100%">
                             <Flex justify="space-between" width="45%">
-                                <Button colorScheme="blue" onClick={handleCloseModal}>
+                                <Button colorScheme="blue" onClick={handleDeleteOutfit}>
                                     Delete Outfit
                                 </Button>
-                                <Button colorScheme="blue" onClick={handleCloseModal}>
-                                    Edit Outfit
-                                </Button>
+        
                             </Flex>
                             <Button colorScheme="blue" onClick={handleCloseModal}>
                                 Close
@@ -323,6 +360,7 @@ const filterOutfits = () => {
         );
     };
 
+    
     // async function handleForm(event) {
     //     loadBaseOutfits();
     // };
