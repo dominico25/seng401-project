@@ -49,6 +49,7 @@ import BrowseItem from "./BrowseItem";
 import BrowseOutfit from "./BrowseOutfit";
 import CreateOutfit from "./CreateOutfit";
 import GenerateOutfit from "./GenerateOutfit";
+import AccountInfo from './AccountInfo';
 import Navigation from "./Navigation";
 import { ChakraProvider } from '@chakra-ui/react';
 import { AccountProvider } from './AccountContext'; // Import AccountProvider

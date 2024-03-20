@@ -16,10 +16,11 @@ const Login = () => {
     const decodedToken = jwtDecode(credentialResponse.credential);
     const userEmail = decodedToken.email;
 
+
     console.log('Logged in User Email:', userEmail);
     const response = await fetch(`https://ebiqi3pv4uq56kjhqiyefy2yji0miujf.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
     const data = await response.json();
-
+    
     if (response.status === 404) { 
       try {
         const formData = new FormData();
@@ -30,7 +31,9 @@ const Login = () => {
         formData.append("bio", "Add a bio!");
 
         // Make an HTTP request to the API Gateway endpoint
+
         const response = await fetch("https://r43ocqjnksk6yi7afg4h5twnom0qznkp.lambda-url.ca-central-1.on.aws/", {
+
             method: "POST",
             body: formData, // Pass FormData directly as the body
         });
@@ -52,7 +55,9 @@ const Login = () => {
     }
     // Call lambda function to retrieve account details
     // fetch using "load-acc-info" lambda
+
     const accountResponse = await fetch(`https://ebiqi3pv4uq56kjhqiyefy2yji0miujf.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+
     const accountData = await accountResponse.json();
     
     setAccount(accountData.email);
