@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Heading, Box, Container, Button, Image, Flex, Wrap, WrapItem } from '@chakra-ui/react';
 import { bottom } from "@popperjs/core";
+import { useAccount} from './AccountContext';
+import { Alert, AlertIcon, Input, Modal, ModalOverlay, ModalContent, ModalBody, ModalHeader, ModalFooter, ModalCloseButton } from "@chakra-ui/react";
 const colourOptions = {
     "colour1": "Random",
     "colour2": "Red",
@@ -21,6 +23,10 @@ const styleOptions = {
 };
 function PreviewScreen(props) {
     // console.log(props.chosenItems.dress['image_url']);
+    // const { accountID } = useAccount();
+    const [showNotification, setShowNotification] = useState(false);
+    const [outfitName, setOutfitName] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const selectedColour = colourOptions[props.formValues.colour];
     const selectedStyle = styleOptions[props.formValues.style];
 
@@ -28,22 +34,26 @@ function PreviewScreen(props) {
         props.previewOff();
     };
 
-    // const [accountID, setAccountID] = useState("");
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
 
+    const handleModalOpen = () => {
+        setIsModalOpen(true);
+    };
+
+    
     const handleSaveOutfit = async () => {
+        if (outfitName.trim() === '') {
+            setShowNotification(true);
+            setTimeout(() => {
+                setShowNotification(false);
+            }, 3000);
+            return;
+        }
         props.saveOutfit();
+        setIsModalOpen(false);
         
-        
-        // const clothingCategories = [
-        //     { key: "top_id", prop: props.chosenItems.top, accessor: props.chosenItems.top ? props.chosenItems.top['item_id'] : null },
-        //     { key: "bottom_id", prop: props.chosenItems.bottom, accessor: props.chosenItems.bottom ? props.chosenItems.bottom['item_id'] : null },
-        //     { key: "outerwear_id", prop: props.chosenItems.outerwear, accessor: props.chosenItems.outerwear ? props.chosenItems.outerwear['item_id'] : null },
-        //     { key: "accessories_id", prop: props.chosenItems.accessory, accessor: props.chosenItems.accessory ? props.chosenItems.accessory['item_id'] : null },
-        //     { key: "shoes_id", prop: props.chosenItems.shoe, accessor: props.chosenItems.shoe ? props.chosenItems.shoe['item_id'] : null },
-        //     { key: "hat_id", prop: props.chosenItems.hat, accessor: props.chosenItems.hat ? props.chosenItems.hat['item_id'] : null },
-        //     { key: "bag_id", prop: props.chosenItems.bag, accessor: props.chosenItems.bag ? props.chosenItems.bag['item_id'] : null }
-        // ];
-
         const topID = props.chosenItems.top ? props.chosenItems.top['item_id'] : null;
         const bottomID = props.chosenItems.bottom ? props.chosenItems.bottom['item_id'] : null;
         const dressID = props.chosenItems.dress ? props.chosenItems.dress['item_id'] : null;
@@ -52,34 +62,22 @@ function PreviewScreen(props) {
         const shoesID = props.chosenItems.shoes ? props.chosenItems.shoes['item_id'] : null;
         const hatID = props.chosenItems.hat ? props.chosenItems.hat['item_id'] : null;
         const bagID = props.chosenItems.bag ? props.chosenItems.bag['item_id'] : null;
-        let accountID;
+        const name = outfitName;
+        const accountID = props.account;
         
-        // const data = new FormData();
-        // clothingCategories.forEach(category => {
-        //     data.append(category.key, category.accessor);
-        // });
-        // clothingCategories.forEach(category => {
-        //     // Append null if accessor is null, otherwise append accessor
-        //     data.append(category.key, category.accessor !== null ? category.accessor : null);
-        // });
-        if (props.chosenItems.bottom !== null && props.chosenItems.bottom !== undefined) {
-            // setAccountID(props.chosenItems.bottom['account_id']);
-            accountID = props.chosenItems.bottom['account_id']
-            // data.append("account_id", props.chosenBottom.account_id);
-        }
-        else if (props.chosenItems.top !== null && props.chosenItems.top !== undefined) {
-            // setAccountID(props.chosenItems.top['account_id']);
-            accountID = props.chosenItems.top['account_id']
-            // data.append("account_id", props.chosenTop.account_id);
-        }
-        else if (props.chosenItems.dress !== null && props.chosenItems.dress !== null) {
-            console.log("ACCCCCCOUUUUNNTTT", props.chosenItems.dress['account_id']);
-
-            // setAccountID(props.chosenItems.dress['account_id']);
-            accountID = props.chosenItems.dress['account_id']
-            console.log(accountID);
-            // data.append("account_id", props.chosenDress.account_id);
-        }
+        
+        // if (props.chosenItems.bottom !== null && props.chosenItems.bottom !== undefined) {
+        //     accountID = props.chosenItems.bottom['account_id']
+        // }
+        // else if (props.chosenItems.top !== null && props.chosenItems.top !== undefined) {
+        //     accountID = props.chosenItems.top['account_id']
+        // }
+        // else if (props.chosenItems.dress !== null && props.chosenItems.dress !== null) {
+        //     console.log("ACCCCCCOUUUUNNTTT", props.chosenItems.dress['account_id']);
+        //     accountID = props.chosenItems.dress['account_id']
+        //     console.log(accountID);
+        // }
+        
         const data = JSON.stringify ({
             top_id: topID,
             bottom_id: bottomID,
@@ -89,16 +87,18 @@ function PreviewScreen(props) {
             shoes_id: shoesID,
             hat_id: hatID,
             bag_id: bagID,
-            account_id: accountID
+            account_id: accountID,
+            name: name
         });
         console.log("DATAAAAAAAAAAAA", data);
-        const res = await fetch(`https://ydc3xidlgow5ra2lb3bvekyhhi0rwcec.lambda-url.ca-central-1.on.aws/`,
+        const res = await fetch(`https://gmn47qn3el3e5rgscqcd7nqmqe0ppogq.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: data
             }
         );
-        
+        setOutfitName('');
+        props.resetChosenItems();
     };
     
     return (
@@ -142,15 +142,56 @@ function PreviewScreen(props) {
                 <Box mb={4}>
                     <Heading size="md">Would you like to save this outfit?</Heading>
                     <Flex direction="column">
-                        <Button mt={4} colorScheme="teal" type="submit" onClick={handleSaveOutfit}>
+                        <Button mt={4} colorScheme="teal" type="submit" onClick={() => {
+                            // handleSaveOutfit();
+                            handleModalOpen();
+                            
+                        }}>
                             Yes, save this outfit!
                         </Button>
-                        <Button mt={4} colorScheme="gray" onClick={handlePreviewOff}>
+                        <Button mt={4} colorScheme="gray" onClick={() => {
+                            handlePreviewOff();
+                            props.resetChosenItems();
+                        }}>
                             No, go back to outfit generator
                         </Button>
                     </Flex>
                 </Box>
             </Flex>
+            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader bg="white" textColor="black">Enter Outfit Name</ModalHeader>
+                    <ModalBody>
+                    <Input
+                        placeholder="Enter outfit name"
+                        value={outfitName}
+                        onChange={(e) => setOutfitName(e.target.value)}
+                    />
+
+                    </ModalBody>
+                    {showNotification && (
+                        <Alert status="warning" mt={4}>
+                            <AlertIcon />
+                            Please input a name.
+                        </Alert>
+                    )}
+                    <ModalFooter bg="white">
+                        <Button colorScheme="teal" onClick={() => {
+                            handleSaveOutfit();
+                        }}>
+                            Save
+                        </Button>
+                        <Button colorScheme="gray" ml={3} onClick={() => {
+                            handleModalClose();
+                            handlePreviewOff();
+                            props.resetChosenItems();
+                        }}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
 
         </div>
       );

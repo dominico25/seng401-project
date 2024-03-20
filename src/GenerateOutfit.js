@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import React from "react";
 import Display from './Display';
 import PreviewScreen from './PreviewScreen';
 import Header from "./Header";
+import { AccountContext } from "./AccountContext";
 import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text } from '@chakra-ui/react'
+import { useAccount} from './AccountContext';
 
 
-function GenerateOutfit(props) {
+
+function GenerateOutfit() {
+    const { setAccount } = useContext(AccountContext);
     const [chosenItems, setChosenItems] = useState({
         top: null,
         bottom: null,
@@ -17,7 +21,15 @@ function GenerateOutfit(props) {
         hat: null,
         bag: null
     });
-    
+    window.addEventListener('load', async function() {
+        console.log("YOOOO", localStorage.getItem('account'))
+        setAccount(localStorage.getItem('account'));
+        setTimeout(() => {
+            loadItems();
+        }, 1500);
+        
+        console.log("Items", items)
+    });
     const [previewScreen, setPreviewScreen] = useState(false);
     const [items, setItems] = useState([]);
     const [chosenTop, setChosenTop] = useState(null);
@@ -29,17 +41,21 @@ function GenerateOutfit(props) {
     const [chosenHat, setChosenHat] = useState(null);
     const [chosenBag, setChosenBag] = useState(null);
     // const [account, setAccount] = useState(null);
-    const account = {id: "dominicomendes@gmail.com"};
-    
+    // const account = {id: "dominicomendes@gmail.com"};
+    // const { account } = useContext(AccountContext);
+    const { account } = useAccount();
     const loadItems = async () => {
-        console.log("hfdkwnfdnsklnfkdslf")
-        const res = await fetch(`https://7o4pxu4wej3eeeplakb7ywge5y0laqdz.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        console.log("Account", account);
+        const res = await fetch(`https://fdgghaajku3craiseg6522g37e0mumff.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
         }
         
     }
+    useEffect(() => {
+        loadItems();
+    }, [account]);
     
     const colourOptions = {
         "colour1": "Random",
@@ -65,9 +81,10 @@ function GenerateOutfit(props) {
         "style4": "Sporty",
     };
 
-    const ownershipOptions = {
-        "ownership1": "Random",
-        "ownership2": "ClosetOnly"
+    const classificationOptions = {
+        "classification1": "Random",
+        "classification2": "Closet",
+        "classification3": "Wishlist"
     };
 
     const previewOn = () => {
@@ -135,11 +152,12 @@ function GenerateOutfit(props) {
 
     async function handleForm(event) {
         event.preventDefault();
+
         if (!formValues.colour || !formValues.style) {
             setShowNotification(true);
             setTimeout(() => {
-                setShowNotification(false); // Hide notification after 3 seconds
-            }, 3000); // 3000 milliseconds = 3 seconds
+                setShowNotification(false);
+            }, 3000);
             return;
         }
     
@@ -150,7 +168,11 @@ function GenerateOutfit(props) {
             style: styleOptions[values.style]
         });
         console.log("Form Values:", values);
-        loadItems();
+        console.log("YOOOO", localStorage.getItem('account'))
+        setAccount(localStorage.getItem('account'));
+        setTimeout(() => {
+            loadItems();
+        }, 1500);
         let topItems = [];
         let bottomItems = [];
         let dressItems = [];
@@ -161,58 +183,67 @@ function GenerateOutfit(props) {
         let bagItems = [];
         const formColour = colourOptions[values.colour];
         const formStyle = styleOptions[values.style];
-        // console.log("Right before ifs:", items);
-        // console.log(styleOptions[formValues.style]);
-        // console.log(values.colour);
-        // console.log(colourOptions["colour1"]);
+        const formClassification = classificationOptions[values.classification];
+
+
         if (formColour === colourOptions["colour1"] && formStyle === styleOptions["style1"]) {
             console.log("1111111111111111111111111111111111111111");
-            topItems = items.filter(item => item.type === "top");
-            bottomItems = items.filter(item => item.type === "bottom");
-            dressItems = items.filter(item => item.type === "dress");
-            outerwearItems = items.filter(item => item.type === "outerwear");
-            accessoryItems = items.filter(item => item.type === "accessory");
-            shoeItems = items.filter(item => item.type === "shoe");
-            hatItems = items.filter(item => item.type === "hat");
-            bagItems = items.filter(item => item.type === "bag");
+            topItems = items.filter(item => item.type === "Top");
+            bottomItems = items.filter(item => item.type === "Bottom");
+            dressItems = items.filter(item => item.type === "Dress");
+            outerwearItems = items.filter(item => item.type === "Outerwear");
+            accessoryItems = items.filter(item => item.type === "Accessory");
+            shoeItems = items.filter(item => item.type === "Shoe");
+            hatItems = items.filter(item => item.type === "Hat");
+            bagItems = items.filter(item => item.type === "Bag");
         }
         else if (formColour !== colourOptions["colour1"] && formStyle === styleOptions["style1"]) {
             console.log("2222222222222222222222222222222222222222");
             console.log(items);
-            topItems = items.filter(item => item.type === "top" && item.colour === formColour);
-            bottomItems = items.filter(item => item.type === "bottom" && item.colour === formColour);
-            dressItems = items.filter(item => item.type === "dress" && item.colour === formColour);
-            outerwearItems = items.filter(item => item.type === "outerwear" && item.colour === formColour);
-            accessoryItems = items.filter(item => item.type === "accessory" && item.colour === formColour);
-            shoeItems = items.filter(item => item.type === "shoe" && item.colour === formColour);
-            hatItems = items.filter(item => item.type === "hat" && item.colour === formColour);
-            bagItems = items.filter(item => item.type === "bag" && item.colour === formColour);
+            topItems = items.filter(item => item.type === "Top" && item.colour === formColour);
+            bottomItems = items.filter(item => item.type === "Bottom" && item.colour === formColour);
+            dressItems = items.filter(item => item.type === "Dress" && item.colour === formColour);
+            outerwearItems = items.filter(item => item.type === "Outerwear" && item.colour === formColour);
+            accessoryItems = items.filter(item => item.type === "Accessory" && item.colour === formColour);
+            shoeItems = items.filter(item => item.type === "Shoe" && item.colour === formColour);
+            hatItems = items.filter(item => item.type === "Hat" && item.colour === formColour);
+            bagItems = items.filter(item => item.type === "Bag" && item.colour === formColour);
         }
         else if (formColour === colourOptions["colour1"] && formStyle !== styleOptions["style1"]) {
             console.log("3333333333333333333333333333333333333333");
-            topItems = items.filter(item => item.type === "top" && item.style === formStyle);
-            bottomItems = items.filter(item => item.type === "bottom" && item.style === formStyle);
-            dressItems = items.filter(item => item.type === "dress" && item.style === formStyle);
-            outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formStyle);
-            accessoryItems = items.filter(item => item.type === "accessory" && item.style === formStyle);
-            shoeItems = items.filter(item => item.type === "shoe" && item.style === formStyle);
-            hatItems = items.filter(item => item.type === "hat" && item.style === formStyle);
-            bagItems = items.filter(item => item.type === "bag" && item.style === formStyle);
+            topItems = items.filter(item => item.type === "Top" && item.style === formStyle);
+            bottomItems = items.filter(item => item.type === "Bottom" && item.style === formStyle);
+            dressItems = items.filter(item => item.type === "Dress" && item.style === formStyle);
+            outerwearItems = items.filter(item => item.type === "Outerwear" && item.style === formStyle);
+            accessoryItems = items.filter(item => item.type === "Accessory" && item.style === formStyle);
+            shoeItems = items.filter(item => item.type === "Shoe" && item.style === formStyle);
+            hatItems = items.filter(item => item.type === "Hat" && item.style === formStyle);
+            bagItems = items.filter(item => item.type === "Bag" && item.style === formStyle);
         }
         else {
             console.log("4444444444444444444444444444444444444444");
-            topItems = items.filter(item => item.type === "top" && item.style === formStyle && item.colour === formColour);
-            bottomItems = items.filter(item => item.type === "bottom" && item.style === formStyle && item.colour === formColour);
-            dressItems = items.filter(item => item.type === "dress" && item.style === formStyle && item.colour === formColour);
-            outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formStyle && item.colour === formColour);
-            accessoryItems = items.filter(item => item.type === "accessory" && item.style === formStyle && item.colour === formColour);
-            shoeItems = items.filter(item => item.type === "shoe" && item.style === formStyle && item.colour === formColour);
-            hatItems = items.filter(item => item.type === "hat" && item.style === formStyle && item.colour === formColour);
-            bagItems = items.filter(item => item.type === "bag" && item.style === formStyle && item.colour === formColour);
+            topItems = items.filter(item => item.type === "Top" && item.style === formStyle && item.colour === formColour);
+            bottomItems = items.filter(item => item.type === "Bottom" && item.style === formStyle && item.colour === formColour);
+            dressItems = items.filter(item => item.type === "Dress" && item.style === formStyle && item.colour === formColour);
+            outerwearItems = items.filter(item => item.type === "Outerwear" && item.style === formStyle && item.colour === formColour);
+            accessoryItems = items.filter(item => item.type === "Accessory" && item.style === formStyle && item.colour === formColour);
+            shoeItems = items.filter(item => item.type === "Shoe" && item.style === formStyle && item.colour === formColour);
+            hatItems = items.filter(item => item.type === "Hat" && item.style === formStyle && item.colour === formColour);
+            bagItems = items.filter(item => item.type === "Bag" && item.style === formStyle && item.colour === formColour);
+        }
+        
+        if (formClassification !== classificationOptions["classification1"]) {
+            console.log("CLOSET");
+            topItems = topItems.filter(item => item.classification === formClassification);
+            bottomItems = bottomItems.filter(item => item.classification === formClassification);
+            dressItems = dressItems.filter(item => item.classification === formClassification);
+            outerwearItems = outerwearItems.filter(item => item.classification === formClassification);
+            accessoryItems = accessoryItems.filter(item => item.classification === formClassification);
+            shoeItems = shoeItems.filter(item => item.classification === formClassification);
+            hatItems = hatItems.filter(item => item.classification === formClassification);
+            bagItems = bagItems.filter(item => item.classification === formClassification);
         }
 
-        // console.log("1111111111111111111111111111111111111111");
-        
         console.log("Top items:", topItems);
         console.log("Bottom items:", bottomItems);
         console.log("Dress items:", dressItems);
@@ -236,22 +267,7 @@ function GenerateOutfit(props) {
         const shoeItemsLength = shoeItems?.length ?? 0;
         const hatItemsLength = hatItems?.length ?? 0;
         const bagItemsLength = bagItems?.length ?? 0;
-        // if (dressItemsLength !== 0 && bottomItemsLength !== 0 && topItemsLength !==0) {
-        //     randomOutfitValue = Math.floor(Math.random() * 2);
-        // }
-        // else if (dressItemsLength !== 0 && bottomItemsLength === 0 && topItemsLength ===0) {
-        //     randomOutfitValue = 0;
-        // }
-        // else if (dressItemsLength === 0 && bottomItemsLength !== 0 && topItemsLength !==0) {
-        //     randomOutfitValue = 1;
-        // }
-        // else {
-        //     setShowInvalidNotification(true);
-        //     setTimeout(() => {
-        //         setShowInvalidNotification(false); // Hide notification after 3 seconds
-        //     }, 3000); // 3000 milliseconds = 3 seconds
-        //     return;
-        // }
+        
         if (dressItemsLength > 0 && bottomItemsLength > 0 && topItemsLength > 0) {
             randomOutfitValue = Math.floor(Math.random() * 2);
         } else if (dressItemsLength > 0 && (bottomItemsLength === 0 || topItemsLength === 0)) {
@@ -263,8 +279,8 @@ function GenerateOutfit(props) {
             console.log(4);
             setShowInvalidNotification(true);
                 setTimeout(() => {
-                setShowInvalidNotification(false); // Hide notification after 3 seconds
-            }, 3000); // 3000 milliseconds = 3 seconds
+                setShowInvalidNotification(false);
+            }, 3000);
             return;
         }
         
@@ -274,7 +290,6 @@ function GenerateOutfit(props) {
         if (randomOutfitValue === 0) {
             setChosenDress(chooseRandomItem(dressItems));
             chosenItems.dress = chooseRandomItem(dressItems);
-            // console.log("fdiosvoildjsovdfjsop", chosenItems.dress)
             if ((Math.floor(Math.random() * 2)) === 1 && topItems !== null) {
                 setChosenTop(chooseRandomItem(topItems));
                 chosenItems.top = chooseRandomItem(topItems);
@@ -312,22 +327,22 @@ function GenerateOutfit(props) {
             chosenItems.outerwear = chooseRandomItem(outerwearItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1 && accessoryItemsLength !== 0) {
+        if ((Math.floor(Math.random() * 2)) === 1 && accessoryItemsLength !== 0) {
             setChosenAccessory(chooseRandomItem(accessoryItems));
             chosenItems.accessory = chooseRandomItem(accessoryItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1 && shoeItemsLength !== 0) {
+        if ((Math.floor(Math.random() * 2)) === 1 && shoeItemsLength !== 0) {
             setChosenShoe(chooseRandomItem(shoeItems));
             chosenItems.shoe = chooseRandomItem(shoeItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1 && hatItemsLength !== 0) {
+        if ((Math.floor(Math.random() * 2)) === 1 && hatItemsLength !== 0) {
             setChosenHat(chooseRandomItem(hatItems));
             chosenItems.hat = chooseRandomItem(hatItems);
         }
 
-        if ((Math.floor(Math.random() * 1)) === 1 && bagItemsLength !== 0) {
+        if ((Math.floor(Math.random() * 2)) === 1 && bagItemsLength !== 0) {
             setChosenBag(chooseRandomItem(bagItems));
             chosenItems.bag = chooseRandomItem(bagItems);
         }
@@ -372,17 +387,17 @@ function GenerateOutfit(props) {
                                 ))}
                             </Select>
                             <Text size='sm'>Select a style</Text>
-                            <Select placeholder='Select Style' name="style" onChange={handleSelectChange}>
+                            <Select placeholder='Select Style' name="style" onChange={handleSelectChange} mb={2}>
                                 {Object.keys(styleOptions).map((key) => (
                                     <option key={key} value={key}>{styleOptions[key]}</option>
                                 ))}
                             </Select>
-                            {/* <Text size='sm'>Select ownership</Text>
-                            <Select placeholder='Select Ownership' name="ownership" onChange={handleSelectChange}>
-                                {Object.keys(ownershipOptions).map((key) => (
-                                    <option key={key} value={key}>{ownershipOptions[key]}</option>
+                            <Text size='sm'>Select classification</Text>
+                            <Select placeholder='Select Classification' name="classification" onChange={handleSelectChange}>
+                                {Object.keys(classificationOptions).map((key) => (
+                                    <option key={key} value={key}>{classificationOptions[key]}</option>
                                 ))}
-                            </Select> */}
+                            </Select>
                             <Button
                                 mt={4}
                                 colorScheme='teal'
@@ -395,7 +410,7 @@ function GenerateOutfit(props) {
                         {showNotification && (
                             <Alert status="warning" mt={4}>
                                 <AlertIcon />
-                                Please make selections for both colour and style.
+                                Please make selections for both colour, style, and classification.
                             </Alert>
                         )}
                         {showInvalidNotification && (
@@ -427,6 +442,7 @@ function GenerateOutfit(props) {
                     outfitSavedNotification={outfitSavedNotification}
                     chosenItems={chosenItems}
                     resetChosenItems={resetChosenItems}
+                    account={account}
                 />
             )}
             {displayScreen && <Display formValues={formValues} setDisplayScreen={setDisplayScreen} chosenTop={chosenTop} chosenBottom={chosenBottom}
