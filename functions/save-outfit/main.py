@@ -112,6 +112,7 @@ def lambda_handler(event, context):
     hat_id = data['hat_id']
     bag_id = data['bag_id']
     account_id = data['account_id']
+    name = data['name']
     
     # Log before checking if the account exists
     logger.info(f"Checking if account {account_id} exists...")
@@ -154,7 +155,8 @@ def lambda_handler(event, context):
             'shoes_id': shoes_id,
             'hat_id': hat_id,
             'bag_id': bag_id,
-            'account_id': account_id
+            'account_id': account_id,
+            'name': name
         }
     )
     
