@@ -109,27 +109,6 @@ const onSuccess = async (credentialResponse) => {
           <h1>Sign in</h1>
           <p>New User ? Create an account</p>
         </div>
-       
-        <div className="Inputs">
-          <div className="input">
-            <img src={email_icom} alt="email" className="icon"></img>
-            <input type='text' id='email' placeholder='Email'>
-          </input></div>
-
-          <div className="input">
-            <img src={password_icon} alt="password" className="icon"></img>
-            <input type='password' id='password' placeholder='Password'>
-          </input></div>
-
-        
-
-        </div>
-
-        <div className="signup_buttons">
-          <div className="signin"><button type='submit' id='signup_button'>Sign up</button></div>
-
-          <div className="signin"> <button type='submit' id='signin_button'>Login in</button></div>
-        </div>
 
         <form id='login_form'>
     
