@@ -10,26 +10,6 @@ import { useAccount} from './AccountContext';
 
 
 function GenerateOutfit() {
-    const { setAccount } = useContext(AccountContext);
-    const [chosenItems, setChosenItems] = useState({
-        top: null,
-        bottom: null,
-        dress: null,
-        outerwear: null,
-        accessory: null,
-        shoe: null,
-        hat: null,
-        bag: null
-    });
-    window.addEventListener('load', async function() {
-        console.log("YOOOO", localStorage.getItem('account'))
-        setAccount(localStorage.getItem('account'));
-        setTimeout(() => {
-            loadItems();
-        }, 1500);
-        
-        console.log("Items", items)
-    });
     const [previewScreen, setPreviewScreen] = useState(false);
     const [items, setItems] = useState([]);
     const [chosenTop, setChosenTop] = useState(null);
@@ -40,22 +20,23 @@ function GenerateOutfit() {
     const [chosenShoe, setChosenShoe] = useState(null);
     const [chosenHat, setChosenHat] = useState(null);
     const [chosenBag, setChosenBag] = useState(null);
-    // const [account, setAccount] = useState(null);
-    // const account = {id: "dominicomendes@gmail.com"};
-    // const { account } = useContext(AccountContext);
-    const { account } = useAccount();
-    const loadItems = async () => {
-        console.log("Account", account);
-        const res = await fetch(`https://fdgghaajku3craiseg6522g37e0mumff.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
-        if (res.status === 200) {
-            const data = await res.json();
-            setItems(data);
-        }
-        
-    }
-    useEffect(() => {
-        loadItems();
-    }, [account]);
+    const { setAccount } = useContext(AccountContext);
+    const [displayScreen, setDisplayScreen] = useState(false);
+    const [formValues, setFormValues] = useState({});
+    const [isFormValid, setIsFormValid] = useState({ colour: true, style: true });
+    const [showNotification, setShowNotification] = useState(false);
+    let { account } = useAccount();
+
+    const [chosenItems, setChosenItems] = useState({
+        top: null,
+        bottom: null,
+        dress: null,
+        outerwear: null,
+        accessory: null,
+        shoe: null,
+        hat: null,
+        bag: null
+    });
     
     const colourOptions = {
         "colour1": "Random",
@@ -73,7 +54,6 @@ function GenerateOutfit() {
         "colour13": "Multicolour",
     };
     
-    
     const styleOptions = {
         "style1": "Random",
         "style2": "Casual",
@@ -87,6 +67,34 @@ function GenerateOutfit() {
         "classification3": "Wishlist"
     };
 
+    window.addEventListener('load', async function() {
+        console.log("YOOOO", localStorage.getItem('account'))
+        setAccount(localStorage.getItem('account'));
+        account = localStorage.getItem('account');
+        // setTimeout(() => {
+            loadItems();
+        // }, 1500);
+        
+        console.log("Items", items)
+    });
+    
+    // const [account, setAccount] = useState(null);
+    // const account = {id: "dominicomendes@gmail.com"};
+    // const { account } = useContext(AccountContext);
+    
+    const loadItems = async () => {
+        console.log("Account", account);
+        const res = await fetch(`https://hbvprjzszd4bsf5sndhmln47d40lhyhl.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        if (res.status === 200) {
+            const data = await res.json();
+            setItems(data);
+        }
+        
+    }
+    useEffect(() => {
+        loadItems();
+    }, [account]);
+
     const previewOn = () => {
         setPreviewScreen(true);
       }
@@ -96,10 +104,7 @@ function GenerateOutfit() {
       }
 
 
-    const [displayScreen, setDisplayScreen] = useState(false);
-    const [formValues, setFormValues] = useState({});
-    const [isFormValid, setIsFormValid] = useState({ colour: true, style: true });
-    const [showNotification, setShowNotification] = useState(false);
+    
     
 
     const chooseRandomItem = (array) => {

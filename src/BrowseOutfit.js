@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import React from "react";
 import Navigation from './Navigation';
 import Display from './Display';
 import PreviewScreen from './PreviewScreen';
 import Header from "./Header";
-import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text, Box, Input, Wrap, WrapItem, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
+import { AccountContext } from "./AccountContext";
+import { useAccount} from './AccountContext';
+import { Select, Button, AlertDialog, AlertDialogOverlay, AlertDialogBody, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, Container, Alert, AlertIcon, Heading, Flex, Text, Box, Input, Wrap, WrapItem, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
 
 function convertToOutfitsArray(outputArray) {
     const outfitsArray = outputArray.map(outfit => ({
@@ -36,13 +38,29 @@ function BrowseOutfit() {
     const [isOpen, setIsOpen] = useState(false);
     const [baseOutfits, setBaseOutfits] = useState([]);
     const [outfits, setOutfits] = useState([]);
-
+    let { account } = useAccount();
     const [outfitToDelete, setOutfitToDelete] = useState('');
 
     // const [outfitsArray, setOutfitsArray] = useState([]);
     const [outfitNames, setOutfitNames] = useState([]);
     const [outfitItemIds, setOutfitItemIds] = useState({});
 
+
+    window.addEventListener('load', async function() {
+        console.log("YOOOO", localStorage.getItem('account'))
+        setAccount(localStorage.getItem('account'));
+        account = localStorage.getItem('account');
+        
+        // setTimeout(() => {
+        loadBaseOutfits();
+        // loadOutfits();
+        // setFilteredOutfits(outfits);
+        // }, 3000);
+        // console.log(outfits);
+        // console.log(filteredOutfits);
+        // console.log(baseOutfits);
+        
+    });
     // const outfits = [
     //     {
     //         name: 'Beachy Hot Pants',
@@ -115,12 +133,12 @@ function BrowseOutfit() {
 
     
     
-    const account = {id: "1"};
-
+    // const account = {id: "1"};
+    const { setAccount } = useContext(AccountContext);
     const loadBaseOutfits = async () => {
 
         // ADD LOAD OUTFITS URL
-        const res = await fetch(`https://iverpq7yvswmh3es23gwsq54qm0scigt.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        const res = await fetch(`https://e2a6hcav5g5iczrcevtpmpaoii0oadse.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setBaseOutfits(data);
@@ -131,7 +149,7 @@ function BrowseOutfit() {
 
     const loadOutfits = async () => {
         // ADD LOAD ITEM INFO URL
-        const res = await fetch(`https://53nw7q3ct3gkskmiuppeztfbt40awhyh.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
+        const res = await fetch(`https://ij22z4apnqprat6fuxjjuvr2ce0llvou.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
         if (res.status === 200) {
             const data = await res.json();
             
@@ -148,7 +166,7 @@ function BrowseOutfit() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://ia3c3cs5ihnkxormvqrlk52wem0yxohx.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&outfit_id=${outfitToDelete}`, {
+            const res = await fetch(`https://y2265chv4s5k7lbxqkrnkc52ea0ylsoo.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=${outfitToDelete}`, {
                 method: 'DELETE'
             });
             
@@ -163,13 +181,25 @@ function BrowseOutfit() {
     }
 
 
-    useEffect(() => {
-        loadBaseOutfits();
-        loadOutfits();
-        // console.log(outfits)
-        setFilteredOutfits(outfits);
-    }, [account.id]);
+    // useEffect(() => {
+    //     loadBaseOutfits();
+    // }, [account]);
 
+    useEffect(() => {
+        loadOutfits();
+    }, [baseOutfits]);
+
+    useEffect(() => {
+        setFilteredOutfits(outfits);
+    }, [outfits]);
+    // window.addEventListener('load', async function() {
+    //     loadBaseOutfits();
+    //     loadOutfits();
+    //     console.log(outfits)
+    //     setFilteredOutfits(outfits);
+    // });
+
+    
 
     // Filter outfits based on search query, color, and style
 const filterOutfits = () => {
@@ -299,26 +329,44 @@ const filterOutfits = () => {
 
     const handleOutfitClick = (outfit) => {
         setSelectedOutfit(outfit);
-        
         setIsOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsOpen(false);
+        setSelectedOutfit(null);
+        setOutfitToDelete('');
     };
 
     const handleDeleteOutfit = () => {
-        try{
-            setOutfitToDelete(selectedOutfit.id);
-            // console.log(outfitToDelete)
-            // console.log(selectedOutfit)
-            // console.log(selectedOutfit.id)
-            deleteOutfit();
-            handleCloseModal();
-        } catch (error) {
-            console.error("Error deleting outfit:", error);
-        }
-        
+        // try{
+        //     // setOutfitToDelete(selectedOutfit.id);
+        //     setTimeout(() => {
+        //     }, 1000);
+        //     // console.log("IDDDDDDD", selectedOutfit.id)
+        //     // console.log(outfitToDelete)
+        //     // console.log(selectedOutfit)
+        //     // console.log(selectedOutfit.id)
+        //     deleteOutfit();
+        //     handleCloseModal();
+        // } catch (error) {
+        //     console.error("Error deleting outfit:", error);
+        // }
+        deleteOutfit();
+        handleCloseModal();
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
+    };
+
+    const handleDeleteConfirmationOpen = (outfit) => {
+        setOutfitToDelete(outfit.id);
+        setIsDeleteConfirmationOpen(true);
+    };
+
+    const handleDeleteConfirmationClose = () => {
+        setOutfitToDelete('');
+        setIsDeleteConfirmationOpen(false);
     };
 
     const renderModalContent = () => {
@@ -327,40 +375,77 @@ const filterOutfits = () => {
         const itemsPerRow = Math.floor((window.innerWidth - 100) / 200); // Adjust according to your needs
 
         return (
-            <Modal isOpen={isOpen} onClose={handleCloseModal} size="xl" centerContent>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>{selectedOutfit.name}</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <Wrap justify="center" spacing={4}>
-                            {selectedOutfit.items.map(item => (
-                                <WrapItem key={item.id} width={`${100 / itemsPerRow}%`} display="flex" justifyContent="center" alignItems="center">
-                                    
-                                    <Image src={item.imageUrl} alt={`Item ${item.id}`} width="auto" height="auto" maxHeight="500px" mb={4} />
-                                </WrapItem>
-                            ))}
-                        </Wrap>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Flex justify="space-between" width="100%">
-                            <Flex justify="space-between" width="45%">
-                                <Button colorScheme="blue" onClick={handleDeleteOutfit}>
-                                    Delete Outfit
+            <>
+                <Modal isOpen={isOpen} onClose={handleCloseModal} size="xl" centerContent>
+                    <ModalOverlay />
+                    <ModalContent>
+                        <ModalHeader>{selectedOutfit.name}</ModalHeader>
+                        <ModalCloseButton onClick={handleCloseModal}/>
+                        <ModalBody>
+                            <Wrap justify="center" spacing={4}>
+                                {selectedOutfit.items.map(item => (
+                                    <WrapItem key={item.id} width={`${100 / itemsPerRow}%`} display="flex" justifyContent="center" alignItems="center">
+                                        
+                                        <Image src={item.imageUrl} alt={`Item ${item.id}`} width="auto" height="auto" maxHeight="500px" mb={4} />
+                                    </WrapItem>
+                                ))}
+                            </Wrap>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Flex justify="space-between" width="100%">
+                                <Flex justify="space-between" width="45%">
+                                    {/* <Button colorScheme="blue" onClick={handleDeleteOutfit}> */}
+                                    <Button colorScheme="blue" onClick={() => handleDeleteConfirmationOpen(selectedOutfit)}>
+                                        Delete Outfit
+                                    </Button>
+            
+                                </Flex>
+                                <Button colorScheme="blue" onClick={handleCloseModal}>
+                                    Close
                                 </Button>
-        
                             </Flex>
-                            <Button colorScheme="blue" onClick={handleCloseModal}>
-                                Close
+                        </ModalFooter>
+                    </ModalContent>
+                </Modal>
+                <AlertDialog
+                    isOpen={isDeleteConfirmationOpen}
+                    leastDestructiveRef={cancelRef}
+                    onClose={handleDeleteConfirmationClose}
+                >
+                    <AlertDialogOverlay />
+                    <AlertDialogContent>
+                        <AlertDialogHeader>Delete Outfit</AlertDialogHeader>
+                        <AlertDialogBody bg="rgb(40,44,52)" textColor="white">
+                            Are you sure you want to delete this outfit?
+                        </AlertDialogBody>
+                        <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={handleDeleteConfirmationClose}>
+                                Cancel
                             </Button>
-                        </Flex>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+                            <Button colorScheme="red" onClick={() => {
+                                deleteOutfitNotification();
+                                handleDeleteOutfit();
+                                setIsDeleteConfirmationOpen(false);
+                                setSelectedOutfit(null);
+                            }} ml={3}>
+                                Delete
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </>
         );
     };
-
-    
+    const [outfitDeletedNotification, setOutfitDeletedNotification] = useState(false);
+    const deleteOutfitNotification = () => {
+        console.log("Your item has been deleted!");
+        setOutfitDeletedNotification(true);
+        setTimeout(() => {
+            setOutfitDeletedNotification(false);
+        }, 3000);
+    };
+    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+    const cancelRef = useRef();
     // async function handleForm(event) {
     //     loadBaseOutfits();
     // };
@@ -369,6 +454,12 @@ const filterOutfits = () => {
 return (
     <Box p={4}>
         <Header />
+            {outfitDeletedNotification && (
+                <Alert status="success" >
+                    <AlertIcon />
+                    Your outfit has been deleted successfully !
+                </Alert>
+            )}
             <h1>Search Page</h1>
             <Input
                 placeholder="Search by Outfit Name"

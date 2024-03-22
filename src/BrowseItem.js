@@ -16,16 +16,22 @@ function BrowseItem() {
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     // const account = {id: "dominicomendes@gmail.com"};
-    const { account } = useAccount();
+    let { account } = useAccount();
     window.addEventListener('load', async function() {
-        console.log("YOOOO", localStorage.getItem('account'))
+        // console.log("YOOOO", localStorage.getItem('account'))
+        // setTimeout(() => {
+        // setAccount(localStorage.getItem('account'));
         setAccount(localStorage.getItem('account'));
-        setTimeout(() => {
+        account = localStorage.getItem('account');
+        console.log("Account", localStorage.getItem('account'));
+        // }, 3000);
+        // setTimeout(() => {
             loadItems();
-        }, 1500);
+        // }, 1500);
         
-        console.log("Items", items)
     });
+
+    
     // useEffect(() => {
     //     console.log("AAAAA");
     //     loadItems();
@@ -33,7 +39,7 @@ function BrowseItem() {
 
     const deleteItem = async () => {
         try {
-            const res = await fetch(`https://p5ewvqgvp7p26uihr4whhaiswe0grljn.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
+            const res = await fetch(`https://7dryhz6npflm3p2ejrdgzu6khi0pmmkt.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -49,7 +55,7 @@ function BrowseItem() {
 
     const deleteItemFromOutfits = async () => {
         try {
-            const res = await fetch(`https://4cs6j4uj25oa5p2zi5b5hkcg640npfxo.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+            const res = await fetch(`https://aitom7vtv4ai2wqjnrn7watxk40yobfg.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
                 method: 'PATCH'
             });
             
@@ -65,7 +71,7 @@ function BrowseItem() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://77nhenqydpmbmc7qf2uvgxdr6e0lqjbe.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
+            const res = await fetch(`https://y2265chv4s5k7lbxqkrnkc52ea0ylsoo.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
                 method: 'DELETE'
             });
             
@@ -81,7 +87,10 @@ function BrowseItem() {
     
 
     const loadItems = async () => {
-        const res = await fetch(`https://fdgghaajku3craiseg6522g37e0mumff.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        // setTimeout(() => {
+        //     setAccount(localStorage.getItem('account'));
+        // }, 3000);
+        const res = await fetch(`https://hbvprjzszd4bsf5sndhmln47d40lhyhl.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -189,7 +198,7 @@ function BrowseItem() {
         }
     }
     const [showNotification, setShowNotification] = useState(false);
-    const [formValues, setFormValues] = useState({image_url: "https://res.cloudinary.com/dnowxhqec/image/upload/v1682492349/kk7vsxzvrtwszyjytpml.jpg"});
+    const [formValues, setFormValues] = useState();
     const [isFormValid, setIsFormValid] = useState({ image_url: false, type: true, colour: true, style: true });
 
     async function handleForm(event) {
@@ -205,7 +214,7 @@ function BrowseItem() {
         const formData = new FormData(event.target);
         const values = Object.fromEntries(formData.entries());
         setFormValues({
-            image_url: "https://res.cloudinary.com/dnowxhqec/image/upload/v1682492349/kk7vsxzvrtwszyjytpml.jpg",
+            image_url: values.image_url,
             type: typeOptions[values.type],
             colour: colourOptions[values.colour],
             style: styleOptions[values.style]
@@ -309,10 +318,10 @@ function BrowseItem() {
         // console.log(itemToDelete.item_id);
         deleteItem();
         deleteItemFromOutfits();
-        deleteOutfit();
+        // deleteOutfit();
         setTimeout(() => {
             window.location.reload();
-        }, 2000); // 2000 milliseconds = 2 seconds
+        }, 2000);
     }
 
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
@@ -341,9 +350,9 @@ function BrowseItem() {
         }, 3000);
     };
     
-    useEffect(() => {
-        loadItems();
-    }, [account]);
+    // useEffect(() => {
+    //     loadItems();
+    // }, [account]);
     const renderModalContent = () => {
         if (!selectedItem) return null;
     
