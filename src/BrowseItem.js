@@ -17,6 +17,8 @@ function BrowseItem() {
     const [filteredItems, setFilteredItems] = useState([]);
     // const account = {id: "dominicomendes@gmail.com"};
     const { account } = useAccount();
+    const { setAccount } = useContext(AccountContext);
+
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
         setAccount(localStorage.getItem('account'));
@@ -33,7 +35,8 @@ function BrowseItem() {
 
     const deleteItem = async () => {
         try {
-            const res = await fetch(`https://p5ewvqgvp7p26uihr4whhaiswe0grljn.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
+            // lambda: lambda_delete_item_url
+            const res = await fetch(`https://vafz7vzh3klgdhuyemxf6kmwja0mqztd.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -49,7 +52,8 @@ function BrowseItem() {
 
     const deleteItemFromOutfits = async () => {
         try {
-            const res = await fetch(`https://4cs6j4uj25oa5p2zi5b5hkcg640npfxo.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+            // lambda: lambda_delete_item_from_outfit_url
+            const res = await fetch(`https://www6rcutjjzhhyiqr2rl3gxreq0rhipb.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
                 method: 'PATCH'
             });
             
@@ -65,7 +69,8 @@ function BrowseItem() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://77nhenqydpmbmc7qf2uvgxdr6e0lqjbe.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
+            // lambda: lambda_delete_outfit_url
+            const res = await fetch(`https://5o7jiut6hgnb3wv6hce4tuktnq0cvdvo.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
                 method: 'DELETE'
             });
             
@@ -81,7 +86,8 @@ function BrowseItem() {
     
 
     const loadItems = async () => {
-        const res = await fetch(`https://fdgghaajku3craiseg6522g37e0mumff.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        // lambda: lambda_load_items_url
+        const res = await fetch(`https://z4nya3zje3fdjrwwi75nivyqbi0rdqpw.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -102,7 +108,8 @@ function BrowseItem() {
         // const data = JSON.stringify ({
         //     type:
         // })
-        const res = await fetch(`https://io3w4px7cobuhvme5oo3ce53ra0tccxl.lambda-url.ca-central-1.on.aws/`,
+        // lambda: lambda_save_item_url
+        const res = await fetch(`https://prseg4bnyw2zeyjwyz52gnxrpu0rclsp.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: JSON.stringify(formValues)
@@ -128,9 +135,6 @@ function BrowseItem() {
     //     localStorage.setItem('account', account);
     // }, [account]);
 
-
-
-    const { setAccount } = useContext(AccountContext);
     const createOn = () => {
         setCreateScreen(true);
     }

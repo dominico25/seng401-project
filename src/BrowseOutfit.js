@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import React from "react";
 import Navigation from './Navigation';
 import Display from './Display';
 import PreviewScreen from './PreviewScreen';
 import Header from "./Header";
 import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text, Box, Input, Wrap, WrapItem, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
+import { AccountContext, useAccount } from "./AccountContext";
 
 function convertToOutfitsArray(outputArray) {
     const outfitsArray = outputArray.map(outfit => ({
@@ -36,12 +37,49 @@ function BrowseOutfit() {
     const [isOpen, setIsOpen] = useState(false);
     const [baseOutfits, setBaseOutfits] = useState([]);
     const [outfits, setOutfits] = useState([]);
+    const { account } = useAccount();
+    const { setAccount } = useContext(AccountContext);
 
     const [outfitToDelete, setOutfitToDelete] = useState('');
 
     // const [outfitsArray, setOutfitsArray] = useState([]);
     const [outfitNames, setOutfitNames] = useState([]);
     const [outfitItemIds, setOutfitItemIds] = useState({});
+
+        // useEffect(() => {
+    //     loadBaseOutfits();
+    // }, [account]);
+    window.addEventListener('load', async function() {
+        console.log("YOOOO", localStorage.getItem('account'))
+        setAccount(localStorage.getItem('account'));
+        setTimeout(() => {
+            loadBaseOutfits();
+            // loadOutfits();
+            // setFilteredOutfits(outfits);
+        }, 1500);
+        console.log("base outfits:", baseOutfits);
+        setTimeout(() => {
+            loadOutfits();
+
+        }, 1500);
+        console.log("outfits:", outfits)
+        setTimeout(() => {
+            setFilteredOutfits(outfits);
+        }, 1500);
+    });
+    
+    useEffect(() => {
+        loadBaseOutfits();
+    }, [account]);
+
+
+    useEffect(() => {
+        loadOutfits();
+    }, [baseOutfits]);
+
+    useEffect(() => {
+        setFilteredOutfits(outfits);
+    }, [outfits]);
 
     // const outfits = [
     //     {
@@ -115,23 +153,24 @@ function BrowseOutfit() {
 
     
     
-    const account = {id: "1"};
+    // const account = {id: "1"};
 
     const loadBaseOutfits = async () => {
 
         // ADD LOAD OUTFITS URL
-        const res = await fetch(`https://iverpq7yvswmh3es23gwsq54qm0scigt.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        // lambda: lambda_load_outfits_url
+        const res = await fetch(`https://og4d5kapyl6femcg4t7aoair3i0blljs.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setBaseOutfits(data);
             // console.log(baseOutfits)
-        }
-        
+        }  
     }
 
     const loadOutfits = async () => {
         // ADD LOAD ITEM INFO URL
-        const res = await fetch(`https://53nw7q3ct3gkskmiuppeztfbt40awhyh.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
+        // lambda: lambda_load_item_info
+        const res = await fetch(`https://uy4muchuxeyzummzjlqmr2no2u0itylh.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
         if (res.status === 200) {
             const data = await res.json();
             
@@ -145,10 +184,10 @@ function BrowseOutfit() {
 
     }
 
-
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://ia3c3cs5ihnkxormvqrlk52wem0yxohx.lambda-url.ca-central-1.on.aws/?account_id=${account.id}&outfit_id=${outfitToDelete}`, {
+            // lambda: lambda_delete_outfit_url
+            const res = await fetch(`https://5o7jiut6hgnb3wv6hce4tuktnq0cvdvo.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=${outfitToDelete}`, {
                 method: 'DELETE'
             });
             
@@ -163,12 +202,20 @@ function BrowseOutfit() {
     }
 
 
-    useEffect(() => {
-        loadBaseOutfits();
-        loadOutfits();
-        // console.log(outfits)
-        setFilteredOutfits(outfits);
-    }, [account.id]);
+// window.addEventListener('load', async function() {
+//         loadBaseOutfits();
+//         loadOutfits();
+//         console.log(outfits)
+//         setFilteredOutfits(outfits);
+//     });
+
+
+    // useEffect(() => {
+    //     loadBaseOutfits();
+    //     loadOutfits();
+    //     // console.log(outfits)
+    //     setFilteredOutfits(outfits);
+    // }, [account]);
 
 
     // Filter outfits based on search query, color, and style
@@ -298,8 +345,12 @@ const filterOutfits = () => {
     };
 
     const handleOutfitClick = (outfit) => {
-        setSelectedOutfit(outfit);
-        
+        setTimeout(() => {
+            setSelectedOutfit(outfit);
+
+        }, 1500);
+        //setSelectedOutfit(outfit);
+        console.log(outfit.id)
         setIsOpen(true);
     };
 
@@ -307,9 +358,14 @@ const filterOutfits = () => {
         setIsOpen(false);
     };
 
+
     const handleDeleteOutfit = () => {
         try{
-            setOutfitToDelete(selectedOutfit.id);
+            setTimeout(() => {
+                setOutfitToDelete(selectedOutfit.id);
+    
+            }, 1500);
+            
             // console.log(outfitToDelete)
             // console.log(selectedOutfit)
             // console.log(selectedOutfit.id)

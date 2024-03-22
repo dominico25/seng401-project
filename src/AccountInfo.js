@@ -11,16 +11,27 @@ function AccountInfo() {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const { account } = useAccount();
+  const { setAccount } = useContext(AccountContext);
 
   useEffect(() => {
     // Fetch account details when the component mounts
     fetchAccountDetails();
   }, []);
 
+  window.addEventListener('load', async function() {
+    console.log("YOOOO", localStorage.getItem('account'))
+    setAccount(localStorage.getItem('account'));
+    setTimeout(() => {
+      fetchAccountDetails();
+    }, 1500);
+    
+  });
+
   const fetchAccountDetails = async () => {
     try {
-      const userEmail = "rjugdev@gmail.com"; // Set the email for fetching account details
-      const response = await fetch(`https://yduraosk52s64z3h5wjg7vq67m0nitip.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+      // const userEmail = "rjugdev@gmail.com"; // Set the email for fetching account details
+      // lambda: lambda_load_acc_url
+      const response = await fetch(`https://iu6aiegbetabqqqtuup5adlj3m0zqcaz.lambda-url.ca-central-1.on.aws/?email=${account}`);
       const data = await response.json();
       if (response.ok) {
         setAccountDetails(data);
@@ -50,7 +61,8 @@ function AccountInfo() {
       formData.append("email", account);
       formData.append("edited_field", field);
       formData.append("new_value", newValue);
-      const response = await fetch('https://egrolm7s7rg6yzot6go34sd3qi0tjuxw.lambda-url.ca-central-1.on.aws/', {
+      // lambda: lambda_edit_account_url
+      const response = await fetch('https://3vcmjgwfk6xmbfubqoniftvkem0fgwvu.lambda-url.ca-central-1.on.aws/', {
         method: 'POST',
     
         body: formData, // Pass FormData directly as the body
