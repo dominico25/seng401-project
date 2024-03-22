@@ -5,6 +5,7 @@ import Navigation from './Navigation';
 import Display from './Display';
 import PreviewScreen from './PreviewScreen';
 import Header from "./Header";
+
 import { AccountContext } from "./AccountContext";
 import { useAccount} from './AccountContext';
 import { Select, Button, AlertDialog, AlertDialogOverlay, AlertDialogBody, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, Container, Alert, AlertIcon, Heading, Flex, Text, Box, Input, Wrap, WrapItem, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
@@ -45,7 +46,6 @@ function BrowseOutfit() {
     const [outfitNames, setOutfitNames] = useState([]);
     const [outfitItemIds, setOutfitItemIds] = useState({});
 
-
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
         setAccount(localStorage.getItem('account'));
@@ -61,6 +61,7 @@ function BrowseOutfit() {
         // console.log(baseOutfits);
         
     });
+
     // const outfits = [
     //     {
     //         name: 'Beachy Hot Pants',
@@ -134,6 +135,7 @@ function BrowseOutfit() {
     
     
     // const account = {id: "1"};
+
     const { setAccount } = useContext(AccountContext);
     const loadBaseOutfits = async () => {
 
@@ -143,12 +145,12 @@ function BrowseOutfit() {
             const data = await res.json();
             setBaseOutfits(data);
             // console.log(baseOutfits)
-        }
-        
+        }  
     }
 
     const loadOutfits = async () => {
         // ADD LOAD ITEM INFO URL
+
         const res = await fetch(`https://ij22z4apnqprat6fuxjjuvr2ce0llvou.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
         if (res.status === 200) {
             const data = await res.json();
@@ -162,7 +164,6 @@ function BrowseOutfit() {
         }
 
     }
-
 
     const deleteOutfit = async () => {
         try {
@@ -179,6 +180,7 @@ function BrowseOutfit() {
             console.error("Error deleting outfit:", error);
         }
     }
+
 
 
     // useEffect(() => {
@@ -198,6 +200,7 @@ function BrowseOutfit() {
     //     console.log(outfits)
     //     setFilteredOutfits(outfits);
     // });
+
 
     
 
@@ -337,6 +340,7 @@ const filterOutfits = () => {
         setSelectedOutfit(null);
         setOutfitToDelete('');
     };
+
 
     const handleDeleteOutfit = () => {
         // try{

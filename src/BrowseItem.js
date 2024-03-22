@@ -16,6 +16,7 @@ function BrowseItem() {
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
     // const account = {id: "dominicomendes@gmail.com"};
+
     let { account } = useAccount();
     window.addEventListener('load', async function() {
         // console.log("YOOOO", localStorage.getItem('account'))
@@ -87,10 +88,12 @@ function BrowseItem() {
     
 
     const loadItems = async () => {
+
         // setTimeout(() => {
         //     setAccount(localStorage.getItem('account'));
         // }, 3000);
         const res = await fetch(`https://hbvprjzszd4bsf5sndhmln47d40lhyhl.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);
@@ -111,7 +114,8 @@ function BrowseItem() {
         // const data = JSON.stringify ({
         //     type:
         // })
-        const res = await fetch(`https://io3w4px7cobuhvme5oo3ce53ra0tccxl.lambda-url.ca-central-1.on.aws/`,
+        // lambda: lambda_save_item_url
+        const res = await fetch(`https://prseg4bnyw2zeyjwyz52gnxrpu0rclsp.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: JSON.stringify(formValues)
@@ -137,9 +141,6 @@ function BrowseItem() {
     //     localStorage.setItem('account', account);
     // }, [account]);
 
-
-
-    const { setAccount } = useContext(AccountContext);
     const createOn = () => {
         setCreateScreen(true);
     }
