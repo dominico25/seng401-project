@@ -78,6 +78,7 @@ footer{
 .navbar ul{
   display: flex;
   align-items: center;
+  
 }
 
 .navbar ul li{
