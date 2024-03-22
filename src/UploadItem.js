@@ -100,8 +100,8 @@ function UploadItem() {
         formData.append("classification", classification)
         formData.append("account_id", account);
 
-        // Make an HTTP request to the API Gateway endpoint
-        const response = await fetch("https://o7vqtnfwfxwc2ykjno4tfbuheq0zvfza.lambda-url.ca-central-1.on.aws/", {
+        // lambda: lambda_save_item_url
+        const response = await fetch("https://prseg4bnyw2zeyjwyz52gnxrpu0rclsp.lambda-url.ca-central-1.on.aws/", {
             method: "POST",
 
             body: formData, // Pass FormData directly as the body
@@ -132,107 +132,110 @@ function UploadItem() {
   };
 
   return (
-    <Container>
-      <Header />
+    <>
+    <Header />
+      <Container>
+        
 
-      {uploadComplete ? (
-        <Flex direction="column" align="center" mt={8}>
-          <Heading>Upload Complete</Heading>
-          <Button mt={4} onClick={handleBack}>
-            Back
-          </Button>
-        </Flex>
-      ) : (
-        <Flex direction="column" align="center" mt={8}>
-          <Heading>Upload Your Item</Heading>
-          <form onSubmit={handleUpload}>
-            <Flex direction="column" align="center" mt={4}>
-              <label htmlFor="file-input" className="custom-file-upload">
-                Select the Item to Upload
-              </label>
-              <input
-                id="file-input"
-                type="file"
-                required
-                accept="images/*"
-                onChange={(e) => onFileChange(e)}
-              />
-              {fileName && <Text mt={2}>({fileName})</Text>}
-            </Flex>
-            <Select
-              mt={4}
-              name="colour"
-              value={colour}
-              onChange={handleChange}
-              placeholder="Select Colour"
-            >
-              <option value="Red">Red</option>
-              <option value="Orange">Orange</option>
-              <option value="Yellow">Yellow</option>
-              <option value="Green">Green</option>
-              <option value="Blue">Blue</option>
-              <option value="Purple">Purple</option>
-              <option value="Black">Black</option>
-              <option value="Pink">Pink</option>
-              <option value="Multicolour">Multicolour</option>
-              <option value="White">White</option>
-              <option value="Brown">Brown</option>
-              <option value="Grey">Grey</option>
-
-            </Select>
-            <Select
-              mt={4}
-              name="style"
-              value={style}
-              onChange={handleChange}
-              placeholder="Select Style"
-            >
-              <option value="Casual">Casual</option>
-              <option value="Formal">Formal</option>
-              <option value="Sporty">Sporty</option>
-            </Select>
-            <Select
-              mt={4}
-              name="type"
-              value={type}
-              onChange={handleChange}
-              placeholder="Select Type"
-            >
-              <option value="Top">Top</option>
-              <option value="Bottom">Bottom</option>
-              <option value="Dress">Dress</option>
-              <option value="Outerwear">Outerwear</option>
-              <option value="Accessory">Accessory</option>
-              <option value="Shoes">Shoes</option>
-              <option value="Hat">Hat</option>
-              <option value="Bag">Bag</option>
-            </Select>
-            <Select
-              mt={4}
-              name="classification"
-              value={classification}
-              onChange={handleChange}
-              placeholder="Select Wishlist or Closet"
-            >
-              <option value="Wishlist">Wishlist</option>
-              <option value="Closet">Closet</option>
-            </Select>
-            <Button
-              mt={4}
-              colorScheme="teal"
-              type="submit"
-              onClick={handleUpload}
-            >
-              Upload Item
+        {uploadComplete ? (
+          <Flex direction="column" align="center" mt={8}>
+            <Heading>Upload Complete</Heading>
+            <Button mt={4} onClick={handleBack}>
+              Back
             </Button>
-          </form>
+          </Flex>
+        ) : (
+          <Flex direction="column" align="center" mt={8}>
+            <Heading>Upload Your Item</Heading>
+            <form onSubmit={handleUpload}>
+              <Flex direction="column" align="center" mt={4}>
+                <label htmlFor="file-input" className="custom-file-upload">
+                  Select the Item to Upload
+                </label>
+                <input
+                  id="file-input"
+                  type="file"
+                  required
+                  accept="images/*"
+                  onChange={(e) => onFileChange(e)}
+                />
+                {fileName && <Text mt={2}>({fileName})</Text>}
+              </Flex>
+              <Select
+                mt={4}
+                name="colour"
+                value={colour}
+                onChange={handleChange}
+                placeholder="Select Colour"
+              >
+                <option value="Red">Red</option>
+                <option value="Orange">Orange</option>
+                <option value="Yellow">Yellow</option>
+                <option value="Green">Green</option>
+                <option value="Blue">Blue</option>
+                <option value="Purple">Purple</option>
+                <option value="Black">Black</option>
+                <option value="Pink">Pink</option>
+                <option value="Multicolour">Multicolour</option>
+                <option value="White">White</option>
+                <option value="Brown">Brown</option>
+                <option value="Grey">Grey</option>
 
-          <Button mt={4} onClick={handleBack}>
-            Back
-          </Button>
-        </Flex>
-      )}
-    </Container>
+              </Select>
+              <Select
+                mt={4}
+                name="style"
+                value={style}
+                onChange={handleChange}
+                placeholder="Select Style"
+              >
+                <option value="Casual">Casual</option>
+                <option value="Formal">Formal</option>
+                <option value="Sporty">Sporty</option>
+              </Select>
+              <Select
+                mt={4}
+                name="type"
+                value={type}
+                onChange={handleChange}
+                placeholder="Select Type"
+              >
+                <option value="Top">Top</option>
+                <option value="Bottom">Bottom</option>
+                <option value="Dress">Dress</option>
+                <option value="Outerwear">Outerwear</option>
+                <option value="Accessory">Accessory</option>
+                <option value="Shoes">Shoes</option>
+                <option value="Hat">Hat</option>
+                <option value="Bag">Bag</option>
+              </Select>
+              <Select
+                mt={4}
+                name="classification"
+                value={classification}
+                onChange={handleChange}
+                placeholder="Select Wishlist or Closet"
+              >
+                <option value="Wishlist">Wishlist</option>
+                <option value="Closet">Closet</option>
+              </Select>
+              <Button
+                mt={4}
+                colorScheme="teal"
+                type="submit"
+                onClick={handleUpload}
+              >
+                Upload Item
+              </Button>
+            </form>
+
+            <Button mt={4} onClick={handleBack}>
+              Back
+            </Button>
+          </Flex>
+        )}
+      </Container>
+    </>
   );
 }
 

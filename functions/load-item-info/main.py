@@ -19,8 +19,8 @@ def lambda_handler(event, context):
         # Extract URL from response
         item = response.get('Item')
         if item:
-            imageUrl = item.get('imageUrl')
-            class_ = item.get('class')
+            imageUrl = item.get('image_url')
+            class_ = item.get('classification')
             colour = item.get('colour')
             style = item.get('style')
             item_id = item.get('item_id')
@@ -43,9 +43,10 @@ def lambda_handler(event, context):
         for key, value in outfit.items():
             if key not in ['name', 'account_id', 'outfit_id']:
                 # Fetch URL from DynamoDB table based on item_id
-                imageUrl, class_, colour, style, item_id = get_url_from_item_id(value)
-                # Add URL to the modified outfit
-                modified_outfit[key] = {'imageUrl': imageUrl, 'class': class_, 'colour': colour, 'style': style, 'item_id': item_id} if imageUrl else value
+                if value is not None:
+                    imageUrl, class_, colour, style, item_id = get_url_from_item_id(value)
+                    # Add URL to the modified outfit
+                    modified_outfit[key] = {'imageUrl': imageUrl, 'class': class_, 'colour': colour, 'style': style, 'item_id': item_id} if imageUrl else value
         
         # Add modified outfit to output array
         output_array.append(modified_outfit)

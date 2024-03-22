@@ -1,16 +1,70 @@
-body.main_page{
+.container{
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  background-image: linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75) ), url("./images/background3.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-  
+body.main_page{
+  height: 100vh;
+  width: 100%;
+  background: none !important;
+}
 
-.main_container{
+.main_content{
+  width : 100%;
+  height: 80%;
+  position: absolute;
+  text-align: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
+  color: white;
+}
+
+h1{
+  font-size: 5.5em !important;
+  font-weight: bold;
+  color: #f2e3e37c;
+  margin: 10px;
+  text-align: center;
+}
+
+h2{
+  font-size: 1.5em !important;
+  margin: 10px;
+  text-align: center;
+}
+
+p{
+  color: #fff;
+}
+
+.intro{
+  flex-basis: 70%;
+}
+
+.features{
+  flex-basis: 30%;
+}
+
+
+.navbar{
+  width: calc(85% );
+  height: 20%;
+  margin: auto;
+  padding: 35px 0;
   
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+.home_logo{
+  height: 30vh;
+  cursor: pointer;
 }
 
 footer{
@@ -21,11 +75,89 @@ footer{
   margin-top: auto;
 }
 
-footer p{
-  font-size: 20px;
+.navbar ul{
+  display: flex;
+  align-items: center;
+  
 }
 
-.container{
-  display: flex;
-  flex-direction: column;
+.navbar ul li{
+  list-style: none;
+  display: inline-block;
+  margin: 0 20px;
+  font-size: calc(1.3vw + 1.3vh);
+  position: relative;
+  text-align: center;
+}
+
+.navbar ul li a{
+  text-decoration: none;
+  color: white;
+  text-transform: uppercase;
+}
+
+/** HOVER ANIMATION 
+.navbar ul li a:hover{
+  color: #254f6b;
+}**/
+
+.navbar ul li::after{
+  content: '';
+  height: 3px;
+  width: 0;
+  background: #254f6b;
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  transition: 0.5s;
+  
+}
+
+.navbar ul li:hover::after{
+  width: 100%;
+}
+
+footer p{
+  font-size: 13px;
+}
+
+@media screen and (max-width: 842px){
+  .main_content{
+    flex-direction: column;
+  }
+  .intro{
+    flex-basis: 0%;
+    font-size: x-small;
+  }
+  .features{
+    flex-basis: 0%;
+    font-size: small;
+  }
+  .navbar{
+    width: 100%;
+    flex-direction: space-between;
+  }
+  .navbar ul li{
+    margin: 0 10px;
+  }
+  .navbar ul li a{
+    font-size: 1.2em;
+  }
+  footer p{
+    font-size: 15px;
+  }
+  h1{
+    font-size: -0.5em !important;
+  }
+  h2{
+    font-size: -0.5em !important;
+  }
+  h3{
+    font-size: -0.5em !important;
+  }
+  p{
+    font-size: -0.5em !important;
+  }
+
+  
 }

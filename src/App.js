@@ -69,6 +69,7 @@ function App() {
             <Route path="/BrowseOutfit" element={<BrowseOutfit />} />
             <Route path="/CreateOutfit" element={<CreateOutfit />} />
             <Route path="/GenerateOutfit" element={<GenerateOutfit />} />
+            <Route path="/AccountInfo" element={<AccountInfo />} />
           </Routes>
         </Router>
       </AccountProvider>
