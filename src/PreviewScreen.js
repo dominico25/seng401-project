@@ -91,8 +91,7 @@ function PreviewScreen(props) {
             name: name
         });
         console.log("DATAAAAAAAAAAAA", data);
-        // lambda: lambda_save_outfit_url
-        const res = await fetch(`https://c65pgpme45w5u2zrr4czlvp42m0nmczd.lambda-url.ca-central-1.on.aws/`,
+        const res = await fetch(`https://iffc4n5tsmoozqpz7fk3omlvn40fbgyk.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: data
