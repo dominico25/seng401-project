@@ -1,144 +1,218 @@
 #createoutfitnav {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100vw;
+    height: 30px;
 }
 
 #otherlinks {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
 }
 
 #fullbody {
-  display:flex;
-  flex-direction: column;
-  align-items: center;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #mainbody {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 #page-title {
-  align-items: center;
-  justify-content: center;
-  width: 300px;
-  
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    
 }
 
 #top-page-title-and-info {
-  display: flex;
-  flex-direction: row;
-  margin-left: 43%;
-  
+    display: flex;
+    flex-direction: row;
+    margin-left: 43%;
+    
 }
 
 #info {
-  margin-left: 67%;
-  height: 40px;
-  align-items: center;
-  margin-top: 2%;
+    margin-left: 67%;
+    height: 40px;
+    align-items: center;
+    margin-top: 2%;
 }
 
 hr {
-  width: 1400px;
-  border:1px solid purple;
-  padding-bottom: 0%;
+    width: 100vw;
+    border:1px solid purple;
+    padding-bottom: 0%;
 }
 
 #rest-of-page {
-  display:flex;
-  flex-direction: row;
-  justify-content: space-around;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 100vh;
 }
 
 #vl {
-  border-left: 2px solid purple;
-  height: 480px;
-  width:2px;
-  
- 
+    border-left: 2px solid purple;
+    height: 100vh;
+    width:2px;
+    
+   
 }
 
 #left_side {
-  display: flex;
-  flex-direction:column;
- align-items: center;
-
+    display: flex;
+    flex-direction:column;
+   align-items: center;
+   width: 50vw;
+  
 }
 
 #right_side {
-  display: flex;
-  flex-direction:column;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    width: 50vw;
 }
 
-#tops {
-  display:flex;
-  flex-direction:column;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 2px solid purple;
-  width: 600px;
+ #tops {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid purple;
+    width: 100%;
+    height: 50%;
 }
 
 #url-label-and-box {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height:30px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height:30px;
 }
 
 #placeholder-tops {
-  width: 150px;
-  height: 50px;
-  font-size: 30px;
-  padding-top:2px;
-  height: 30px;
+    width: 150px;
+    height: 50px;
+    font-size: 30px;
+    padding-top:2px;
+    height: 30px;
 
 }
 
 #bottoms {
-  display:flex;
-  flex-direction:column;
-  align-items: center;
-  justify-content: center;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
 }
 
 #accessories {
-  display:flex;
-  flex-direction:column;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 2px solid purple;
-  width: 600px;
-  height: 100%;
-  
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid purple;
+    width: 100%;
+    height: 50%;
 }
 
 #shoes {
-  display:flex;
-  flex-direction:column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
 }
 
 #page-bottom {
-  display:flex;
-  flex-direction: row;
-  justify-content: center;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 #saveoutfit {
-  margin-top: 30px;
-  width: 200px;
-  height: 55px;
-  background-color: green;
-  color: white;
+    margin-top: 30px;
+    width: 200px;
+    height: 55px;
+    background-color: green;
+    color: white;
+}
+
+.modal-overlay{
+    width: 100vw;
+    height:100vh;
+    background-color:rgba(91, 90, 90);
+    z-index: 9;
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    
+}
+
+.modal-background{
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    z-index: 10;
+    background-color:white;
+    margin:auto;
+    width: 150px;
+    height: 280px;
+    
+}
+
+.clothing-pics-top{
+  width: 50px;
+  height: 50px;
+}
+
+.header_container{
+  width: 100vw;
+  height: 100px;
+}
+
+#hats {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+}
+
+#bags {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+}
+
+#dresses {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+}
+
+#outerwear {
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
 }
