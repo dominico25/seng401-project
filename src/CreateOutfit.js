@@ -1,167 +1,107 @@
-import { useState } from "react";
+
+import { useState, useRef, useContext } from "react";
 import React from "react";
 import Navigation from './Navigation';
 import { Link } from 'react-router-dom';
 import './create-outfit.css';
 import Header from "./Header";
 import { useEffect } from "react";
-
+import { useAccount, AccountContext } from './AccountContext';
+import { Text, useDisclosure, Button } from '@chakra-ui/react'
+import {
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react'
 
 
 
 function CreateOutfit() {
+    const { account } = useAccount();
+    const { setAccount } = useContext(AccountContext);
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
+    console.log("YOOOO", localStorage.getItem('account'))
+    setAccount(localStorage.getItem('account'));
+    
+    useEffect(() => {loadItemsFromRemote()},[])
+    const [saveOutfitClicked, setsaveOutfitClicked] = useState(false);
+    //saveoutfit useEffect
+    useEffect(() =>{
+    if (saveOutfitClicked){
+        const topImage = document.getElementById('clothing-pics-top')
+        const bottomImage = document.getElementById('clothing-pics-bottom')
+        const accessoriesImage = document.getElementById('clothing-pics-accessories')
+        const shoesImage = document.getElementById('clothing-pics-shoes')
+        const hatsImage =document.getElementById('clothing-pics-hats')
+        const outerwearImage = document.getElementById('clothing-pics-outerwear')
+        const bagsImage =document.getElementById('clothing-pics-bags')
+        const dressesImage = document.getElementById('clothing-pics-dresses')
 
 
-   const image1 = {
-       itemID: "1",
-       imageurl: "https://www.highsnobiety.com/static-assets/thumbor/M29ZnHrOQ8wLvy3nD7HETr6Mc04=/fit-in/1200x1500/aaba6fc7dd05e6321705-d3c8e77fedf34b64ceac1fa28b6c145b.ssl.cf3.rackcdn.com/Carhartt_3380-mBojFUj_.jpg",
-       color: "black",
-       style: "workwear",
-       category: "Top",
-       type: "jacket",
-       wishlistorcloset: "closet",
-       accountid: "1234"
+        const res =  fetch(
+            `https://34q4hexz65b5guqi5zt4rzrfh40dwmhw.lambda-url.ca-central-1.on.aws/`,
+              {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                      
+                  },
+                  body: JSON.stringify({
+                    top_id: topImage.getAttribute('uniqueid'),
+                    bottom_id: bottomImage.getAttribute('uniqueid'),
+                    dress_id: accessoriesImage.getAttribute('uniqueid'),
+                    outerwear_id: shoesImage.getAttribute('uniqueid'),
+                    accessories_id : hatsImage.getAttribute('uniqueid'),
+                    shoes_id: outerwearImage.getAttribute('uniqueid'),
+                    hat_id: bagsImage.getAttribute('uniqueid'),
+                    bag_id : dressesImage.getAttribute('uniqueid'),
+                    account_id: '1234'})
+            }
+        )
+        console.log(res.body)  
+    }  
+   },[saveOutfitClicked])
+   
+
+   
+
+   const testoutfit = {
+        top_id: "001",
+        bottom_id: '002',
+        dress_id: '003',
+        outerwear_id: '004',
+        accessories_id : '005',
+        shoes_id: '006',
+        hat_id: '007',
+        bag_id : '008',
+        account_id: '1234'
+
    }
-   const image2 = {
-       itemID: "2",
-       imageurl: "https://www.bootbarn.com/dw/image/v2/BCCF_PRD/on/demandware.static/-/Sites-master-product-catalog-shp/default/dwf6af816d/images/666/2000213666_342_P1.JPG?sw=600&sh=600&sm=fit&q=50",
-       color: "black",
-       style: "workwear",
-       category: "Bottom",
-       type: "pants",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-  const image3 = {
-       itemID: "3",
-       imageurl: "https://i.ebayimg.com/images/g/ko8AAOSwr2FjD8q8/s-l1600.jpg",
-       color: "brown",
-       style: "everyday",
-       category: "Top",
-       type: "shirt",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-  }
-  const image4 = {
-   itemID: "4",
-   imageurl: "https://sweetexotics.ca/cdn/shop/files/Untitled-00_9e4d3bb9-40ad-47b4-b082-8de7c8444884.png?v=1701557518&width=2400",
-   color: "black",
-   style: "everyday",
-   category: "Top",
-   type: "shirt",
-   wishlistorcloset: "closet",
-   accountid: "1234"
-   }
-   const image5 = {
-       itemID: "5",
-       imageurl: "https://i.ebayimg.com/images/g/V~IAAOSwZRVkjekP/s-l1600.jpg",
-       color: "white",
-       style: "everyday",
-       category: "Top",
-       type: "shirt",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image6 = {
-       itemID: "6",
-       imageurl: "https://i.etsystatic.com/41902614/r/il/bd870b/4735445452/il_fullxfull.4735445452_mgbi.jpg",
-       color: "green",
-       style: "everyday",
-       category: "Top",
-       type: "shirt",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image7 = {
-       itemID: "7",
-       imageurl: "https://cdn-images.farfetch-contents.com/22/03/82/62/22038262_51960100_600.jpg",
-       color: "grey",
-       style: "everyday",
-       category: "Bottom",
-       type: "pants",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image8 = {
-       itemID: "8",
-       imageurl: "https://cdn-images.farfetch-contents.com/20/11/37/19/20113719_50040298_300.jpg",
-       color: "brown",
-       style: "everyday",
-       category: "Bottom",
-       type: "pants",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image9 = {
-       itemID: "9",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSxVwYq0epcI9c3dXEuO96TXvZ_LWnZF6Pyw&usqp=CAU",
-       color: "black",
-       style: "everyday",
-       category: "Bottom",
-       type: "pants",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image10 = {
-       itemID: "10",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQabPSjKl_lOCS24gN7ycl2XTs5W_NTnhQxx8xbmeif1yn9XpISwFcfBZMT4k-Muaja4cY&usqp=CAU",
-       color: "black",
-       style: "everyday",
-       category: "Shoes",
-       type: "adidas",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image11 = {
-       itemID: "11",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGNRo0Use9oLEPCufA4bPGADJZWwj2SaQcePt-banuR8pBcnPXhU6_SXeF_oRbhbV_rWc&usqp=CAU",
-       color: "white",
-       style: "everyday",
-       category: "Shoes",
-       type: "adidas",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image12 = {
-       itemID: "11",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4l1sCR7H3Rw-YSx8yOfoGwFM5f4jExdIuevDiF9KbLYeb_xAiRA0sWhal0Q3TMQW6Nl8&usqp=CAU",
-       color: "black",
-       style: "everyday",
-       category: "Shoes",
-       type: "asics",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image13 = {
-       itemID: "11",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5Xg_GK9hYJlAuCdIu5SZ5Z76ACziUJ1Ir9w&usqp=CAU",
-       color: "black",
-       style: "basketball",
-       category: "Shoes",
-       type: "jordan",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image14 = {
-       itemID: "14",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTB6IgaRp2ryZ6q0CnlK3FD-SV9dGHveQSjgw&usqp=CAU",
-       color: "black",
-       style: "everyday",
-       category: "Accessories",
-       type: "silver",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
-   const image15 = {
-       itemID: "15",
-       imageurl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQONjzCNn1caseRf4fBG6P6Sa7wamRIkvkOmA&usqp=CAU",
-       color: "black",
-       style: "everyday",
-       category: "Accessories",
-       type: "beanie",
-       wishlistorcloset: "closet",
-       accountid: "1234"
-   }
+
+   async function loadItemsFromRemote() {
+    try {
+        
+        const response = await fetch(
+            `https://bq2lnv2etovvmc3nnp3vwzhcra0jyhkn.lambda-url.ca-central-1.on.aws/?account_id=1234`,
+            );
+        console.log(response)
+        
+
+        const items = await response.json();
+
+        // Store items in local storage
+        localStorage.setItem("loadeditems", JSON.stringify(items));
+        console.log(items);
+        console.log("Items loaded and stored in local storage");
+    } catch (error) {
+        console.error("Error loading za items:", error);
+    }
+    }
 
 
 
@@ -193,11 +133,39 @@ function CreateOutfit() {
    const toggleShoesModal = () => {
        setShowShoesModal(!showShoesModal);
    };
+
+   const [showDressModal, setShowDressModal] = useState(false);
+   const toggleDressModal = () => {
+       setShowDressModal(!showDressModal);
+   };
+
+
+   const [showHatModal, setShowHatModal] = useState(false);
+   const toggleHatModal = () => {
+       setShowHatModal(!showHatModal);
+   };
+
+
+   const [showBagModal, setShowBagModal] = useState(false);
+   const toggleBagModal = () => {
+       setShowBagModal(!showBagModal);
+   };
+
+
+   const [showOuterwearModal, setShowOuterwearModal] = useState(false);
+   const toggleOuterwearModal = () => {
+       setShowOuterwearModal(!showOuterwearModal);
+   };
   
    const [showTopPlaceholder, setShowTopPlaceholder] = useState(true);
    const [showBottomPlaceholder, setShowBottomPlaceholder] = useState(true);
    const [showAccessoriesPlaceholder, setShowAccessoriesPlaceholder] = useState(true);
    const [showShoesPlaceholder, setShowShoesPlaceholder] = useState(true);
+   const [showHatPlaceholder, setShowHatPlaceholder] = useState(true);
+   const [showOuterwearPlaceholder, setShowOuterwearPlaceholder] = useState(true);
+   const [showBagPlaceholder, setShowBagPlaceholder] = useState(true);
+   const [showDressPlaceholder, setShowDressPlaceholder] = useState(true);
+
    const removePlaceholder = (category) =>{
        if (category == "Top"){
            setShowTopPlaceholder(false);
@@ -215,34 +183,64 @@ function CreateOutfit() {
   
 
 
-   const includeImage = (imageurl, category) => {
+   const includeImage = (imageurl, category,image) => {
       // Create an image element
        const img = document.createElement('img');
        img.src = imageurl; // Set the src attribute to the image URL
+       
       
        if (category == "Top"){
-           img.className = "clothing-pics-top"
+           img.id = "clothing-pics-top"
+           img.setAttribute('uniqueid', image.id)
            // Get the "displayedtops" div
            const displayedTopsDiv = document.getElementById('displayedtops');
            // Append the image to the "displayedtops" div
            displayedTopsDiv.appendChild(img);
+           setShowTopPlaceholder(false)
        }
        //don't forget to do the same thing for the other categories
        else if (category == "Bottom"){
-           img.className = "clothing-pics-bottom"
+           img.id = "clothing-pics-bottom"
+           img.setAttribute('uniqueid', image.id)
            const displayedBottomsDiv = document.getElementById('displayedbottoms');
            displayedBottomsDiv.appendChild(img);
        }
        else if (category == "Accessories"){
-           img.className = "clothing-pics-accessories"
+           img.id = "clothing-pics-accessories"
+           img.setAttribute('uniqueid', image.id)
            const displayedAccessoriesDiv = document.getElementById('displayedaccessories');
            displayedAccessoriesDiv.appendChild(img);
        }
        else if (category == "Shoes"){
-           img.className = "clothing-pics-shoes"
+           img.id = "clothing-pics-shoes"
+           img.setAttribute('uniqueid', image.id)
            const displayedShoesDiv = document.getElementById('displayedshoes');
            displayedShoesDiv.appendChild(img);
        }
+       else if (category == "Outerwear"){
+        img.id = "clothing-pics-outerwear"
+        img.setAttribute('uniqueid', image.id)
+        const displayedOuterwearDiv = document.getElementById('displayedouterwear');
+        displayedOuterwearDiv.appendChild(img);
+        }
+        else if (category == "Dresses"){
+            img.id = "clothing-pics-dresses"
+            img.setAttribute('uniqueid', image.id)
+            const displayedDressesDiv = document.getElementById('displayeddresses');
+            displayedDressesDiv.appendChild(img);
+        }
+        else if (category == "Hats"){
+            img.id = "clothing-pics-hats"
+            img.setAttribute('uniqueid', image.id)
+            const displayedHatsDiv = document.getElementById('displayedhats');
+            displayedHatsDiv.appendChild(img);
+        }
+        else if (category == "Bags"){
+            img.id = "clothing-pics-bags"
+            img.setAttribute('uniqueid', image.id)
+            const displayedBagsDiv = document.getElementById('displayedbags');
+            displayedBagsDiv.appendChild(img);
+        }
    }
 
 
@@ -250,14 +248,16 @@ function CreateOutfit() {
   
    const displayOptions = (category) => {
    // Retrieve items from local storage and parse into an array
-   //const storedImages = JSON.parse(localStorage.getItem('testimages')) ?? [];
-   const storedImages = [image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15]
+   const storedImages = JSON.parse(localStorage.getItem('loadeditems')) ?? [];
+   //const storedImages = [image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15]
    // Create an array to hold the div elements for each image
-   const filteredImages = storedImages.filter(image => image.category == category)
+   console.log("checking")
+   console.log(storedImages)
+   const filteredImages = storedImages.filter(image => image.type == category)
    const imageDivs = filteredImages.map((image, index) => (
        <div key={index} className="image-container">
-           <img src={image.imageurl} className = "clothing-pics-top" alt={`Item ${index + 1}`} />
-           <button onClick={() => [removePlaceholder(category), includeImage(image.imageurl, category)]}>Add Image</button>
+           <img src={image.imageurl} className='displaymode' alt={`Item ${index + 1}`} />
+           <button onClick={() => [removePlaceholder(category), includeImage(image.imageurl, category, image)]}>Add Image</button>
        </div>
    ));
 
@@ -266,15 +266,10 @@ function CreateOutfit() {
    return imageDivs;
    }
   
-   const [saveOutfitClicked, setsaveOutfitClicked] = useState(false);
-   const saveOutfitClickedResult = () => {
-       //add logic to maybe display a message indicating that the outfit has been saved.
-       // could add other things as well
-       //maybe add logic to display an overlay where the user can enter the category to which each item in the outfit belongs to
-
-
-       setsaveOutfitClicked(true);
-   }
+   
+    
+       
+   
 
 
 
@@ -283,78 +278,62 @@ function CreateOutfit() {
 
 
 
-   useEffect(() => {
-       function show() {
-           document.getElementById("navbar").classList.toggle("active");
-       }  
-       document.getElementById("activator").addEventListener("click", show);
-       return () => {
-           document.getElementById("activator").removeEventListener("click", show);
-       }
-   }, []);
+   //useEffect(() => {
+   //    function show() {
+   //        document.getElementById("navbar").classList.toggle("active");
+   //    }  
+   //    document.getElementById("activator").addEventListener("click", show);
+   //    return () => {
+   //        document.getElementById("activator").removeEventListener("click", show);
+    //   }
+   //}, []);
   
 
 
    return (
 
-
-     
-      
-         
-      
-       <body id = "fullbody">
+   <body id = "fullbody">
            <Header />
            <div id = "createoutfitnav">
 
 
                <div id = "otherlinks">
-                   <div className="directory">
-                       <Link className = "navtext" to="/">Home</Link>
-                   </div>
-                   <div className="directory">
-                       <Link className = "navtext" to="/Login">Login</Link>
-                   </div>
-                   <div className="directory">
-                       <Link className = "navtext" to="/UploadItem">UploadItem</Link>
-                   </div>
-                   <div className="directory">
-                       <Link className = "navtext" to="/CreateOutfit">CreateOutfit</Link>
-                   </div>
-                   <div className="directory">
-                       <Link className = "navtext" to="/BrowseItem">BrowseItem</Link>
-                   </div>
-                   <div className="directory">
-                       <Link className = "navtext" to="/BrowseOutfit">BrowseOutfit</Link>
-                   </div>
-                   <div className="directory">
-                       <Link className = "navtext" to="/GenerateOutfit">GenerateOutfit</Link>
-                   </div>
+                   
                </div>
            </div>
            <hr></hr>
            <div id = "mainbody">
-               <div id = "top-page-title-and-info"><div id = "page-title"><h1>Create Outfit</h1></div><button id="info">&#9432;</button></div>
+               <div id = "top-page-title-and-info"><div id = "page-title"><Text fontSize='4xl'> Create Outfit</Text></div><button id="info">&#9432;</button></div>
                <hr></hr>
-               {showTopModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content">{displayOptions("Top")}<button onClick={toggleTopModal}>Close</button></div></div></div> }
-               {showBottomModal && <div className = "modal-overlay"><div className = "modal-background" ><div className = "modal-content">{displayOptions("Bottom")}<button onClick={toggleBottomModal}>Close</button></div></div></div> }
-               {showAccessoriesModal && <div className = "modal-overlay"><div className = "modal-background" ><div className = "modal-content">{displayOptions("Accessories")}<button onClick={toggleAccessoriesModal}>Close</button></div></div></div> }
-               {showShoesModal && <div className = "modal-overlay"><div className = "modal-background" ><div className = "modal-content">{displayOptions("Shoes")}<button onClick={toggleShoesModal}>Close</button></div></div></div> }
+               {showTopModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Tops</Text>{displayOptions("Top")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleTopModal}>Close</Button></div></div></div> }
+               {showBottomModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bottoms</Text>{displayOptions("Bottom")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBottomModal}>Close</Button></div></div></div> }
+               {showAccessoriesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Accessories</Text>{displayOptions("Accessories")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleAccessoriesModal}>Close</Button></div></div></div> }
+               {showShoesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Shoes</Text>{displayOptions("Shoes")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleShoesModal}>Close</Button></div></div></div> }
+               {showDressModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Dresses</Text>{displayOptions("Dresses")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleDressModal}>Close</Button></div></div></div> }
+               {showOuterwearModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Outerwear</Text>{displayOptions("Outerwear")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleOuterwearModal}>Close</Button></div></div></div> }
+               {showHatModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Hats</Text>{displayOptions("Hats")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleHatModal}>Close</Button></div></div></div> }
+               {showBagModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bags</Text>{displayOptions("Bags")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBagModal}>Close</Button></div></div></div> }
                <div id = "rest-of-page" >
                    <div id = "left-side">
                        <div id = "tops"><h2>Tops</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleTopModal} className="browse-images"><b>+ Browse Closet</b></button></p><button id = 'trash'/></div><p><i>Your tops should appear here</i></p><div id = "displayedtops"></div>{showTopPlaceholder && <p id = "placeholder-tops">&nbsp;&nbsp;&nbsp;&#128084;&nbsp;&nbsp;&#128090;&nbsp;&nbsp;&#129466;</p>}</div>
                       
                        <div id = "bottoms"><h2>Bottoms</h2><p>&nbsp; <button onClick = {toggleBottomModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your bottoms should appear here</i></p><div id = "displayedbottoms"></div>{showBottomPlaceholder && <p id = "placeholder-bottoms">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
+                       <div id = "dresses"><h2>Dresses</h2><p>&nbsp; <button onClick = {toggleDressModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your dresses should appear here</i></p><div id = "displayeddresses"></div>{showDressPlaceholder && <p id = "placeholder-dresses">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
+                       <div id = "outerwear"><h2>Outwear</h2><p>&nbsp; <button onClick = {toggleOuterwearModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your outerwear should appear here</i></p><div id = "displayedhats"></div>{showOuterwearPlaceholder && <p id = "placeholder-outerwear">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
                    </div>
-                   <div id = "vl"></div>
+                  
                    <div id = "right-side">
                        <div id = "accessories"><h2>Accessories</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleAccessoriesModal} className="browse-images"><b>+ Browse Closet</b></button></p></div><p><i>Your accessories should appear here</i></p><div id = "displayedaccessories"></div>{showAccessoriesPlaceholder && <p id = "placeholder-accessories">&nbsp;&nbsp;&nbsp;&#128083;&nbsp;&nbsp;&#129506;&nbsp;&nbsp;&#128092;</p>}</div>
                        <div id = "shoes"><h2>Shoes</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleShoesModal} className="browse-images"><b>+ Browse Closet</b></button></p></div><p><i>Your shoes should appear here</i></p><div id = "displayedshoes"></div>{showShoesPlaceholder && <p id = "placeholder-shoes">&nbsp;&nbsp;&nbsp;&#128094;&nbsp;&nbsp;&#128096;&nbsp;&nbsp;&#129406;</p>}</div>
+                       <div id = "hats"><h2>Hats</h2><p>&nbsp; <button onClick = {toggleHatModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your hats should appear here</i></p><div id = "displayedhats"></div>{showHatPlaceholder && <p id = "placeholder-hats">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
+                       <div id = "bags"><h2>Bags</h2><p>&nbsp; <button onClick = {toggleBagModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your bags should appear here</i></p><div id = "displayedbags"></div>{showBagPlaceholder && <p id = "placeholder-bags">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
                    </div>
                </div>
                <hr></hr>
                <div id = "page-bottom">
-                   <button onClick={() => setsaveOutfitClicked()} id = "saveoutfit">Save Outfit</button>
+                   <button onClick={() => setsaveOutfitClicked(true)}   id = "saveoutfit">Save Outfit</button>
                </div>
+              
               
            </div>
 
