@@ -319,7 +319,7 @@ function CreateOutfit() {
                       
                        <div id = "bottoms"><h2>Bottoms</h2><p>&nbsp; <button onClick = {toggleBottomModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your bottoms should appear here</i></p><div id = "displayedbottoms"></div>{showBottomPlaceholder && <p id = "placeholder-bottoms">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
                        <div id = "dresses"><h2>Dresses</h2><p>&nbsp; <button onClick = {toggleDressModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your dresses should appear here</i></p><div id = "displayeddresses"></div>{showDressPlaceholder && <p id = "placeholder-dresses">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
-                       <div id = "outerwear"><h2>Outwear</h2><p>&nbsp; <button onClick = {toggleOuterwearModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your outerwear should appear here</i></p><div id = "displayedhats"></div>{showOuterwearPlaceholder && <p id = "placeholder-outerwear">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
+                       <div id = "outerwear"><h2>Outwear</h2><p>&nbsp; <button onClick = {toggleOuterwearModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your outerwear should appear here</i></p><div id = "displayedouterwear"></div>{showOuterwearPlaceholder && <p id = "placeholder-outerwear">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
                    </div>
                   
                    <div id = "right-side">
