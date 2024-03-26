@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import Display from './Display';
 import PreviewScreen from './PreviewScreen';
@@ -6,7 +6,18 @@ import Header from "./Header";
 import { Select, Button, Container, Alert, AlertIcon, Heading, Flex, Text } from '@chakra-ui/react'
 
 
-function GenerateOutfit() {
+function GenerateOutfit(props) {
+    const [chosenItems, setChosenItems] = useState({
+        top: null,
+        bottom: null,
+        dress: null,
+        outerwear: null,
+        accessory: null,
+        shoe: null,
+        hat: null,
+        bag: null
+    });
+    
     const [previewScreen, setPreviewScreen] = useState(false);
     const [items, setItems] = useState([]);
     const [chosenTop, setChosenTop] = useState(null);
@@ -17,16 +28,19 @@ function GenerateOutfit() {
     const [chosenShoe, setChosenShoe] = useState(null);
     const [chosenHat, setChosenHat] = useState(null);
     const [chosenBag, setChosenBag] = useState(null);
+    // const [account, setAccount] = useState(null);
+    const account = {id: "dominicomendes@gmail.com"};
+    
     const loadItems = async () => {
-        const res = await fetch(
-            `https://tqeurpmxqzlzvdgtjj42swi57m0rswbr.lambda-url.ca-central-1.on.aws/`,
-            {
-                method: "GET",
-            }
-        );
-        const data = await res.json();
-        setItems(data);
+        console.log("hfdkwnfdnsklnfkdslf")
+        const res = await fetch(`https://otlbpraskqdgdmwcbc6looqx7e0vdqgn.lambda-url.ca-central-1.on.aws/?account_id=${account.id}`);
+        if (res.status === 200) {
+            const data = await res.json();
+            setItems(data);
+        }
+        
     }
+    
     const colourOptions = {
         "colour1": "Random",
         "colour2": "Red",
@@ -36,13 +50,24 @@ function GenerateOutfit() {
         "colour6": "Blue",
         "colour7": "Purple",
         "colour8": "Pink",
+        "colour9": "Brown",
+        "colour10": "Black",
+        "colour11": "Grey",
+        "colour12": "White",
+        "colour13": "Multicolour",
     };
-
+    
+    
     const styleOptions = {
         "style1": "Random",
         "style2": "Casual",
         "style3": "Formal",
-        "style4": "Athletic",
+        "style4": "Sporty",
+    };
+
+    const ownershipOptions = {
+        "ownership1": "Random",
+        "ownership2": "ClosetOnly"
     };
 
     const previewOn = () => {
@@ -56,46 +81,9 @@ function GenerateOutfit() {
 
     const [displayScreen, setDisplayScreen] = useState(false);
     const [formValues, setFormValues] = useState({});
-    const [isFormValid, setIsFormValid] = useState({ color: true, style: true });
+    const [isFormValid, setIsFormValid] = useState({ colour: true, style: true });
     const [showNotification, setShowNotification] = useState(false);
-    const onSubmitForm = async (e) => {
-        e.preventDefault();
-        // if (!file) {
-        //   alert("Please select an image for the deceased");
-        //   return;
-        // }
-      
-        // const obituaryId = uuidv4();
-        // console.log(personName, dateOfBirth, dateOfDeath, file);
-        // const timestamp = new Date().toISOString();
-        // const data = new FormData();
-        // data.append("file", file);
-        // data.append("personName", personName);
-        // data.append("dateOfBirth", dateOfBirth);
-        // data.append("dateOfDeath", dateOfDeath || defaultDate);
-        // data.append("obituaryId", obituaryId);
-        // data.append("timestamp", timestamp);
     
-        // const button = document.querySelector('.write-obituary-button');
-        // button.disabled = true;
-        // button.className = 'write-obituary-button-disabled';
-        // button.style.backgroundColor = 'lightgrey';
-        // button.textContent = "Please wait. It's not like they're gonna be late for something ..."
-        
-        // const res = await fetch(`https://u7ml7vw5nogsljabtqyudxvo6u0qsndy.lambda-url.ca-central-1.on.aws/`,
-        //   {
-        //     method: 'POST',
-        //     body: data
-        //   }
-        // );
-    
-        
-        // getObituary();
-        // props.cardsOn();
-        // handleObituaryOff();
-        // button.disabled = false;
-        // button.className = 'write-obituary-button';
-    };
 
     const chooseRandomItem = (array) => {
         const randomIndex = Math.floor(Math.random() * array.length);
@@ -114,10 +102,40 @@ function GenerateOutfit() {
         setPreviewScreen(false);
     };
 
+    const resetChosenItems = () => {
+        setChosenTop(null);
+        setChosenBottom(null);
+        setChosenDress(null);
+        setChosenOuterwear(null);
+        setChosenAccessory(null);
+        setChosenShoe(null);
+        setChosenHat(null);
+        setChosenBag(null);
+        setChosenItems({
+            top: null,
+            bottom: null,
+            dress: null,
+            outerwear: null,
+            accessory: null,
+            shoe: null,
+            hat: null,
+            bag: null
+        });
+        
+
+
+    };
+
+    const [showInvalidNotification, setShowInvalidNotification] = useState(false);
+
+
+    useEffect(() => {
+        loadItems();
+    }, [account.id]);
+
     async function handleForm(event) {
         event.preventDefault();
-
-        if (!formValues.color || !formValues.style) {
+        if (!formValues.colour || !formValues.style) {
             setShowNotification(true);
             setTimeout(() => {
                 setShowNotification(false); // Hide notification after 3 seconds
@@ -128,103 +146,199 @@ function GenerateOutfit() {
         const formData = new FormData(event.target);
         const values = Object.fromEntries(formData.entries());
         setFormValues({
-            color: values.color,
-            style: values.style
+            colour: colourOptions[values.colour],
+            style: styleOptions[values.style]
         });
         console.log("Form Values:", values);
-        // loadItems();
-
-        // let topItems = [];
-        // let bottomItems = [];
-        // let dressItems = [];
-        // let outerwearItems = [];
-        // let accessoryItems = [];
-        // let shoeItems = [];
-        // let hatItems = [];
-        // let bagItems = [];
-
-        // if (formValues.color === colour1 && formValues.style === style1) {
-        //     let topItems = items.filter(item => item.type === "top");
-        //     let bottomItems = items.filter(item => item.type === "bottom");
-        //     let dressItems = items.filter(item => item.type === "dress");
-        //     let outerwearItems = items.filter(item => item.type === "outerwear");
-        //     let accessoryItems = items.filter(item => item.type === "accessory");
-        //     let shoeItems = items.filter(item => item.type === "shoe");
-        //     let hatItems = items.filter(item => item.type === "hat");
-        //     let bagItems = items.filter(item => item.type === "bag");
-        // }
-        // else if (formValues.color != colour1 && formValues.style === style1) {
-        //     let topItems = items.filter(item => item.type === "top" && item.colour === formValues.color);
-        //     let bottomItems = items.filter(item => item.type === "bottom" && item.colour === formValues.color);
-        //     let dressItems = items.filter(item => item.type === "dress" && item.colour === formValues.color);
-        //     let outerwearItems = items.filter(item => item.type === "outerwear" && item.colour === formValues.color);
-        //     let accessoryItems = items.filter(item => item.type === "accessory" && item.colour === formValues.color);
-        //     let shoeItems = items.filter(item => item.type === "shoe" && item.colour === formValues.color);
-        //     let hatItems = items.filter(item => item.type === "hat" && item.colour === formValues.color);
-        //     let bagItems = items.filter(item => item.type === "bag" && item.colour === formValues.color);
-        // }
-        // else if (formValues.color === colour1 && formValues.style != style1) {
-        //     let topItems = items.filter(item => item.type === "top" && item.style === formValues.style);
-        //     let bottomItems = items.filter(item => item.type === "bottom" && item.style === formValues.style);
-        //     let dressItems = items.filter(item => item.type === "dress" && item.style === formValues.style);
-        //     let outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formValues.style);
-        //     let accessoryItems = items.filter(item => item.type === "accessory" && item.style === formValues.style);
-        //     let shoeItems = items.filter(item => item.type === "shoe" && item.style === formValues.style);
-        //     let hatItems = items.filter(item => item.type === "hat" && item.style === formValues.style);
-        //     let bagItems = items.filter(item => item.type === "bag" && item.style === formValues.style);
-        // }
-        
-
-
-
-        // const randomOutfitValue = Math.floor(Math.random() * 1);
-        // if (randomOutfitValue == 0) {
-        //     setChosenDress(chooseRandomItem(dressItems));
-        //     if ((Math.floor(Math.random() * 1)) == 1) {
-        //         setChosenTop(chooseRandomItem(topItems));
-        //     }
-        //     if ((Math.floor(Math.random() * 1)) == 1) {
-        //         setChosenBottom(chooseRandomItem(bottomItems));
-        //     }
-        // }
-
-        // else if (randomOutfitValue == 1) { 
-        //     setChosenTop(chooseRandomItem(topItems));
-        //     setChosenBottom(chooseRandomItem(bottomItems));
-        //     if ((Math.floor(Math.random() * 1)) == 1) {
-        //         setChosenDress(chooseRandomItem(dressItems));
-        //     }
-        // }
-        // if ((Math.floor(Math.random() * 1)) == 1) {
-        //     setChosenOuterwear(chooseRandomItem(outerwearItems));
-        // }
-
-        // if ((Math.floor(Math.random() * 1)) == 1) {
-        //     setChosenAccessory(chooseRandomItem(accessoryItems));
-        // }
-
-        // if ((Math.floor(Math.random() * 1)) == 1) {
-        //     setChosenShoe(chooseRandomItem(shoeItems));
-        // }
-
-        // if ((Math.floor(Math.random() * 1)) == 1) {
-        //     setChosenHat(chooseRandomItem(hatItems));
-        // }
-
-        // if ((Math.floor(Math.random() * 1)) == 1) {
-        //     setChosenBag(chooseRandomItem(bagItems));
-        // }
-
-        
-        
-        
-        
-
-        try {
-            setPreviewScreen(true);
-        } catch (error) {
-            console.error("Error:", error);
+        loadItems();
+        let topItems = [];
+        let bottomItems = [];
+        let dressItems = [];
+        let outerwearItems = [];
+        let accessoryItems = [];
+        let shoeItems = [];
+        let hatItems = [];
+        let bagItems = [];
+        const formColour = colourOptions[values.colour];
+        const formStyle = styleOptions[values.style];
+        // console.log("Right before ifs:", items);
+        // console.log(styleOptions[formValues.style]);
+        // console.log(values.colour);
+        // console.log(colourOptions["colour1"]);
+        if (formColour === colourOptions["colour1"] && formStyle === styleOptions["style1"]) {
+            console.log("1111111111111111111111111111111111111111");
+            topItems = items.filter(item => item.type === "top");
+            bottomItems = items.filter(item => item.type === "bottom");
+            dressItems = items.filter(item => item.type === "dress");
+            outerwearItems = items.filter(item => item.type === "outerwear");
+            accessoryItems = items.filter(item => item.type === "accessory");
+            shoeItems = items.filter(item => item.type === "shoe");
+            hatItems = items.filter(item => item.type === "hat");
+            bagItems = items.filter(item => item.type === "bag");
         }
+        else if (formColour !== colourOptions["colour1"] && formStyle === styleOptions["style1"]) {
+            console.log("2222222222222222222222222222222222222222");
+            console.log(items);
+            topItems = items.filter(item => item.type === "top" && item.colour === formColour);
+            bottomItems = items.filter(item => item.type === "bottom" && item.colour === formColour);
+            dressItems = items.filter(item => item.type === "dress" && item.colour === formColour);
+            outerwearItems = items.filter(item => item.type === "outerwear" && item.colour === formColour);
+            accessoryItems = items.filter(item => item.type === "accessory" && item.colour === formColour);
+            shoeItems = items.filter(item => item.type === "shoe" && item.colour === formColour);
+            hatItems = items.filter(item => item.type === "hat" && item.colour === formColour);
+            bagItems = items.filter(item => item.type === "bag" && item.colour === formColour);
+        }
+        else if (formColour === colourOptions["colour1"] && formStyle !== styleOptions["style1"]) {
+            console.log("3333333333333333333333333333333333333333");
+            topItems = items.filter(item => item.type === "top" && item.style === formStyle);
+            bottomItems = items.filter(item => item.type === "bottom" && item.style === formStyle);
+            dressItems = items.filter(item => item.type === "dress" && item.style === formStyle);
+            outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formStyle);
+            accessoryItems = items.filter(item => item.type === "accessory" && item.style === formStyle);
+            shoeItems = items.filter(item => item.type === "shoe" && item.style === formStyle);
+            hatItems = items.filter(item => item.type === "hat" && item.style === formStyle);
+            bagItems = items.filter(item => item.type === "bag" && item.style === formStyle);
+        }
+        else {
+            console.log("4444444444444444444444444444444444444444");
+            topItems = items.filter(item => item.type === "top" && item.style === formStyle && item.colour === formColour);
+            bottomItems = items.filter(item => item.type === "bottom" && item.style === formStyle && item.colour === formColour);
+            dressItems = items.filter(item => item.type === "dress" && item.style === formStyle && item.colour === formColour);
+            outerwearItems = items.filter(item => item.type === "outerwear" && item.style === formStyle && item.colour === formColour);
+            accessoryItems = items.filter(item => item.type === "accessory" && item.style === formStyle && item.colour === formColour);
+            shoeItems = items.filter(item => item.type === "shoe" && item.style === formStyle && item.colour === formColour);
+            hatItems = items.filter(item => item.type === "hat" && item.style === formStyle && item.colour === formColour);
+            bagItems = items.filter(item => item.type === "bag" && item.style === formStyle && item.colour === formColour);
+        }
+
+        // console.log("1111111111111111111111111111111111111111");
+        
+        console.log("Top items:", topItems);
+        console.log("Bottom items:", bottomItems);
+        console.log("Dress items:", dressItems);
+        console.log("Outerwear items:", outerwearItems);
+        console.log("Accessory items:", accessoryItems);
+        console.log("Shoe items:", shoeItems);
+        console.log("Hat items:", hatItems);
+        console.log("Bag items:", bagItems);
+
+
+       
+
+
+        let randomOutfitValue = 1000000;
+        // const randomOutfitValue = 1;
+        const topItemsLength = topItems?.length ?? 0;
+        const bottomItemsLength = bottomItems?.length ?? 0;
+        const dressItemsLength = dressItems?.length ?? 0;
+        const outerwearItemsLength = outerwearItems?.length ?? 0;
+        const accessoryItemsLength = accessoryItems?.length ?? 0;
+        const shoeItemsLength = shoeItems?.length ?? 0;
+        const hatItemsLength = hatItems?.length ?? 0;
+        const bagItemsLength = bagItems?.length ?? 0;
+        // if (dressItemsLength !== 0 && bottomItemsLength !== 0 && topItemsLength !==0) {
+        //     randomOutfitValue = Math.floor(Math.random() * 2);
+        // }
+        // else if (dressItemsLength !== 0 && bottomItemsLength === 0 && topItemsLength ===0) {
+        //     randomOutfitValue = 0;
+        // }
+        // else if (dressItemsLength === 0 && bottomItemsLength !== 0 && topItemsLength !==0) {
+        //     randomOutfitValue = 1;
+        // }
+        // else {
+        //     setShowInvalidNotification(true);
+        //     setTimeout(() => {
+        //         setShowInvalidNotification(false); // Hide notification after 3 seconds
+        //     }, 3000); // 3000 milliseconds = 3 seconds
+        //     return;
+        // }
+        if (dressItemsLength > 0 && bottomItemsLength > 0 && topItemsLength > 0) {
+            randomOutfitValue = Math.floor(Math.random() * 2);
+        } else if (dressItemsLength > 0 && (bottomItemsLength === 0 || topItemsLength === 0)) {
+            randomOutfitValue = 0;
+        } else if (dressItemsLength === 0 && bottomItemsLength > 0 && topItemsLength > 0) {
+            console.log(3);
+            randomOutfitValue = 1;
+        } else {
+            console.log(4);
+            setShowInvalidNotification(true);
+                setTimeout(() => {
+                setShowInvalidNotification(false); // Hide notification after 3 seconds
+            }, 3000); // 3000 milliseconds = 3 seconds
+            return;
+        }
+        
+        
+        
+        console.log(randomOutfitValue);
+        if (randomOutfitValue === 0) {
+            setChosenDress(chooseRandomItem(dressItems));
+            chosenItems.dress = chooseRandomItem(dressItems);
+            // console.log("fdiosvoildjsovdfjsop", chosenItems.dress)
+            if ((Math.floor(Math.random() * 2)) === 1 && topItems !== null) {
+                setChosenTop(chooseRandomItem(topItems));
+                chosenItems.top = chooseRandomItem(topItems);
+            }
+            if ((Math.floor(Math.random() * 2)) === 1 && bottomItems !== null) {
+                setChosenBottom(chooseRandomItem(bottomItems));
+                chosenItems.bottom = chooseRandomItem(bottomItems);
+            }
+            try {
+                setPreviewScreen(true);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+        else if (randomOutfitValue === 1) { 
+            setChosenTop(chooseRandomItem(topItems));
+            setChosenBottom(chooseRandomItem(bottomItems))
+            chosenItems.top = chooseRandomItem(topItems);
+            chosenItems.bottom = chooseRandomItem(bottomItems);
+            if ((Math.floor(Math.random() * 2) && dressItems !== null) === 1) {
+                setChosenDress(chooseRandomItem(dressItems));
+                chosenItems.dress = chooseRandomItem(dressItems);
+            }
+            try {
+                setPreviewScreen(true);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+
+        if ((Math.floor(Math.random() * 2)) === 1 && outerwearItemsLength !== 0) {
+            setChosenOuterwear(chooseRandomItem(outerwearItems));
+            chosenItems.outerwear = chooseRandomItem(outerwearItems);
+        }
+
+        if ((Math.floor(Math.random() * 1)) === 1 && accessoryItemsLength !== 0) {
+            setChosenAccessory(chooseRandomItem(accessoryItems));
+            chosenItems.accessory = chooseRandomItem(accessoryItems);
+        }
+
+        if ((Math.floor(Math.random() * 1)) === 1 && shoeItemsLength !== 0) {
+            setChosenShoe(chooseRandomItem(shoeItems));
+            chosenItems.shoe = chooseRandomItem(shoeItems);
+        }
+
+        if ((Math.floor(Math.random() * 1)) === 1 && hatItemsLength !== 0) {
+            setChosenHat(chooseRandomItem(hatItems));
+            chosenItems.hat = chooseRandomItem(hatItems);
+        }
+
+        if ((Math.floor(Math.random() * 1)) === 1 && bagItemsLength !== 0) {
+            setChosenBag(chooseRandomItem(bagItems));
+            chosenItems.bag = chooseRandomItem(bagItems);
+        }
+        
+
+        console.log("CHOSEN ITEMSSSSS", chosenItems);
+        
+        
+        
+
+        
     }
 
     function handleSelectChange(event) {
@@ -241,9 +355,9 @@ function GenerateOutfit() {
         <div>
             <Header />
             {outfitSavedNotification && (
-                <Alert status="success" mt={4}>
+                <Alert status="success" >
                     <AlertIcon />
-                    Outfit saved
+                    Your outfit has been saved! Go to browse to see your outfits.
                 </Alert>
             )}
             {!previewScreen && (
@@ -252,7 +366,7 @@ function GenerateOutfit() {
                         <Heading as='h3' size='lg' mb={4}>Generate an Outfit!</Heading>
                         <form onSubmit={handleForm}>
                             <Text size='sm'>Select a colour</Text>
-                            <Select placeholder='Select Colour' name="color" onChange={handleSelectChange} mb={2}>
+                            <Select placeholder='Select Colour' name="colour" onChange={handleSelectChange} mb={2}>
                                 {Object.keys(colourOptions).map((key) => (
                                     <option key={key} value={key}>{colourOptions[key]}</option>
                                 ))}
@@ -263,11 +377,17 @@ function GenerateOutfit() {
                                     <option key={key} value={key}>{styleOptions[key]}</option>
                                 ))}
                             </Select>
+                            {/* <Text size='sm'>Select ownership</Text>
+                            <Select placeholder='Select Ownership' name="ownership" onChange={handleSelectChange}>
+                                {Object.keys(ownershipOptions).map((key) => (
+                                    <option key={key} value={key}>{ownershipOptions[key]}</option>
+                                ))}
+                            </Select> */}
                             <Button
                                 mt={4}
                                 colorScheme='teal'
                                 type='submit'
-                                disabled={!isFormValid.color || !isFormValid.style}
+                                disabled={!isFormValid.colour || !isFormValid.style}
                             >
                                 Submit
                             </Button>
@@ -275,7 +395,13 @@ function GenerateOutfit() {
                         {showNotification && (
                             <Alert status="warning" mt={4}>
                                 <AlertIcon />
-                                Please make selections for both color and style.
+                                Please make selections for both colour and style.
+                            </Alert>
+                        )}
+                        {showInvalidNotification && (
+                            <Alert status="warning" mt={4}>
+                                <AlertIcon />
+                                No items of specified choice. Upload more items or select valid options.
                             </Alert>
                         )}
                     </Flex>
@@ -299,125 +425,21 @@ function GenerateOutfit() {
                     chosenBag={chosenBag}
                     saveOutfit={saveOutfit}
                     outfitSavedNotification={outfitSavedNotification}
+                    chosenItems={chosenItems}
+                    resetChosenItems={resetChosenItems}
                 />
             )}
             {displayScreen && <Display formValues={formValues} setDisplayScreen={setDisplayScreen} chosenTop={chosenTop} chosenBottom={chosenBottom}
             chosenDress={chosenDress} chosenOuterwear={chosenOuterwear} chosenAccessory={chosenAccessory} chosenShoe={chosenShoe} chosenHat={chosenHat}
             chosenBag={chosenBag} />}
                 
-            <footer >
+            <footer style={{ position: "fixed", bottom: "0", width: "100%", padding: "10px 0", textAlign: "center" }}>
                 <p>&copy; 2024 Dream Closet. All rights reserved.</p>
             </footer>
         </div>
     )
-
-
-    // return (
-    //     <div>
-    //         <Header />
-    //         {!displayScreen &&
-    //             <Container mb={4}>
-    //                 <Flex direction="column" alignItems="center" mt={4}>
-    //                     <Heading as='h3' size='lg' mb={4}>Generate an Outfit!</Heading>
-    //                     <form onSubmit={handleForm}>
-    //                         <Text size='sm'>Select a colour</Text>
-    //                         <Select placeholder='Select Colour' name="color" onChange={handleSelectChange} mb={2}>
-    //                             {Object.keys(colourOptions).map((key) => (
-    //                                 <option key={key} value={key}>{colourOptions[key]}</option>
-    //                             ))}
-    //                         </Select>
-    //                         <Text size='sm'>Select a season</Text>
-    //                         <Select placeholder='Select Season' name="season" onChange={handleSelectChange}>
-    //                             {Object.keys(seasonOptions).map((key) => (
-    //                                 <option key={key} value={key}>{seasonOptions[key]}</option>
-    //                             ))}
-    //                         </Select>
-    //                         <Button
-    //                             mt={4}
-    //                             colorScheme='teal'
-    //                             type='submit'
-    //                             disabled={!isFormValid.color || !isFormValid.season}
-    //                         >
-    //                             Submit
-    //                         </Button>
-    //                     </form>
-    //                     {showNotification && (
-    //                         <Alert status="warning" mt={4}>
-    //                             <AlertIcon />
-    //                             Please make selections for both color and season.
-    //                         </Alert>
-    //                     )}
-    //                 </Flex>
-    //             </Container >
-    //         }
-    //         {displayScreen && <Display formValues={formValues} setDisplayScreen={setDisplayScreen} chosenTop={chosenTop} chosenBottom={chosenBottom}
-    //         chosenDress={chosenDress} chosenOuterwear={chosenOuterwear} chosenAccessory={chosenAccessory} chosenShoe={chosenShoe} chosenHat={chosenHat}
-    //         chosenBag={chosenBag} />}
-    //         <footer >
-    //             <p>&copy; 2024 Dream Closet. All rights reserved.</p>
-    //         </footer>
-    //     </div>
-    // )
 }
 
 export default GenerateOutfit;
 
 
-
-
-
-// OLD
-// import { useState } from "react";
-// import React from "react";
-// import Navigation from './Navigation';
-// import Display from './Display';
-// import Header from './Header';
-
-// function GenerateOutfit() {
-//     const [displayScreen, setDisplayScreen] = useState(false);
-//     const [formValues, setFormValues] = useState({}); // State to store form values
-    
-//     function handleForm(event) {
-//         event.preventDefault(); // Prevent default form submission behavior
-//         const formData = new FormData(event.target); // Get form data
-//         const values = Object.fromEntries(formData.entries()); // Convert form data to object
-//         setFormValues(values); // Set form values in state
-//         console.log("Form Values:", values); // Log the form values to the console
-//         setDisplayScreen(true); // Set displayScreen to true to render Display component
-//     }
-
-//     return (
-//         <div>
-//             <Header/>
-//             {!displayScreen &&
-//                 <form onSubmit={handleForm}>
-//                     <label htmlFor="colour-choice">Colour:</label>
-//                     <select id="colour-choice" name="colour-choice">
-//                         <option value="colour1">Red</option>
-//                         <option value="colour2">Orange</option>
-//                         <option value="colour3">Yellow</option>
-//                         <option value="colour4">Green</option>
-//                         <option value="colour5">Blue</option>
-//                         <option value="colour6">Purple</option>
-//                         <option value="colour7">Pink</option>
-//                         <option value="colour8">Random</option>
-//                     </select>
-//                     <br />
-//                     <label htmlFor="season-choice">Season:</label>
-//                     <select id="season-choice" name="season-choice">
-//                         <option value="season1">Fall</option>
-//                         <option value="season2">Winter</option>
-//                         <option value="season3">Spring</option>
-//                         <option value="season4">Summer</option>
-//                         <option value="season5">Random</option>
-//                     </select>
-//                     <br />
-//                     <input type="submit" value="Submit" />
-//                 </form>
-//             }
-//             {displayScreen && <Display formValues={formValues} />} {/* Pass formValues to Display component */}
-//         </div>
-//     )
-// }
-
-// export default GenerateOutfit;

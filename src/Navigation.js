@@ -15,16 +15,19 @@ function Navigation() {
                     <Link to="/UploadItem">UploadItem</Link>
                 </li>
                 <li>
-                    <Link to="/CreateOutfit">CreateOutfit</Link>
+                    <Link to="/CreateOutfit">Create Outfit</Link>
                 </li>
                 <li>
-                    <Link to="/BrowseItem">BrowseItem</Link>
+                    <Link to="/BrowseItem">Browse Item</Link>
                 </li>
                 <li>
-                    <Link to="/BrowseOutfit">BrowseOutfit</Link>
+                    <Link to="/BrowseOutfit">Browse Outfit</Link>
                 </li>
                 <li>
-                    <Link to="/GenerateOutfit">GenerateOutfit</Link>
+                    <Link to="/GenerateOutfit">Generate Outfit</Link>
+                </li>
+                <li>
+                    <Link to="/AccountInfo">Account Info</Link>
                 </li>
             </ul>
         </nav>

@@ -2,36 +2,41 @@ import json
 import boto3
 
 dynamodb = boto3.resource('dynamodb')
-items_table = dynamodb.Table('items')
+accounts_table = dynamodb.Table('accounts')
 
 def lambda_handler(event, context):
-    # Extract account ID from the incoming event data
-    account_id = event['pathParameters']['id']
+    # Parse incoming event data
+    email = event["queryStringParameters"]["email"]
+    # data = json.loads(event['body'])
     
-    # Query items associated with the given account ID from the DynamoDB table
-    response = items_table.scan(
-        FilterExpression='account_id = :val',
-        ExpressionAttributeValues={':val': account_id}
+    # Extract account information from the event data
+    # email = data["email"]
+    
+    # Retrieve account details from the DynamoDB table
+    response = accounts_table.get_item(
+        Key={
+            "account_id": email
+        }
     )
     
-    # If items associated with the account ID are found, return them
-    if 'Items' in response:
-        items = response['Items']
+    # If account exists, return account details
+    if 'Item' in response:
+        account_details = response['Item']
         return {
-            'statusCode': 200,
-            'body': json.dumps(items),
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+            "statusCode": 200,
+            "body": json.dumps(account_details),
+            "headers": {
+                "Content-Type": "application/json"
+                # "Access-Control-Allow-Origin": "*"
             }
         }
-    # If no items associated with the account ID are found, return empty list
+    # If account doesn't exist, return a specific response
     else:
         return {
-            'statusCode': 200,
-            'body': json.dumps([]),
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
+            "statusCode": 404,
+            "body": json.dumps({"message": "Account does not exist"}),
+            "headers": {
+                "Content-Type": "application/json"
+                # "Access-Control-Allow-Origin": "*"
             }
         }
