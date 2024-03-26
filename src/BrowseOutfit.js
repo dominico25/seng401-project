@@ -131,9 +131,7 @@ function BrowseOutfit() {
     //     },
     //     // Add more outfits as needed
     // ];
-
-    
-    
+        
     // const account = {id: "1"};
 
     const { setAccount } = useContext(AccountContext);

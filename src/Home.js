@@ -5,7 +5,6 @@ import Header from "./Header";
 import { googleLogout } from '@react-oauth/google';
 import Navigation from "./Navigation";
 import { AccountContext, useAccount } from "./AccountContext";
-import './home.css'
 import b1 from './images/background1.jpg';
 import b2 from './images/background2.jpg';
 import b4 from './images/background4.jpg';
@@ -16,7 +15,7 @@ function Home(){
         <>
           <Header />
           <Container maxW="container.2xl"  width={"100%"} margin={"auto"} display={"flex"} flexDirection ={"column"} justifyContent={"center"} alignItems={"center"}>
-            <Box display={"flex"} flexDirection={"column"} justifyContent={"space-evenly"} border={"1px solid black"} borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'60vh'} alignItems={"center"} backgroundImage={b1} backgroundSize={"cover"} backgroundRepeat={"no-repeat"}>
+            <Box display={"flex"} flexDirection={"column"} justifyContent={"space-evenly"} border={"1px solid black"} borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'60vh'} alignItems={"center"} backgroundImage={`linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5)), url(${b1}) `} backgroundSize={"cover"} backgroundRepeat={"no-repeat"}>
               <Heading background={"white"} size={"4xl"} p={4} borderRadius={"100%"} width = {"100px"} height={"100px"} _hover={{color: "white", cursor: "pointer", background:"#282c34"}}>1</Heading>
               <Link to="/Home"><Heading color={"white"} size={"4xl"}  _hover={{color: "#282c34", cursor: "pointer", textShadow:"2px 2px 4px #000000"}}>Dream Closet</Heading></Link>
               <Text color = {"white"} textShadow={"2px 2px 4px #000000"} fontSize={"2xl"} fontWeight={"50px"} width={"75%"}>Step into your personal style haven with our Dream Closet feature. 
@@ -28,7 +27,7 @@ function Home(){
             </Box>
 
 
-            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'60vh'} alignItems={"center"}>
+            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"} borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'60vh'} alignItems={"center"}>
               
               <Box width = {"50%"} height={'100%'}>
                 <img src={b2} alt="background2" style={{borderRadius:"20px", width:"100%", height:"100%", border:"1px solid black"}}></img>
@@ -67,41 +66,32 @@ function Home(){
 
 
 
-          <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}  borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'60vh'} alignItems={"center"}>
-            
-            <Box display={"flex"} flexDirection={"column"} justifyContent={"space-evenly"} alignItems={"center"} border={"1px solid black"} margin={"10px 10px"}  borderRadius={"10px"}>
-              <Heading background={"#282c34"} color={"white"} size={"4xl"} p={4} borderRadius={"100%"} margin={"10px 10px"} width = {"100px"} height={"100px"} _hover={{color: "white", cursor: "pointer", background:"#282c34"}}>5</Heading>
-              <Link to = "/BrowseOutfit"><Heading size={"4xl"}  _hover={{color: "#282c34", cursor: "pointer", textShadow:"2px 2px 4px #000000"}}>Browse Outfit</Heading></Link>
+          <Box display={"flex"} flexDirection={"row"} justifyContent={"space-between"}  borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'70vh'} alignItems={"center"}>
               
-              <Text  textShadow={"0px 0px 1px #000000"} fontSize={"lg"} fontWeight={"20px"} width={"90%"}>Dive into a world of endless fashion possibilities with our Browse Outfit & Browse Item features. 
+            <Box display={"flex"} bg={"#282c34"} flexDirection={"column"} justifyContent={"space-evenly"} alignItems={"center"} border={"1px solid black"} margin={"10px 10px"} borderRadius={"10px"} boxShadow={"0px 1px 1px #000000"} height={"100%"} position={"relative"}  _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-5px"}}>
+                <Heading background={"white"} color={"#282c34"} size={"4xl"} p={4} borderRadius={"100%"} margin={"10px 10px"} width = {"100px"} height={"100px"} _hover={{color: "white", cursor: "pointer", background:"#282c34"}}>5</Heading>
+                <Link to="/BrowseItem"><Heading size={"4xl"} color={"white"} _hover={{ cursor: "pointer", textShadow:"2px 2px 4px #000000"}}>Browse Item</Heading></Link>
+                <Text color={"white"}  textShadow={"0px 0px 1px #000000"} fontSize={"lg"} fontWeight={"20px"} width={"90%"} padding={"10px"}>
+                  Dive into a world of endless fashion possibilities with our Browse Item feature. 
+                  Looking to expand your wardrobe? Browse through our extensive collection of clothing items sourced from top brands and designers with our Browse Item feature. 
+                  Whether you're searching for wardrobe staples or statement pieces, you'll find a wide selection of clothing items to suit your style.
+                  Filter by category, color, brand, and more to easily find the perfect additions to your closet. With easy navigation and personalized recommendations, finding your next fashion obsession has never been easier.
+                  </Text>
+              </Box>
+            <Box display={"flex"} bg={"#282c34"} flexDirection={"column"} justifyContent={"space-evenly"} alignItems={"center"} border={"1px solid black"} margin={"10px 10px"}  borderRadius={"10px"} boxShadow={"0px 1px 1px #000000"} height={"100%"} position={"relative"} _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-5px"} }>
+              <Heading background={"white"} color={"#282c34"} size={"4xl"} p={4} borderRadius={"100%"} margin={"10px 10px"} width = {"100px"} height={"100px"} _hover={{color: "white", cursor: "pointer", background:"#282c34"}}>6</Heading>
+              <Link to = "/BrowseOutfit"><Heading size={"4xl"} color={"white"}  _hover={{ cursor: "pointer", textShadow:"2px 2px 4px #000000"}}>Browse Outfit</Heading></Link>
+              <Text color={"white"} textShadow={"0px 0px 1px #000000"} fontSize={"lg"} fontWeight={"20px"} width={"100%"} padding={"10px"}> 
                 Explore a diverse array of outfits created by users just like you, or draw inspiration from curated collections tailored to your tastes. 
                 From casual chic to haute couture, there's something for every style preference and occasion. 
                 Looking to expand your wardrobe? Browse through our extensive collection of clothing items sourced from top brands and designers. 
                 With easy navigation and personalized recommendations, finding your next fashion obsession has never been easier.
-                Whether you're searching for wardrobe staples or statement pieces, you'll find a wide selection of clothing items to suit your style. 
-                Filter by category, color, brand, and more to easily find the perfect additions to your closet. 
-                With easy navigation and personalized recommendations, finding your next fashion obsession has never been easier.
                 </Text>
             </Box>
-            <Box display={"flex"} flexDirection={"column"} justifyContent={"space-evenly"} alignItems={"center"} border={"1px solid black"} margin={"10px 10px"} borderRadius={"10px"}>
-              <Heading background={"#282c34"} color={"white"} size={"4xl"} p={4} borderRadius={"100%"} margin={"10px 10px"} width = {"100px"} height={"100px"} _hover={{color: "white", cursor: "pointer", background:"#282c34"}}>6</Heading>
-              <Link to="/BrowseItem"><Heading size={"4xl"}  _hover={{color: "#282c34", cursor: "pointer", textShadow:"2px 2px 4px #000000"}}>Browse Item</Heading></Link>
-              <Text  textShadow={"0px 0px 1px #000000"} fontSize={"lg"} fontWeight={"20px"} width={"90%"}>Dive into a world of endless fashion possibilities with our Browse Outfit & Browse Item features. 
-                Explore a diverse array of outfits created by users just like you, or draw inspiration from curated collections tailored to your tastes. 
-                From casual chic to haute couture, there's something for every style preference and occasion. 
-                Looking to expand your wardrobe? Browse through our extensive collection of clothing items sourced from top brands and designers. 
-                With easy navigation and personalized recommendations, finding your next fashion obsession has never been easier.
-                Whether you're searching for wardrobe staples or statement pieces, you'll find a wide selection of clothing items to suit your style. 
-                Filter by category, color, brand, and more to easily find the perfect additions to your closet. 
-                With easy navigation and personalized recommendations, finding your next fashion obsession has never been easier.
-                </Text>
-            </Box>
-            
           </Box>
-        
 
 
-          <Box display={"flex"} flexDirection={"column"} justifyContent={"space-evenly"} border={"1px solid black"} borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'40vh'} alignItems={"center"}>
+          <Box display={"flex"} flexDirection={"column"} justifyContent={"space-evenly"} borderRadius={"10px"} p={4} margin={"10px 10px"} textAlign={"center"} width={"100%"} height={'50vh'} alignItems={"center"}>
             <Heading background={"#282c34"} color={"white"} size={"4xl"} p={4} borderRadius={"100%"} width = {"100px"} height={"100px"} _hover={{color: "white", cursor: "pointer", background:"#282c34"}}>7</Heading>
             <Link to="/GenerateOutfit"><Heading size={"4xl"}  _hover={{color: "#282c34", cursor: "pointer", textShadow:"2px 2px 4px #000000"}} >Generate Outfit</Heading></Link>
             <Text textShadow={"0px 0px 1px #000000"} fontSize={"lg"} fontWeight={"20px"} width={"90%"}>Ready to shake up your style routine? Let our outfit generator ignite your fashion creativity.

@@ -14,6 +14,7 @@ function Header(){
     const [accountDetails, setAccountDetails] = useState(null);
     let { account } = useAccount();
     const { setAccount } = useContext(AccountContext);
+    const [display, setDisplay] = useState("none")
 
     // useEffect(() => {
     //     // Fetch account details when the component mounts
@@ -30,6 +31,11 @@ function Header(){
         
     });
 
+    // Define a function to toggle the menu
+    const toggleMenu = () => {
+        setDisplay(display === "none" ? "block" : "none");
+    }
+
     // Define a logout function
     const logout = () => {
         googleLogout();
@@ -40,7 +46,7 @@ function Header(){
     const fetchAccountDetails = async () => {
         try {
           const userEmail = account; // Set the email for fetching account details
-          const response = await fetch(`https://5prapzdrjhfapsxx337jpkytzi0obarh.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+          const response = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
           const data = await response.json();
           if (response.ok) {
             setAccountDetails(data);
@@ -55,12 +61,12 @@ function Header(){
     return (
       <>
         <Flex bg={'#282c34'} height={'15vh'} color={'white'} justifyContent={'space-between'} alignContent={'center'}>
-            <Heading as ="h1" ><a href='/'> <img src={logo} alt="logo"   className ="logo" /></a></Heading>
+            <Heading as ="h1" ><a href='/Home'> <img src={logo} alt="logo"   className ="logo" /></a></Heading>
             <Box id="navbar" bg = {'#282c34'} justifyContent={'center'}>
             <nav>
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/Home">Home</Link>
                 </li>
                 <li>
                     <Link to="/UploadItem">Upload Item</Link>
@@ -79,7 +85,7 @@ function Header(){
                 </li>
                 {accountDetails && (
                 <Flex alignItems="center" justifyContent="center">
-                  <Avatar size="lg" name={accountDetails.name} src={accountDetails.profile_picture} mb={4} className="avatar" bg={'white'} color={'#282c34'}  />
+                  <Avatar size="lg" name={accountDetails.name} src={accountDetails.profile_picture} mb={4} className="avatar" bg={'white'} color={'#282c34'} onClick={toggleMenu}/>
                 </Flex>
                   )}
               </ul>
@@ -90,7 +96,7 @@ function Header(){
             </Flex>
 
           {accountDetails && (
-            <Box className="dropdown-account" display={'block'} backgroundColor={'grey'} width = {'15%'} height = {'25vh'} position={'fixed'} marginTop={'+2vh'} borderRadius={'13%'} boxShadow={'0 0 10px rgba(0, 0, 0, 0.8)'} alignSelf={'flex-end'}>
+            <Box display={display} backgroundColor={'grey'} width = {'20%'} height = {'35vh'} position={'fixed'} marginTop={'0.5vh'} borderRadius={'11%'} boxShadow={'0 1px 10px rgba(0, 0, 0, 0.8)'} right={"1vh"}>
             <Flex alignItems="center" justifyContent="center" display={"flex"} flexDirection={"column"} height={"100%"} width={"100%"} >
                     <Flex alignItems="center" justifyContent="center" display={"flex"} flexDirection={"row"} height={"50%"} width={"100%"}  >
                       <Avatar size="lg" name={accountDetails.name} src={accountDetails.profile_picture} mb={4} className="avatar" bg={'white'} color={'#282c34'} margin={"auto"} />
@@ -105,8 +111,6 @@ function Header(){
           </Flex>
           </Box>
           )}
-          
-     
       </>
         
     )
