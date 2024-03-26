@@ -12,7 +12,7 @@ import { AccountContext, useAccount } from "./AccountContext";
 function Header(){
     const navigate = useNavigate();
     const [accountDetails, setAccountDetails] = useState(null);
-    const { account } = useAccount();
+    let { account } = useAccount();
     const { setAccount } = useContext(AccountContext);
 
     // useEffect(() => {
@@ -23,6 +23,7 @@ function Header(){
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
         setAccount(localStorage.getItem('account'));
+        account = localStorage.getItem('account');
         setTimeout(() => {
             fetchAccountDetails();
         }, 1500);
@@ -39,7 +40,7 @@ function Header(){
     const fetchAccountDetails = async () => {
         try {
           const userEmail = account; // Set the email for fetching account details
-          const response = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+          const response = await fetch(`https://5prapzdrjhfapsxx337jpkytzi0obarh.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
           const data = await response.json();
           if (response.ok) {
             setAccountDetails(data);

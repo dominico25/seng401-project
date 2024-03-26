@@ -15,6 +15,7 @@ function BrowseItem() {
     const [createScreen, setCreateScreen] = useState(false);
     const [items, setItems] = useState([]);
     const [filteredItems, setFilteredItems] = useState([]);
+    const { setAccount } = useContext(AccountContext);
     // const account = {id: "dominicomendes@gmail.com"};
 
     let { account } = useAccount();
@@ -40,7 +41,7 @@ function BrowseItem() {
 
     const deleteItem = async () => {
         try {
-            const res = await fetch(`https://7dryhz6npflm3p2ejrdgzu6khi0pmmkt.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
+            const res = await fetch(`https://kbneqcotwr5nxijpfv3b4guuca0tqjch.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -56,7 +57,7 @@ function BrowseItem() {
 
     const deleteItemFromOutfits = async () => {
         try {
-            const res = await fetch(`https://aitom7vtv4ai2wqjnrn7watxk40yobfg.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+            const res = await fetch(`https://yqdhcwz7ktglpmff2ya2lvshyu0wwwsn.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
                 method: 'PATCH'
             });
             
@@ -92,7 +93,7 @@ function BrowseItem() {
         // setTimeout(() => {
         //     setAccount(localStorage.getItem('account'));
         // }, 3000);
-        const res = await fetch(`https://hbvprjzszd4bsf5sndhmln47d40lhyhl.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        const res = await fetch(`https://po65izbh53qqkfmlzdxmr2ksfy0rgdyd.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
 
         if (res.status === 200) {
             const data = await res.json();
@@ -221,7 +222,7 @@ function BrowseItem() {
             style: styleOptions[values.style]
         });
         console.log("Form Values:", values);
-        saveItems();
+        // saveItems();
         
     }
     const [searchQuery, setSearchQuery] = useState('');
