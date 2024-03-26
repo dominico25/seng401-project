@@ -16,17 +16,25 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
 
 
 function CreateOutfit() {
-    const { account } = useAccount();
+    let { account } = useAccount();
     const { setAccount } = useContext(AccountContext);
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    console.log("YOOOO", localStorage.getItem('account'))
-    setAccount(localStorage.getItem('account'));
+    window.addEventListener('load', async function() {
+        console.log("YOOOO", localStorage.getItem('account'))
+        // setTimeout(() => {
+        // setAccount(localStorage.getItem('account'));
+        setAccount(localStorage.getItem('account'));
+        account = localStorage.getItem('account');
+        console.log("Account", localStorage.getItem('account'));
+
+
+    });
     
     useEffect(() => {loadItemsFromRemote()},[])
     const [saveOutfitClicked, setsaveOutfitClicked] = useState(false);
@@ -54,13 +62,13 @@ function CreateOutfit() {
                   body: JSON.stringify({
                     top_id: topImage.getAttribute('uniqueid'),
                     bottom_id: bottomImage.getAttribute('uniqueid'),
-                    dress_id: accessoriesImage.getAttribute('uniqueid'),
-                    outerwear_id: shoesImage.getAttribute('uniqueid'),
-                    accessories_id : hatsImage.getAttribute('uniqueid'),
-                    shoes_id: outerwearImage.getAttribute('uniqueid'),
-                    hat_id: bagsImage.getAttribute('uniqueid'),
-                    bag_id : dressesImage.getAttribute('uniqueid'),
-                    account_id: '1234'})
+                    dress_id: dressesImage.getAttribute('uniqueid'),
+                    outerwear_id: outerwearImage.getAttribute('uniqueid'),
+                    accessories_id : accessoriesImage.getAttribute('uniqueid'),
+                    shoes_id: shoesImage.getAttribute('uniqueid'),
+                    hat_id: hatsImage.getAttribute('uniqueid'),
+                    bag_id : bagsImage.getAttribute('uniqueid'),
+                    account_id: account})
             }
         )
         console.log(res.body)  
@@ -87,7 +95,7 @@ function CreateOutfit() {
     try {
         
         const response = await fetch(
-            `https://bq2lnv2etovvmc3nnp3vwzhcra0jyhkn.lambda-url.ca-central-1.on.aws/?account_id=1234`,
+            `https://bq2lnv2etovvmc3nnp3vwzhcra0jyhkn.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
             );
         console.log(response)
         
@@ -205,13 +213,13 @@ function CreateOutfit() {
            const displayedBottomsDiv = document.getElementById('displayedbottoms');
            displayedBottomsDiv.appendChild(img);
        }
-       else if (category == "Accessories"){
+       else if (category == "Accessory"){
            img.id = "clothing-pics-accessories"
            img.setAttribute('uniqueid', image.id)
            const displayedAccessoriesDiv = document.getElementById('displayedaccessories');
            displayedAccessoriesDiv.appendChild(img);
        }
-       else if (category == "Shoes"){
+       else if (category == "Shoe"){
            img.id = "clothing-pics-shoes"
            img.setAttribute('uniqueid', image.id)
            const displayedShoesDiv = document.getElementById('displayedshoes');
@@ -223,25 +231,26 @@ function CreateOutfit() {
         const displayedOuterwearDiv = document.getElementById('displayedouterwear');
         displayedOuterwearDiv.appendChild(img);
         }
-        else if (category == "Dresses"){
+        else if (category == "Dress"){
             img.id = "clothing-pics-dresses"
             img.setAttribute('uniqueid', image.id)
             const displayedDressesDiv = document.getElementById('displayeddresses');
             displayedDressesDiv.appendChild(img);
         }
-        else if (category == "Hats"){
+        else if (category == "Hat"){
             img.id = "clothing-pics-hats"
             img.setAttribute('uniqueid', image.id)
             const displayedHatsDiv = document.getElementById('displayedhats');
             displayedHatsDiv.appendChild(img);
         }
-        else if (category == "Bags"){
+        else if (category == "Bag"){
             img.id = "clothing-pics-bags"
             img.setAttribute('uniqueid', image.id)
             const displayedBagsDiv = document.getElementById('displayedbags');
             displayedBagsDiv.appendChild(img);
         }
    }
+
 
 
  
@@ -256,8 +265,8 @@ function CreateOutfit() {
    const filteredImages = storedImages.filter(image => image.type == category)
    const imageDivs = filteredImages.map((image, index) => (
        <div key={index} className="image-container">
-           <img src={image.imageurl} className='displaymode' alt={`Item ${index + 1}`} />
-           <button onClick={() => [removePlaceholder(category), includeImage(image.imageurl, category, image)]}>Add Image</button>
+           <img src={image.image_url} className='displaymode' alt={`Item ${index + 1}`} />
+           <button onClick={() => [removePlaceholder(category), includeImage(image.image_url, category, image)]}>Add Image</button>
        </div>
    ));
 
@@ -265,6 +274,30 @@ function CreateOutfit() {
    // Return the array of image divs to be rendered in the modal content
    return imageDivs;
    }
+  
+   
+    
+       
+   
+
+
+
+
+
+
+
+
+   //useEffect(() => {
+   //    function show() {
+   //        document.getElementById("navbar").classList.toggle("active");
+   //    }  
+   //    document.getElementById("activator").addEventListener("click", show);
+   //    return () => {
+   //        document.getElementById("activator").removeEventListener("click", show);
+    //   }
+   //}, []);
+  
+
 
    return (
 
@@ -283,12 +316,12 @@ function CreateOutfit() {
                <hr></hr>
                {showTopModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Tops</Text>{displayOptions("Top")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleTopModal}>Close</Button></div></div></div> }
                {showBottomModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bottoms</Text>{displayOptions("Bottom")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBottomModal}>Close</Button></div></div></div> }
-               {showAccessoriesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Accessories</Text>{displayOptions("Accessories")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleAccessoriesModal}>Close</Button></div></div></div> }
-               {showShoesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Shoes</Text>{displayOptions("Shoes")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleShoesModal}>Close</Button></div></div></div> }
-               {showDressModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Dresses</Text>{displayOptions("Dresses")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleDressModal}>Close</Button></div></div></div> }
+               {showAccessoriesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Accessories</Text>{displayOptions("Accessory")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleAccessoriesModal}>Close</Button></div></div></div> }
+               {showShoesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Shoes</Text>{displayOptions("Shoe")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleShoesModal}>Close</Button></div></div></div> }
+               {showDressModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Dresses</Text>{displayOptions("Dress")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleDressModal}>Close</Button></div></div></div> }
                {showOuterwearModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Outerwear</Text>{displayOptions("Outerwear")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleOuterwearModal}>Close</Button></div></div></div> }
-               {showHatModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Hats</Text>{displayOptions("Hats")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleHatModal}>Close</Button></div></div></div> }
-               {showBagModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bags</Text>{displayOptions("Bags")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBagModal}>Close</Button></div></div></div> }
+               {showHatModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Hats</Text>{displayOptions("Hat")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleHatModal}>Close</Button></div></div></div> }
+               {showBagModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bags</Text>{displayOptions("Bag")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBagModal}>Close</Button></div></div></div> }
                <div id = "rest-of-page" >
                    <div id = "left-side">
                        <div id = "tops"><h2>Tops</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleTopModal} className="browse-images"><b>+ Browse Closet</b></button></p><button id = 'trash'/></div><p><i>Your tops should appear here</i></p><div id = "displayedtops"></div>{showTopPlaceholder && <p id = "placeholder-tops">&nbsp;&nbsp;&nbsp;&#128084;&nbsp;&nbsp;&#128090;&nbsp;&nbsp;&#129466;</p>}</div>
