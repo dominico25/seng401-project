@@ -265,30 +265,6 @@ function CreateOutfit() {
    // Return the array of image divs to be rendered in the modal content
    return imageDivs;
    }
-  
-   
-    
-       
-   
-
-
-
-
-
-
-
-
-   //useEffect(() => {
-   //    function show() {
-   //        document.getElementById("navbar").classList.toggle("active");
-   //    }  
-   //    document.getElementById("activator").addEventListener("click", show);
-   //    return () => {
-   //        document.getElementById("activator").removeEventListener("click", show);
-    //   }
-   //}, []);
-  
-
 
    return (
 

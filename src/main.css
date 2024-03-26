@@ -23,21 +23,23 @@ body.main_page{
   color: white;
 }
 
-h1{
-  font-size: 5.5em !important;
+.main_content h1{
+  font-size: 5.0em !important;
   font-weight: bold;
-  color: #f2e3e37c;
+  /* color: #f2e3e37c; */
+  color: #979aad7c !important;
   margin: 10px;
   text-align: center;
+  color: rgba(60, 63, 93, 0.287);
 }
 
-h2{
+.main_content h2{
   font-size: 1.5em !important;
   margin: 10px;
   text-align: center;
 }
 
-p{
+.main_content p{
   color: #fff;
 }
 

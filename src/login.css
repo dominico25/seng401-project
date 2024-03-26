@@ -39,7 +39,6 @@
     height : 85vh;
     width : 30vw;
     background-color: white;
-    color: black;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -47,6 +46,7 @@
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     flex-basis: 35%;
+    text-shadow: #797979 0.5px 0.5px 0.5px;
     /*
     width: fit-content;
     height: 300px;
@@ -80,6 +80,9 @@
     cursor: pointer;
 }
 
+#container{
+    width: 100vw;
+}
 
 
 footer p{
@@ -89,11 +92,11 @@ footer p{
   
 .login_container h1, h2, p{
     text-align: center;
-    color: #282c34 !important;
+    color: #282c34 ;
 }
 
 .login_container h1{
-    font-size: 2em;
+    font-size: 6em;
     margin: 20px;
     text-align: center;
     color: #282c34 !important;
