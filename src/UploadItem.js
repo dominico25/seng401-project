@@ -101,7 +101,7 @@ function UploadItem() {
         formData.append("account_id", account);
 
         // lambda: lambda_save_item_url
-        const response = await fetch("https://prseg4bnyw2zeyjwyz52gnxrpu0rclsp.lambda-url.ca-central-1.on.aws/", {
+        const response = await fetch("https://uc5zq47y6kxytzw33whvrtx5oq0zbrjv.lambda-url.ca-central-1.on.aws/", {
             method: "POST",
 
             body: formData, // Pass FormData directly as the body

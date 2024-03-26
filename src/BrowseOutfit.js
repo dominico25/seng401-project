@@ -140,7 +140,7 @@ function BrowseOutfit() {
     const loadBaseOutfits = async () => {
 
         // ADD LOAD OUTFITS URL
-        const res = await fetch(`https://e2a6hcav5g5iczrcevtpmpaoii0oadse.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        const res = await fetch(`https://kqkzwvdmluvqldqaeiop6vbbau0vlsjt.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setBaseOutfits(data);
@@ -151,7 +151,7 @@ function BrowseOutfit() {
     const loadOutfits = async () => {
         // ADD LOAD ITEM INFO URL
 
-        const res = await fetch(`https://ij22z4apnqprat6fuxjjuvr2ce0llvou.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
+        const res = await fetch(`https://q7wy5xphaman7o7zqctt46mkte0pzytj.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
         if (res.status === 200) {
             const data = await res.json();
             
@@ -167,7 +167,7 @@ function BrowseOutfit() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://y2265chv4s5k7lbxqkrnkc52ea0ylsoo.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=${outfitToDelete}`, {
+            const res = await fetch(`https://rdfvkyicbfezfa3oepep2vphmi0jlywc.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=${outfitToDelete}`, {
                 method: 'DELETE'
             });
             

@@ -31,7 +31,7 @@ function AccountInfo() {
     try {
       // const userEmail = "rjugdev@gmail.com"; // Set the email for fetching account details
       // lambda: lambda_load_acc_url
-      const response = await fetch(`https://iu6aiegbetabqqqtuup5adlj3m0zqcaz.lambda-url.ca-central-1.on.aws/?email=${account}`);
+      const response = await fetch(`https://5prapzdrjhfapsxx337jpkytzi0obarh.lambda-url.ca-central-1.on.aws/?email=${account}`);
       const data = await response.json();
       if (response.ok) {
         setAccountDetails(data);
@@ -62,7 +62,7 @@ function AccountInfo() {
       formData.append("edited_field", field);
       formData.append("new_value", newValue);
       // lambda: lambda_edit_account_url
-      const response = await fetch('https://3vcmjgwfk6xmbfubqoniftvkem0fgwvu.lambda-url.ca-central-1.on.aws/', {
+      const response = await fetch('https://d77t3mh7qv6uc73mc62t76agiu0ojxop.lambda-url.ca-central-1.on.aws/', {
         method: 'POST',
     
         body: formData, // Pass FormData directly as the body
