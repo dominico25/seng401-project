@@ -11,8 +11,8 @@ terraform {
 provider "aws" {
   region = "ca-central-1"
   ## dont wanna add access key here
-  access_key = "AKIAQ3V3MBYS2UKFVAVL"
-  secret_key = "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"
+  access_key = ""
+  secret_key = ""
 }
 
 # two lambda functions w/ function url
