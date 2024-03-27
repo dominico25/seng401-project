@@ -101,9 +101,9 @@ function CreateOutfit() {
 
    async function loadItemsFromRemote() {
     try {
-        const acc='1234'
+        
         const response = await fetch(
-            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${acc}`,
+            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
             );
         console.log(response)
         
