@@ -53,7 +53,8 @@ function Header(){
     // Define a logout function
     const logout = () => {
         googleLogout();
-        console.log("Logged out")
+        localStorage.removeItem('account');
+        console.log("Logged out");
         navigate('/');
     };
 
