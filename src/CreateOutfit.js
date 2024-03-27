@@ -101,9 +101,9 @@ function CreateOutfit() {
 
    async function loadItemsFromRemote() {
     try {
-        
+        const acc='1234'
         const response = await fetch(
-            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
+            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${acc}`,
             );
         console.log(response)
         
@@ -255,7 +255,7 @@ function CreateOutfit() {
            setShowBottomPlaceholder(false)
            setBottomHasOne(true)
        }
-       else if (category == "Accessory"){
+       else if (category == "Accessory" && !accessoriesHasOne){
            img.id = "clothing-pics-accessories"
            img.setAttribute('uniqueid', image.id)
            const displayedAccessoriesDiv = document.getElementById('displayedaccessories');
@@ -263,7 +263,7 @@ function CreateOutfit() {
            setShowAccessoriesPlaceholder(false)
            setAccessoriesHasOne(true)
        }
-       else if (category == "Shoe"){
+       else if (category == "Shoe" && !shoesHasOne){
            img.id = "clothing-pics-shoes"
            img.setAttribute('uniqueid', image.id)
            const displayedShoesDiv = document.getElementById('displayedshoes');
@@ -271,7 +271,7 @@ function CreateOutfit() {
            setShowShoesPlaceholder(false)
            setShoesHasOne(true)
        }
-       else if (category == "Outerwear"){
+       else if (category == "Outerwear" && !outerwearHasOne){
         img.id = "clothing-pics-outerwear"
         img.setAttribute('uniqueid', image.id)
         const displayedOuterwearDiv = document.getElementById('displayedouterwear');
@@ -279,7 +279,7 @@ function CreateOutfit() {
         setShowOuterwearPlaceholder(false)
         setOuterwearHasOne(true)
         }
-        else if (category == "Dress"){
+        else if (category == "Dress" && !dressesHasOne){
             img.id = "clothing-pics-dresses"
             img.setAttribute('uniqueid', image.id)
             const displayedDressesDiv = document.getElementById('displayeddresses');
@@ -287,7 +287,7 @@ function CreateOutfit() {
             setShowDressPlaceholder(false)
             setDressesHasOne(true)
         }
-        else if (category == "Hat"){
+        else if (category == "Hat" && !hatsHasOne){
             img.id = "clothing-pics-hats"
             img.setAttribute('uniqueid', image.id)
             const displayedHatsDiv = document.getElementById('displayedhats');
@@ -295,7 +295,7 @@ function CreateOutfit() {
             setShowHatPlaceholder(false)
             setHatsHasOne(true)
         }
-        else if (category == "Bag"){
+        else if (category == "Bag" && !bagsHasOne){
             img.id = "clothing-pics-bags"
             img.setAttribute('uniqueid', image.id)
             const displayedBagsDiv = document.getElementById('displayedbags');
