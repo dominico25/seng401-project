@@ -72,9 +72,9 @@ function CreateOutfit() {
             const bag_id = getAttributeValueOrNull(bagsImage, 'uniqueid')
 
             
-            if(showEmptyNotification===false) {
+            
                 const res = fetch(
-                    `https://exdk4ckwk74mivlphg353dxgyu0uwbdx.lambda-url.ca-central-1.on.aws/`,
+                    `https://rlkt7s7hg3in4fz6mavyxtohdi0plizt.lambda-url.ca-central-1.on.aws/`,
                     {
                         method: "POST",
                         headers: {
@@ -89,14 +89,14 @@ function CreateOutfit() {
                             shoes_id: shoes_id,
                             hat_id: hat_id,
                             bag_id: bag_id,
-                            account_id: account,
+                            account_id: '1234',
                             name:outfitName
                         })
                     }
                 );
                 console.log(res.body);
                 console.log('outfits have been saved')
-            }
+            
             
             
         }
@@ -120,9 +120,9 @@ function CreateOutfit() {
 
    async function loadItemsFromRemote() {
     try {
-        //const acc='1234'
+        const acc='1234'
         const response = await fetch(
-            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
+            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${acc}`,
             );
         console.log(response)
         
