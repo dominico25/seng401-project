@@ -59,7 +59,7 @@ function CreateOutfit() {
             };
     
             const res = fetch(
-                `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/`,
+                `https://exdk4ckwk74mivlphg353dxgyu0uwbdx.lambda-url.ca-central-1.on.aws/`,
                 {
                     method: "POST",
                     headers: {
