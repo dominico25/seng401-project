@@ -19,6 +19,43 @@ function BrowseItem() {
     // const account = {id: "dominicomendes@gmail.com"};
 
     let { account } = useAccount();
+
+    // useEffect(() => {
+    //     setAccount(localStorage.getItem('account'));
+    //     account = localStorage.getItem('account');
+    //     console.log("Account", localStorage.getItem('account'));
+    //     loadItems();
+    // }, []);
+
+    // useEffect(() => {
+    //     // Check if the function has already been executed
+    //     const hasExecuted = localStorage.getItem('browseItemPageLoaded');
+
+    //     if (!hasExecuted) {
+    //         // Function to execute upon navigation to this page
+    //         console.log("Navigation to BrowseItem page");
+    //         // Additional actions can be added here
+            
+    //         // Update local storage to indicate that the function has been executed
+    //         localStorage.setItem('browseItemPageLoaded', true);
+    //     }
+    // }, []);
+    const [accountLoaded, setAccountLoaded] = useState(false);
+    useEffect(() => {
+        // Load account from local storage upon component mount
+        const storedAccount = localStorage.getItem('account');
+        if (storedAccount) {
+            setAccount(storedAccount);
+            setAccountLoaded(true);
+        }
+    }, []); // Empty dependency array ensures it runs only once upon mounting
+
+    useEffect(() => {
+        if (accountLoaded) {
+            // Functionality to execute upon account load
+            loadItems();
+        }
+    }, [accountLoaded]); 
     window.addEventListener('load', async function() {
         // console.log("YOOOO", localStorage.getItem('account'))
         // setTimeout(() => {
@@ -41,7 +78,7 @@ function BrowseItem() {
 
     const deleteItem = async () => {
         try {
-            const res = await fetch(`https://kbneqcotwr5nxijpfv3b4guuca0tqjch.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
+            const res = await fetch(`https://bkuzg6rzs2wji4xfr5lts7elym0dprne.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -57,7 +94,7 @@ function BrowseItem() {
 
     const deleteItemFromOutfits = async () => {
         try {
-            const res = await fetch(`https://yqdhcwz7ktglpmff2ya2lvshyu0wwwsn.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+            const res = await fetch(`https://qgjnlzpz5yyuxgiwl6vnaqdmku0fbnns.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
                 method: 'PATCH'
             });
             
@@ -93,7 +130,7 @@ function BrowseItem() {
         // setTimeout(() => {
         //     setAccount(localStorage.getItem('account'));
         // }, 3000);
-        const res = await fetch(`https://po65izbh53qqkfmlzdxmr2ksfy0rgdyd.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        const res = await fetch(`https://jhrkjduj7yigqqjcutunxzmb6m0jxdur.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
 
         if (res.status === 200) {
             const data = await res.json();

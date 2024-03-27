@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { List, ListItem } from "@chakra-ui/react";
 import { Flex, Box, Text, Button, Heading, Avatar } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { googleLogout } from '@react-oauth/google';
@@ -20,7 +21,20 @@ function Header(){
     //     // Fetch account details when the component mounts
     //     fetchAccountDetails();
     //   }, []);
+    const [accountLoaded, setAccountLoaded] = useState(false);
+    useEffect(() => {
+        const storedAccount = localStorage.getItem('account');
+        if (storedAccount) {
+            setAccount(storedAccount);
+            setAccountLoaded(true);
+        }
+    }, []);
 
+    useEffect(() => {
+        if (accountLoaded) {
+            fetchAccountDetails();
+        }
+    }, [accountLoaded]); 
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
         setAccount(localStorage.getItem('account'));
@@ -46,7 +60,7 @@ function Header(){
     const fetchAccountDetails = async () => {
         try {
           const userEmail = account; // Set the email for fetching account details
-          const response = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+          const response = await fetch(`https://uk7ejxpi4gq65455ohd57um3ji0vpyoy.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
           const data = await response.json();
           if (response.ok) {
             setAccountDetails(data);
@@ -62,7 +76,7 @@ function Header(){
       <>
         <Flex bg={'#282c34'} height={'15vh'} color={'white'} justifyContent={'space-between'} alignContent={'center'}>
             <Heading as ="h1" ><a href='/Home'> <img src={logo} alt="logo"   className ="logo" /></a></Heading>
-            <Box id="navbar" bg = {'#282c34'} justifyContent={'center'}>
+            {/* <Box id="navbar" bg = {'#282c34'} justifyContent={'center'}>
             <nav>
             <ul>
                 <li>
@@ -89,6 +103,44 @@ function Header(){
                 </Flex>
                   )}
               </ul>
+            </nav>
+            </Box> */}
+            <Box id="navbar" bg="#282c34" justifyContent="center">
+            <nav>
+                <List display="flex" justifyContent="center" alignItems="center">
+                <ListItem mx={2}>
+                    <Link to="/Home">Home</Link>
+                </ListItem>
+                <ListItem mx={2}>
+                    <Link to="/UploadItem">Upload Item</Link>
+                </ListItem>
+                <ListItem mx={2}>
+                    <Link to="/CreateOutfit">Create Outfit</Link>
+                </ListItem>
+                <ListItem mx={2}>
+                    <Link to="/BrowseItem">Browse Item</Link>
+                </ListItem>
+                <ListItem mx={2}>
+                    <Link to="/BrowseOutfit">Browse Outfit</Link>
+                </ListItem>
+                <ListItem mx={2}>
+                    <Link to="/GenerateOutfit">Generate Outfit</Link>
+                </ListItem>
+                {accountDetails && (
+                    <Flex alignItems="center" justifyContent="center">
+                    <Avatar
+                        size="lg"
+                        name={accountDetails.name}
+                        src={accountDetails.profile_picture}
+                        mb={4}
+                        className="avatar"
+                        bg="white"
+                        color="#282c34"
+                        onClick={toggleMenu}
+                    />
+                    </Flex>
+                )}
+                </List>
             </nav>
             </Box>
             {/* <Avatar size="2xl" name={accountDetails?.name} src={accountDetails?.profile_picture} mb={4} /> */}

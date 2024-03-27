@@ -34,7 +34,7 @@ const Login = () => {
 
     // Call lambda function to check if the user exists
     // lambda: lambda_load_acc_url
-    const response = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const response = await fetch(`https://uk7ejxpi4gq65455ohd57um3ji0vpyoy.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
     const data = await response.json();
 
     console.log('Logged in User Email:', userEmail);
@@ -51,7 +51,7 @@ const Login = () => {
         // Make an HTTP request to the API Gateway endpoint
 
         // lambda: lambda_save_acc_url
-        const response = await fetch(`https://zkss7valln5amj42fxnv25iopm0jhrfu.lambda-url.ca-central-1.on.aws/`, {
+        const response = await fetch(`https://znqk4rd3ggnhtxzxy32ngswjve0lfuee.lambda-url.ca-central-1.on.aws/`, {
 
             method: "POST",
             body: formData, // Pass FormData directly as the body
@@ -75,7 +75,7 @@ const Login = () => {
     // Call lambda function to retrieve account details
   
     // lambda: lambda_load_acc_url
-    const accountResponse = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const accountResponse = await fetch(`https://uk7ejxpi4gq65455ohd57um3ji0vpyoy.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
     const accountData = await accountResponse.json();
 
     // Set the user object to state
