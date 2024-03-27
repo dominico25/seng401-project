@@ -27,6 +27,7 @@ function CreateOutfit() {
     const [outfitName, setOutfitName] = useState('');
     const [showNotification, setShowNotification] = useState(false);
     const [showOutfitSaved, setShowOutfitSaved] = useState(false);
+    const [showEmptyNotification, setShowEmptyNotification] = useState(false);
 
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
@@ -39,6 +40,12 @@ function CreateOutfit() {
 
     });
     
+    // Function to get the attribute value or return null if the element is null
+    const getAttributeValueOrNull = (element, attribute) => {
+        return element ? element.getAttribute(attribute) : null;
+    };
+
+
     useEffect(() => {loadItemsFromRemote()},[])
     const [saveOutfitClicked, setsaveOutfitClicked] = useState(false);
     //saveoutfit useEffect
@@ -53,33 +60,45 @@ function CreateOutfit() {
             const bagsImage = document.getElementById('clothing-pics-bags');
             const dressesImage = document.getElementById('clothing-pics-dresses');
     
-            // Function to get the attribute value or return null if the element is null
-            const getAttributeValueOrNull = (element, attribute) => {
-                return element ? element.getAttribute(attribute) : null;
-            };
-    
-            const res = fetch(
-                `https://exdk4ckwk74mivlphg353dxgyu0uwbdx.lambda-url.ca-central-1.on.aws/`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        top_id: getAttributeValueOrNull(topImage, 'uniqueid'),
-                        bottom_id: getAttributeValueOrNull(bottomImage, 'uniqueid'),
-                        dress_id: getAttributeValueOrNull(dressesImage, 'uniqueid'),
-                        outerwear_id: getAttributeValueOrNull(outerwearImage, 'uniqueid'),
-                        accessories_id: getAttributeValueOrNull(accessoriesImage, 'uniqueid'),
-                        shoes_id: getAttributeValueOrNull(shoesImage, 'uniqueid'),
-                        hat_id: getAttributeValueOrNull(hatsImage, 'uniqueid'),
-                        bag_id: getAttributeValueOrNull(bagsImage, 'uniqueid'),
-                        account_id: '1234',
-                        name:outfitName
-                    })
-                }
-            );
-            console.log(res.body);
+            
+            
+            const top_id = getAttributeValueOrNull(topImage, 'uniqueid');
+            const bottom_id = getAttributeValueOrNull(bottomImage, 'uniqueid')
+            const dress_id = getAttributeValueOrNull(dressesImage, 'uniqueid')
+            const outerwear_id = getAttributeValueOrNull(outerwearImage, 'uniqueid')
+            const accessories_id = getAttributeValueOrNull(accessoriesImage, 'uniqueid')
+            const shoes_id = getAttributeValueOrNull(shoesImage, 'uniqueid')
+            const hat_id = getAttributeValueOrNull(hatsImage, 'uniqueid')
+            const bag_id = getAttributeValueOrNull(bagsImage, 'uniqueid')
+
+            
+            if(showEmptyNotification===false) {
+                const res = fetch(
+                    `https://rlkt7s7hg3in4fz6mavyxtohdi0plizt.lambda-url.ca-central-1.on.aws/`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            top_id: top_id,
+                            bottom_id: bottom_id,
+                            dress_id: dress_id,
+                            outerwear_id: outerwear_id,
+                            accessories_id: accessories_id,
+                            shoes_id: shoes_id,
+                            hat_id: hat_id,
+                            bag_id: bag_id,
+                            account_id: account,
+                            name:outfitName
+                        })
+                    }
+                );
+                console.log(res.body);
+                console.log('outfits have been saved')
+            }
+            
+            
         }
     }, [saveOutfitClicked]);
    
@@ -101,9 +120,9 @@ function CreateOutfit() {
 
    async function loadItemsFromRemote() {
     try {
-        
+        //const acc='1234'
         const response = await fetch(
-            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
+            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
             );
         console.log(response)
         
@@ -350,6 +369,42 @@ function CreateOutfit() {
     
 
 };
+
+const handlefirstSaveClick = () => {
+            const topImage = document.getElementById('clothing-pics-top');
+            const bottomImage = document.getElementById('clothing-pics-bottom');
+            const accessoriesImage = document.getElementById('clothing-pics-accessories');
+            const shoesImage = document.getElementById('clothing-pics-shoes');
+            const hatsImage = document.getElementById('clothing-pics-hats');
+            const outerwearImage = document.getElementById('clothing-pics-outerwear');
+            const bagsImage = document.getElementById('clothing-pics-bags');
+            const dressesImage = document.getElementById('clothing-pics-dresses');
+    
+            
+            
+            const top_id = getAttributeValueOrNull(topImage, 'uniqueid');
+            const bottom_id = getAttributeValueOrNull(bottomImage, 'uniqueid')
+            const dress_id = getAttributeValueOrNull(dressesImage, 'uniqueid')
+            const outerwear_id = getAttributeValueOrNull(outerwearImage, 'uniqueid')
+            const accessories_id = getAttributeValueOrNull(accessoriesImage, 'uniqueid')
+            const shoes_id = getAttributeValueOrNull(shoesImage, 'uniqueid')
+            const hat_id = getAttributeValueOrNull(hatsImage, 'uniqueid')
+            const bag_id = getAttributeValueOrNull(bagsImage, 'uniqueid')
+
+    if(!top_id && !bottom_id && !dress_id && !outerwear_id && !accessories_id && !shoes_id && !hat_id && !bag_id){
+        setShowEmptyNotification(true);
+        setTimeout(() => {
+            setShowEmptyNotification(false);
+        }, 3000);
+        // Reset saveOutfitClicked state
+        setsaveOutfitClicked(false);
+    }
+    
+    else{
+        setShowSaveOutfitModal(true)
+
+    }
+}
        
    
 
@@ -396,8 +451,8 @@ function CreateOutfit() {
                {showOuterwearModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Outerwear</Text>{displayOptions("Outerwear")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleOuterwearModal}>Close</Button></div></div></div> }
                {showHatModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Hats</Text>{displayOptions("Hat")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleHatModal}>Close</Button></div></div></div> }
                {showBagModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bags</Text>{displayOptions("Bag")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBagModal}>Close</Button></div></div></div> }
-               {showSaveOutfitModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Save Your Outfit</Text><Input placeholder="Enter outfit name" value={outfitName} onChange={(e) => setOutfitName(e.target.value)}/><Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleSaveOutfitModal}>Close</Button><Button className='closemodal' colorScheme='blue' mr={3} onClick={() =>handleSaveOutfit()}>Save</Button></div>{showNotification && (<Alert status="warning" mt={4}><AlertIcon />Please input a name.</Alert>)}{showOutfitSaved && (<Alert status="warning" mt={4}><AlertIcon />Your Outfit has been saved.</Alert>)}</div></div> }
-               
+               {showSaveOutfitModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Save Your Outfit</Text><Input placeholder="Enter outfit name" value={outfitName} onChange={(e) => setOutfitName(e.target.value)}/><Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleSaveOutfitModal}>Close</Button><Button className='closemodal' colorScheme='blue' mr={3} onClick={() =>handleSaveOutfit()}>Save</Button></div>{showNotification && (<Alert status="warning" mt={4}><AlertIcon />Please input a name.</Alert>)}</div></div> }
+               {showEmptyNotification && (<Alert status="warning" mt={4}><AlertIcon />Your outfit is empty</Alert>)}
 
                <div id = "rest-of-page" >
                    <div id = "left-side">
@@ -417,7 +472,7 @@ function CreateOutfit() {
                </div>
                <hr></hr>
                <div id = "page-bottom">
-                   <button onClick={() => setShowSaveOutfitModal(true)}   id = "saveoutfit">Save Outfit</button>
+                   <button onClick={() => handlefirstSaveClick()}   id = "saveoutfit">Save Outfit</button>
                </div>
               
               
