@@ -74,7 +74,7 @@ function CreateOutfit() {
             
             if(showEmptyNotification===false) {
                 const res = fetch(
-                    `https://rlkt7s7hg3in4fz6mavyxtohdi0plizt.lambda-url.ca-central-1.on.aws/`,
+                    `https://exdk4ckwk74mivlphg353dxgyu0uwbdx.lambda-url.ca-central-1.on.aws/`,
                     {
                         method: "POST",
                         headers: {
@@ -122,7 +122,7 @@ function CreateOutfit() {
     try {
         //const acc='1234'
         const response = await fetch(
-            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
+            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
             );
         console.log(response)
         
