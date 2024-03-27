@@ -50,9 +50,9 @@ function CreateOutfit() {
         const bagsImage =document.getElementById('clothing-pics-bags')
         const dressesImage = document.getElementById('clothing-pics-dresses')
 
-
+        // SAVE OUTFIT URL
         const res =  fetch(
-            `https://fdrunt6caajb7gklgeq3ljoywm0yeugr.lambda-url.ca-central-1.on.aws/`,
+            `https://exdk4ckwk74mivlphg353dxgyu0uwbdx.lambda-url.ca-central-1.on.aws/`,
               {
                   method: "POST",
                   headers: {
@@ -93,9 +93,9 @@ function CreateOutfit() {
 
    async function loadItemsFromRemote() {
     try {
-        
+        // LOAD ITEMS URL
         const response = await fetch(
-            `https://po65izbh53qqkfmlzdxmr2ksfy0rgdyd.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
+            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
             );
         console.log(response)
         
