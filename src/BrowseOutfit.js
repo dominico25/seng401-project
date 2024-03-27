@@ -77,77 +77,7 @@ function BrowseOutfit() {
         
     });
 
-    // const outfits = [
-    //     {
-    //         name: 'Beachy Hot Pants',
-    //         items: [
-    //             { id: 1, imageUrl: 'https://i.pinimg.com/474x/54/0d/b4/540db4337b968800f2abab1897d8618d.jpg', color: 'White', style: 'Formal', classification: 'WishList' },
-    //             { id: 2, imageUrl: 'https://i.pinimg.com/474x/a6/02/3c/a6023c90d73a250117efb65de5f435bd.jpg', color: 'Blue', style: 'Casual', classification: 'Closet' },
-    //             // Add more items for the first outfit
-    //         ]
-    //     },
-    //     {
-    //         name: 'Classy Knitwear',
-    //         items: [
-    //             { id: 3, imageUrl: 'https://i.pinimg.com/474x/38/4b/a3/384ba3b411f15765936ae65e6ab98c55.jpg', color: 'Multicolour', style: 'Casual', classification: 'Closet' },
-    //             { id: 4, imageUrl: 'https://i.pinimg.com/474x/e7/e2/1f/e7e21f5a38a4e7efd4efeaebafa0470e.jpg', color: 'Black', style: 'Formal', classification: 'Closet' },
-    //             { id: 5, imageUrl: 'https://i.pinimg.com/474x/47/0b/d2/470bd287288ca28997e298004666d972.jpg', color: 'Pink', style: 'Casual', classification: 'Closet' },
-    //             // Add more items for the second outfit
-    //         ]
-    //     },
-    //     {
-    //         name: 'Classy Knitwear',
-    //         items: [
-    //             { id: 3, imageUrl: 'https://i.pinimg.com/474x/38/4b/a3/384ba3b411f15765936ae65e6ab98c55.jpg', color: 'Multicolour', style: 'Casual', classification: 'Closet' },
-    //             { id: 4, imageUrl: 'https://i.pinimg.com/474x/e7/e2/1f/e7e21f5a38a4e7efd4efeaebafa0470e.jpg', color: 'Black', style: 'Formal', classification: 'Closet' },
-    //             { id: 5, imageUrl: 'https://i.pinimg.com/474x/47/0b/d2/470bd287288ca28997e298004666d972.jpg', color: 'Pink', style: 'Casual', classification: 'Closet' },
-    //             // Add more items for the second outfit
-    //         ]
-    //     },
-    //     {
-    //         name: 'Classy Knitwear',
-    //         items: [
-    //             { id: 3, imageUrl: 'https://i.pinimg.com/474x/38/4b/a3/384ba3b411f15765936ae65e6ab98c55.jpg', color: 'Multicolour', style: 'Casual', classification: 'Closet' },
-    //             { id: 4, imageUrl: 'https://i.pinimg.com/474x/e7/e2/1f/e7e21f5a38a4e7efd4efeaebafa0470e.jpg', color: 'Black', style: 'Formal', classification: 'Closet' },
-    //             { id: 5, imageUrl: 'https://i.pinimg.com/474x/47/0b/d2/470bd287288ca28997e298004666d972.jpg', color: 'Pink', style: 'Casual', classification: 'Closet' },
-    //             // Add more items for the second outfit
-    //         ]
-    //     },
-    //     {
-    //         name: 'Classy Knitwear',
-    //         items: [
-    //             { id: 3, imageUrl: 'https://i.pinimg.com/474x/38/4b/a3/384ba3b411f15765936ae65e6ab98c55.jpg', color: 'Multicolour', style: 'Casual', classification: 'Closet' },
-    //             { id: 4, imageUrl: 'https://i.pinimg.com/474x/e7/e2/1f/e7e21f5a38a4e7efd4efeaebafa0470e.jpg', color: 'Black', style: 'Formal', classification: 'Closet' },
-    //             { id: 5, imageUrl: 'https://i.pinimg.com/474x/47/0b/d2/470bd287288ca28997e298004666d972.jpg', color: 'Pink', style: 'Casual', classification: 'Closet' },
-    //             // Add more items for the second outfit
-    //         ]
-    //     },
-    //     {
-    //         name: 'White Tank Ties',
-    //         items: [
-    //             { id: 6, imageUrl: 'https://i.pinimg.com/474x/a7/6c/f2/a76cf27eb4392978c2b4df6922f08743.jpg', color: 'Multicolour', style: 'Casual', classification: 'Closet' },
-    //             { id: 7, imageUrl: 'https://i.pinimg.com/474x/7a/a8/44/7aa8446be17039b8cbba7502e81f1bed.jpg', color: 'White', style: 'Casual', classification: 'Closet' },
-    //             { id: 8, imageUrl: 'https://i.pinimg.com/474x/67/31/b4/6731b45d7d44539240f3a625b46e1fde.jpg', color: 'White', style: 'Casual', classification: 'WishList' },
-    //             { id: 9, imageUrl: 'https://i.pinimg.com/474x/4c/46/a2/4c46a2420c8f800b9c6fc41a79f47f4c.jpg', color: 'Black', style: 'Formal', classification: 'Closet' },
-    //             // Add more items for the second outfit
-    //         ]
-    //     },
-    //     {
-    //         name: 'Wacko Green',
-    //         items: [
-    //             { id: 10, imageUrl: 'https://i.pinimg.com/474x/e6/66/6f/e6666f7c7e74ebfd6f4b5267351fb502.jpg', color: 'White', style: 'Casual', classification: 'Closet' },
-    //             { id: 11, imageUrl: 'https://i.pinimg.com/474x/5f/ba/75/5fba759791a91338944b8fdf0142730e.jpg', color: 'Multicolour', style: 'Formal', classification: 'Closet' },
-    //             { id: 12, imageUrl: 'https://i.pinimg.com/474x/ad/c5/75/adc575e83d72212c2f6f16d9a7762788.jpg', color: 'White', style: 'Casual', classification: 'Closet' },
-    //             { id: 13, imageUrl: 'https://i.pinimg.com/474x/3b/28/db/3b28db1b2198fe8db4bc93bd8ee25343.jpg', color: 'Multicolour', style: 'Casual', classification: 'Closet' },
-    //             { id: 14, imageUrl: 'https://i.pinimg.com/474x/ac/5c/77/ac5c777b3909a97f73f7d290f7be672d.jpg', color: 'Green', style: 'Casual', classification: 'Closet' },
-    //             { id: 15, imageUrl: 'https://i.pinimg.com/474x/3a/80/6c/3a806c2e7fa5f0d3f608cb1d0300d3f2.jpg', color: 'Multicolour', style: 'Sporty', classification: 'Closet' },
-    //             // Add more items for the second outfit
-    //         ]
-    //     },
-    //     // Add more outfits as needed
-    // ];
-        
-    // const account = {id: "1"};
+
 
     const { setAccount } = useContext(AccountContext);
     const loadBaseOutfits = async () => {
@@ -477,6 +407,7 @@ return (
                     Your outfit has been deleted successfully !
                 </Alert>
             )}
+        <Box p={4}>
             <Input
                 placeholder="Search by Outfit Name"
                 value={searchQuery}
@@ -537,7 +468,7 @@ return (
             </Wrap>
 
             {renderModalContent()}
-
+            </Box>
             <Flex justifyContent="center" alignItems="center" position="fixed" bottom="0" width="100%" bg="gray.200" p={4}>
                 <Link to="/GenerateOutfit">
                     <Button fontSize="sm" overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" width="250px" mr={4}>Generate an Outfit for Me</Button>
