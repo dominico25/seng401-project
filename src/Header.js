@@ -75,7 +75,7 @@ function Header(){
 
     return (
       <>
-        <Flex bg={'#282c34'} height={'15vh'} color={'white'} justifyContent={'space-between'} alignContent={'center'}>
+        <Flex bg={'#282c34'} height={'15vh'} width = {'100vw'}color={'white'} justifyContent={'space-between'} alignContent={'center'}>
             <Heading as ="h1" ><a href='/Home'> <img src={logo} alt="logo"   className ="logo" /></a></Heading>
             {/* <Box id="navbar" bg = {'#282c34'} justifyContent={'center'}>
             <nav>
