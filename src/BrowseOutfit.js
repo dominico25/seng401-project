@@ -469,7 +469,7 @@ const filterOutfits = () => {
     
 
 return (
-    <Box p={4}>
+    <>
         <Header />
             {outfitDeletedNotification && (
                 <Alert status="success" >
@@ -477,7 +477,6 @@ return (
                     Your outfit has been deleted successfully !
                 </Alert>
             )}
-            <h1>Search Page</h1>
             <Input
                 placeholder="Search by Outfit Name"
                 value={searchQuery}
@@ -548,7 +547,7 @@ return (
                 </Link>
             </Flex>
             
-        </Box>
+        </>
 
     );
 }
