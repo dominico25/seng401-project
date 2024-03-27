@@ -68,6 +68,9 @@ hr {
     
    
 }
+#fullbody{
+    width: 100vw;
+}
 
 #left_side {
     display: flex;
