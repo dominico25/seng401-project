@@ -103,7 +103,7 @@ function CreateOutfit() {
     try {
         const acc='1234'
         const response = await fetch(
-            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${acc}`,
+            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${acc}`,
             );
         console.log(response)
         
