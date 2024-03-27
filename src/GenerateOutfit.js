@@ -84,7 +84,7 @@ function GenerateOutfit() {
     
     const loadItems = async () => {
         console.log("Account", account);
-        const res = await fetch(`https://jhrkjduj7yigqqjcutunxzmb6m0jxdur.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        const res = await fetch(`https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setItems(data);

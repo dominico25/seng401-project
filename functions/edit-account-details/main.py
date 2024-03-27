@@ -94,8 +94,8 @@ def upload_to_cloudinary(filename, resource_type="image", extra_fields={}):
 
     # Uploads file at filename path to Cloudinary
     # ADD YOUR OWN HERE
-    api_key = "771558923381198"
-    cloud_name = "dab4dil6d"
+    api_key = "978881496744973"
+    cloud_name = "djk956f2q"
 
     # Retrieve API secret from AWS SSM Parameter Store
     ssm = boto3.client('ssm')
