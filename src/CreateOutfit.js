@@ -5,9 +5,9 @@ import Navigation from './Navigation';
 import { Link } from 'react-router-dom';
 import './create-outfit.css';
 import Header from "./Header";
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import { useAccount, AccountContext } from './AccountContext';
-import { Text, useDisclosure, Button } from '@chakra-ui/react'
+import { Text, useDisclosure, Button, Input, Alert, AlertIcon } from '@chakra-ui/react'
 import {
     Modal,
     ModalOverlay,
@@ -23,7 +23,10 @@ import {
 function CreateOutfit() {
     let { account } = useAccount();
     const { setAccount } = useContext(AccountContext);
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [outfitName, setOutfitName] = useState('');
+    const [showNotification, setShowNotification] = useState(false);
+    const [showOutfitSaved, setShowOutfitSaved] = useState(false);
 
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
@@ -39,41 +42,46 @@ function CreateOutfit() {
     useEffect(() => {loadItemsFromRemote()},[])
     const [saveOutfitClicked, setsaveOutfitClicked] = useState(false);
     //saveoutfit useEffect
-    useEffect(() =>{
-    if (saveOutfitClicked){
-        const topImage = document.getElementById('clothing-pics-top')
-        const bottomImage = document.getElementById('clothing-pics-bottom')
-        const accessoriesImage = document.getElementById('clothing-pics-accessories')
-        const shoesImage = document.getElementById('clothing-pics-shoes')
-        const hatsImage =document.getElementById('clothing-pics-hats')
-        const outerwearImage = document.getElementById('clothing-pics-outerwear')
-        const bagsImage =document.getElementById('clothing-pics-bags')
-        const dressesImage = document.getElementById('clothing-pics-dresses')
-
-        // SAVE OUTFIT URL
-        const res =  fetch(
-            `https://exdk4ckwk74mivlphg353dxgyu0uwbdx.lambda-url.ca-central-1.on.aws/`,
-              {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json"
-                      
-                  },
-                  body: JSON.stringify({
-                    top_id: topImage.getAttribute('uniqueid'),
-                    bottom_id: bottomImage.getAttribute('uniqueid'),
-                    dress_id: dressesImage.getAttribute('uniqueid'),
-                    outerwear_id: outerwearImage.getAttribute('uniqueid'),
-                    accessories_id : accessoriesImage.getAttribute('uniqueid'),
-                    shoes_id: shoesImage.getAttribute('uniqueid'),
-                    hat_id: hatsImage.getAttribute('uniqueid'),
-                    bag_id : bagsImage.getAttribute('uniqueid'),
-                    account_id: account})
-            }
-        )
-        console.log(res.body)  
-    }  
-   },[saveOutfitClicked])
+    useEffect(() => {
+        if (saveOutfitClicked) {
+            const topImage = document.getElementById('clothing-pics-top');
+            const bottomImage = document.getElementById('clothing-pics-bottom');
+            const accessoriesImage = document.getElementById('clothing-pics-accessories');
+            const shoesImage = document.getElementById('clothing-pics-shoes');
+            const hatsImage = document.getElementById('clothing-pics-hats');
+            const outerwearImage = document.getElementById('clothing-pics-outerwear');
+            const bagsImage = document.getElementById('clothing-pics-bags');
+            const dressesImage = document.getElementById('clothing-pics-dresses');
+    
+            // Function to get the attribute value or return null if the element is null
+            const getAttributeValueOrNull = (element, attribute) => {
+                return element ? element.getAttribute(attribute) : null;
+            };
+    
+            const res = fetch(
+                `https://rlkt7s7hg3in4fz6mavyxtohdi0plizt.lambda-url.ca-central-1.on.aws/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        top_id: getAttributeValueOrNull(topImage, 'uniqueid'),
+                        bottom_id: getAttributeValueOrNull(bottomImage, 'uniqueid'),
+                        dress_id: getAttributeValueOrNull(dressesImage, 'uniqueid'),
+                        outerwear_id: getAttributeValueOrNull(outerwearImage, 'uniqueid'),
+                        accessories_id: getAttributeValueOrNull(accessoriesImage, 'uniqueid'),
+                        shoes_id: getAttributeValueOrNull(shoesImage, 'uniqueid'),
+                        hat_id: getAttributeValueOrNull(hatsImage, 'uniqueid'),
+                        bag_id: getAttributeValueOrNull(bagsImage, 'uniqueid'),
+                        account_id: '1234',
+                        name:outfitName
+                    })
+                }
+            );
+            console.log(res.body);
+        }
+    }, [saveOutfitClicked]);
    
 
    
@@ -93,9 +101,9 @@ function CreateOutfit() {
 
    async function loadItemsFromRemote() {
     try {
-        // LOAD ITEMS URL
+        
         const response = await fetch(
-            `https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
+            `https://akfbflnxl6gle2ptnga443lhbi0trmya.lambda-url.ca-central-1.on.aws/?account_id=${account}`,
             );
         console.log(response)
         
@@ -164,6 +172,13 @@ function CreateOutfit() {
    const toggleOuterwearModal = () => {
        setShowOuterwearModal(!showOuterwearModal);
    };
+
+   const [showSaveOutfitModal, setShowSaveOutfitModal] = useState(false);
+   const toggleSaveOutfitModal = () => {
+       setShowSaveOutfitModal(!showSaveOutfitModal);
+   };
+
+
   
    const [showTopPlaceholder, setShowTopPlaceholder] = useState(true);
    const [showBottomPlaceholder, setShowBottomPlaceholder] = useState(true);
@@ -173,6 +188,18 @@ function CreateOutfit() {
    const [showOuterwearPlaceholder, setShowOuterwearPlaceholder] = useState(true);
    const [showBagPlaceholder, setShowBagPlaceholder] = useState(true);
    const [showDressPlaceholder, setShowDressPlaceholder] = useState(true);
+
+
+   const[topHasOne, setTopHasOne] = useState(false);
+   const[bottomHasOne, setBottomHasOne] = useState(false);
+   const[accessoriesHasOne, setAccessoriesHasOne] = useState(false);
+   const[shoesHasOne, setShoesHasOne] = useState(false);
+   const[dressesHasOne, setDressesHasOne] = useState(false);
+   const[hatsHasOne, setHatsHasOne] = useState(false);
+   const[outerwearHasOne, setOuterwearHasOne] = useState(false);
+   const[bagsHasOne, setBagsHasOne] = useState(false);
+
+
 
    const removePlaceholder = (category) =>{
        if (category == "Top"){
@@ -189,65 +216,92 @@ function CreateOutfit() {
        }
    };
   
+    function removePicture (category){
+    const elementId = `clothing-pics-${category.toLowerCase()}`;
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.remove();
+        setTopHasOne(false);
+        console.log('item removed')
+    } else {
+        console.log(`Element with ID '${elementId}' not found.`);
+   }
+}
 
 
-   const includeImage = (imageurl, category,image) => {
+   function includeImage(imageurl, category,image){
       // Create an image element
        const img = document.createElement('img');
        img.src = imageurl; // Set the src attribute to the image URL
        
       
-       if (category == "Top"){
+       if (category == "Top" && topHasOne===false){
            img.id = "clothing-pics-top"
            img.setAttribute('uniqueid', image.id)
            // Get the "displayedtops" div
-           const displayedTopsDiv = document.getElementById('displayedtops');
+           let displayedTopsDiv = document.getElementById('displayedtops');
            // Append the image to the "displayedtops" div
            displayedTopsDiv.appendChild(img);
            setShowTopPlaceholder(false)
+            setTopHasOne(true)
+           
        }
        //don't forget to do the same thing for the other categories
-       else if (category == "Bottom"){
+       else if (category == "Bottom" && !bottomHasOne){
            img.id = "clothing-pics-bottom"
            img.setAttribute('uniqueid', image.id)
            const displayedBottomsDiv = document.getElementById('displayedbottoms');
            displayedBottomsDiv.appendChild(img);
+           setShowBottomPlaceholder(false)
+           setBottomHasOne(true)
        }
        else if (category == "Accessory"){
            img.id = "clothing-pics-accessories"
            img.setAttribute('uniqueid', image.id)
            const displayedAccessoriesDiv = document.getElementById('displayedaccessories');
            displayedAccessoriesDiv.appendChild(img);
+           setShowAccessoriesPlaceholder(false)
+           setAccessoriesHasOne(true)
        }
        else if (category == "Shoe"){
            img.id = "clothing-pics-shoes"
            img.setAttribute('uniqueid', image.id)
            const displayedShoesDiv = document.getElementById('displayedshoes');
            displayedShoesDiv.appendChild(img);
+           setShowShoesPlaceholder(false)
+           setShoesHasOne(true)
        }
        else if (category == "Outerwear"){
         img.id = "clothing-pics-outerwear"
         img.setAttribute('uniqueid', image.id)
         const displayedOuterwearDiv = document.getElementById('displayedouterwear');
         displayedOuterwearDiv.appendChild(img);
+        setShowOuterwearPlaceholder(false)
+        setOuterwearHasOne(true)
         }
         else if (category == "Dress"){
             img.id = "clothing-pics-dresses"
             img.setAttribute('uniqueid', image.id)
             const displayedDressesDiv = document.getElementById('displayeddresses');
             displayedDressesDiv.appendChild(img);
+            setShowDressPlaceholder(false)
+            setDressesHasOne(true)
         }
         else if (category == "Hat"){
             img.id = "clothing-pics-hats"
             img.setAttribute('uniqueid', image.id)
             const displayedHatsDiv = document.getElementById('displayedhats');
             displayedHatsDiv.appendChild(img);
+            setShowHatPlaceholder(false)
+            setHatsHasOne(true)
         }
         else if (category == "Bag"){
             img.id = "clothing-pics-bags"
             img.setAttribute('uniqueid', image.id)
             const displayedBagsDiv = document.getElementById('displayedbags');
             displayedBagsDiv.appendChild(img);
+            setShowBagPlaceholder(false)
+           setBagsHasOne(true)
         }
    }
 
@@ -255,7 +309,7 @@ function CreateOutfit() {
 
  
   
-   const displayOptions = (category) => {
+   function displayOptions (category){
    // Retrieve items from local storage and parse into an array
    const storedImages = JSON.parse(localStorage.getItem('loadeditems')) ?? [];
    //const storedImages = [image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15]
@@ -266,7 +320,7 @@ function CreateOutfit() {
    const imageDivs = filteredImages.map((image, index) => (
        <div key={index} className="image-container">
            <img src={image.image_url} className='displaymode' alt={`Item ${index + 1}`} />
-           <button onClick={() => [removePlaceholder(category), includeImage(image.image_url, category, image)]}>Add Image</button>
+           <button className='add-images' onClick={() => [removePlaceholder(category),includeImage(image.image_url, category, image)]}><h1><b>+</b></h1></button>
        </div>
    ));
 
@@ -276,7 +330,26 @@ function CreateOutfit() {
    }
   
    
+   const handleSaveOutfit = () => {
+    if (outfitName.trim() === '') {
+        setShowNotification(true);
+        setTimeout(() => {
+            setShowNotification(false);
+        }, 3000);
+        return;
+    }
+    // First, set saveOutfitClicked to true
+    setsaveOutfitClicked(true);
+    // Then, toggle the save outfit modal
+    toggleSaveOutfitModal();
     
+        setShowOutfitSaved(true);
+        setTimeout(() => {
+        setShowOutfitSaved(false);
+    }, 3000);
+    
+
+};
        
    
 
@@ -313,6 +386,7 @@ function CreateOutfit() {
            <hr></hr>
            <div id = "mainbody">
                <div id = "top-page-title-and-info"><div id = "page-title"><Text fontSize='4xl'> Create Outfit</Text></div><button id="info">&#9432;</button></div>
+               
                <hr></hr>
                {showTopModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Tops</Text>{displayOptions("Top")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleTopModal}>Close</Button></div></div></div> }
                {showBottomModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bottoms</Text>{displayOptions("Bottom")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBottomModal}>Close</Button></div></div></div> }
@@ -322,25 +396,28 @@ function CreateOutfit() {
                {showOuterwearModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Outerwear</Text>{displayOptions("Outerwear")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleOuterwearModal}>Close</Button></div></div></div> }
                {showHatModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Hats</Text>{displayOptions("Hat")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleHatModal}>Close</Button></div></div></div> }
                {showBagModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bags</Text>{displayOptions("Bag")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBagModal}>Close</Button></div></div></div> }
+               {showSaveOutfitModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Save Your Outfit</Text><Input placeholder="Enter outfit name" value={outfitName} onChange={(e) => setOutfitName(e.target.value)}/><Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleSaveOutfitModal}>Close</Button><Button className='closemodal' colorScheme='blue' mr={3} onClick={() =>handleSaveOutfit()}>Save</Button></div>{showNotification && (<Alert status="warning" mt={4}><AlertIcon />Please input a name.</Alert>)}{showOutfitSaved && (<Alert status="warning" mt={4}><AlertIcon />Your Outfit has been saved.</Alert>)}</div></div> }
+               
+
                <div id = "rest-of-page" >
                    <div id = "left-side">
-                       <div id = "tops"><h2>Tops</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleTopModal} className="browse-images"><b>+ Browse Closet</b></button></p><button id = 'trash'/></div><p><i>Your tops should appear here</i></p><div id = "displayedtops"></div>{showTopPlaceholder && <p id = "placeholder-tops">&nbsp;&nbsp;&nbsp;&#128084;&nbsp;&nbsp;&#128090;&nbsp;&nbsp;&#129466;</p>}</div>
+                       <div id = "tops"><Text fontSize = '3xl'>Tops</Text><div className = 'arrange'> <button onClick = {toggleTopModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('top')}><b>Clear</b></button></div><p><i>Your tops should appear here</i></p><div id = "displayedtops"></div>{showTopPlaceholder && <p id = "placeholder-tops"></p>}</div>
                       
-                       <div id = "bottoms"><h2>Bottoms</h2><p>&nbsp; <button onClick = {toggleBottomModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your bottoms should appear here</i></p><div id = "displayedbottoms"></div>{showBottomPlaceholder && <p id = "placeholder-bottoms">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
-                       <div id = "dresses"><h2>Dresses</h2><p>&nbsp; <button onClick = {toggleDressModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your dresses should appear here</i></p><div id = "displayeddresses"></div>{showDressPlaceholder && <p id = "placeholder-dresses">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
-                       <div id = "outerwear"><h2>Outwear</h2><p>&nbsp; <button onClick = {toggleOuterwearModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your outerwear should appear here</i></p><div id = "displayedouterwear"></div>{showOuterwearPlaceholder && <p id = "placeholder-outerwear">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
+                       <div id = "bottoms"><Text fontSize = '3xl'>Bottoms</Text><div className = 'arrange'> <button onClick = {toggleBottomModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('bottom')}><b>Clear</b></button></div><p><i>Your bottoms should appear here</i></p><div id = "displayedbottoms"></div>{showBottomPlaceholder && <p id = "placeholder-bottoms"></p>}</div>
+                       <div id = "dresses"><Text fontSize = '3xl'>Dresses</Text><div className = 'arrange'> <button onClick = {toggleDressModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('dresses')}><b>Clear</b></button></div><p><i>Your dresses should appear here</i></p><div id = "displayeddresses"></div>{showDressPlaceholder && <p id = "placeholder-dresses"></p>}</div>
+                       <div id = "outerwear"><Text fontSize = '3xl'>Outerwear</Text><div className = 'arrange'> <button onClick = {toggleOuterwearModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('outerwear')}><b>Clear</b></button></div><p><i>Your outerwear should appear here</i></p><div id = "displayedouterwear"></div>{showOuterwearPlaceholder && <p id = "placeholder-outerwear"></p>}</div>
                    </div>
                   
                    <div id = "right-side">
-                       <div id = "accessories"><h2>Accessories</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleAccessoriesModal} className="browse-images"><b>+ Browse Closet</b></button></p></div><p><i>Your accessories should appear here</i></p><div id = "displayedaccessories"></div>{showAccessoriesPlaceholder && <p id = "placeholder-accessories">&nbsp;&nbsp;&nbsp;&#128083;&nbsp;&nbsp;&#129506;&nbsp;&nbsp;&#128092;</p>}</div>
-                       <div id = "shoes"><h2>Shoes</h2><div id = "url-label-and-box"><p>&nbsp; <button onClick = {toggleShoesModal} className="browse-images"><b>+ Browse Closet</b></button></p></div><p><i>Your shoes should appear here</i></p><div id = "displayedshoes"></div>{showShoesPlaceholder && <p id = "placeholder-shoes">&nbsp;&nbsp;&nbsp;&#128094;&nbsp;&nbsp;&#128096;&nbsp;&nbsp;&#129406;</p>}</div>
-                       <div id = "hats"><h2>Hats</h2><p>&nbsp; <button onClick = {toggleHatModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your hats should appear here</i></p><div id = "displayedhats"></div>{showHatPlaceholder && <p id = "placeholder-hats">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
-                       <div id = "bags"><h2>Bags</h2><p>&nbsp; <button onClick = {toggleBagModal}className="browse-images"><b>+ Browse Closet</b></button></p><div id = "url-label-and-box"></div><p><i>Your bags should appear here</i></p><div id = "displayedbags"></div>{showBagPlaceholder && <p id = "placeholder-bags">&nbsp;&nbsp;&nbsp;&#128086;&nbsp;&nbsp;&#128087;</p>}</div>
+                       <div id = "accessories"><Text fontSize = '3xl'>Accessories</Text><div className = 'arrange'> <button onClick = {toggleAccessoriesModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('accessories')}><b>Clear</b></button></div><p><i>Your accessories should appear here</i></p><div id = "displayedaccessories"></div>{showAccessoriesPlaceholder && <p id = "placeholder-accessories"></p>}</div>
+                       <div id = "shoes"><Text fontSize = '3xl'>Shoes</Text><div className = 'arrange'> <button onClick = {toggleShoesModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('shoes')}><b>Clear</b></button></div><p><i>Your shoes should appear here</i></p><div id = "displayedshoes"></div>{showShoesPlaceholder && <p id = "placeholder-shoes"></p>}</div>
+                       <div id = "hats"><Text fontSize = '3xl'>Hats</Text> <div className = 'arrange'> <button onClick = {toggleHatModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('hats')}><b>Clear</b></button></div><p><i>Your hats should appear here</i></p><div id = "displayedhats"></div>{showHatPlaceholder && <p id = "placeholder-hats"></p>}</div>
+                       <div id = "bags"><Text fontSize = '3xl'>Bags</Text> <div className = 'arrange'> <button onClick = {toggleBagModal}className="browse-images"><b>+Browse</b></button><button className ='clear' onClick={() => removePicture('bags')}><b>Clear</b></button></div><p><i>Your bags should appear here</i></p><div id = "displayedbags"></div>{showBagPlaceholder && <p id = "placeholder-bags"></p>}</div>
                    </div>
                </div>
                <hr></hr>
                <div id = "page-bottom">
-                   <button onClick={() => setsaveOutfitClicked(true)}   id = "saveoutfit">Save Outfit</button>
+                   <button onClick={() => setShowSaveOutfitModal(true)}   id = "saveoutfit">Save Outfit</button>
                </div>
               
               
