@@ -60,7 +60,7 @@ function Header(){
     const fetchAccountDetails = async () => {
         try {
           const userEmail = account; // Set the email for fetching account details
-          const response = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+          const response = await fetch(`https://3tjmyt6xpa6nfilpkiyr5rtwba0roicr.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
           const data = await response.json();
           if (response.ok) {
             setAccountDetails(data);
