@@ -78,7 +78,7 @@ function BrowseItem() {
 
     const deleteItem = async () => {
         try {
-            const res = await fetch(`https://bkuzg6rzs2wji4xfr5lts7elym0dprne.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
+            const res = await fetch(`https://4bme5arnsmtyspg42tquhtg3la0gtwai.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}`, {
                 method: 'DELETE'
             });
             
@@ -94,7 +94,7 @@ function BrowseItem() {
 
     const deleteItemFromOutfits = async () => {
         try {
-            const res = await fetch(`https://qgjnlzpz5yyuxgiwl6vnaqdmku0fbnns.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
+            const res = await fetch(`https://tvvelzhmhly6flpryj4c62bpia0hqkmq.lambda-url.ca-central-1.on.aws/?account_id=${account}&item_id=${itemToDelete.item_id}&type=${itemToDelete.type}`, {
                 method: 'PATCH'
             });
             
@@ -110,7 +110,7 @@ function BrowseItem() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://y2265chv4s5k7lbxqkrnkc52ea0ylsoo.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
+            const res = await fetch(`https://qzwwpldz3dggiytylo75a63cqy0ocnpe.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=OUTFIT_TO_DELETE`, {
                 method: 'DELETE'
             });
             
@@ -130,7 +130,7 @@ function BrowseItem() {
         // setTimeout(() => {
         //     setAccount(localStorage.getItem('account'));
         // }, 3000);
-        const res = await fetch(`https://jhrkjduj7yigqqjcutunxzmb6m0jxdur.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        const res = await fetch(`https://hyrh533txgyf4hwpg2ye43h47i0urrym.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
 
         if (res.status === 200) {
             const data = await res.json();
@@ -153,7 +153,7 @@ function BrowseItem() {
         //     type:
         // })
         // lambda: lambda_save_item_url
-        const res = await fetch(`https://prseg4bnyw2zeyjwyz52gnxrpu0rclsp.lambda-url.ca-central-1.on.aws/`,
+        const res = await fetch(`https://woz7s32sqfjzgpdgevrni25x540dsfym.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: JSON.stringify(formValues)
