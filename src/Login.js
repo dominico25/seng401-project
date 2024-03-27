@@ -81,8 +81,8 @@ const Login = () => {
     // Set the user object to state
     setUser(accountData);
     setAccount(accountData.email);
+    console.log(accountData.email)
     navigate('/Home'); // Redirect to Home page
-
   };
 
   return (
@@ -97,7 +97,7 @@ const Login = () => {
 
         <div className="signup_content">
           <h1>Sign In</h1>
-          <p>New User ? Create an account</p>
+          <p>or Create an account with Google</p>
         </div>
 
         <form id='login_form'>
