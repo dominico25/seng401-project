@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import React from "react";
 import './main.css';
 import Header from "./Header";
-import home_logo from "./images/homepage_logo.webp";
+import home_logo from "./images/homepage_logo.png";
 
 function Main() {
     return (

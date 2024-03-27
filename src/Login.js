@@ -5,13 +5,13 @@ import { Box, Button, Flex, Heading } from '@chakra-ui/react';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { useAccount, AccountContext } from './AccountContext';
-import b1 from './background_images/img1.webp';
-import b2 from './background_images/img2.webp';
-import b3 from './background_images/img4.webp';
-import b4 from './background_images/img5.webp';
-import b5 from './background_images/img6.webp';
-import b6 from './background_images/img7.webp';
-import home_logo from "./images/homepage_logo.webp";
+import b1 from './background_images/img1.jpeg';
+import b2 from './background_images/img2.jpeg';
+import b3 from './background_images/img4.jpeg';
+import b4 from './background_images/img5.jpg';
+import b5 from './background_images/img6.jpg';
+import b6 from './background_images/img7.jpg';
+import home_logo from "./images/homepage_logo.png";
 
 import './login.css';
 
@@ -34,7 +34,7 @@ const Login = () => {
 
     // Call lambda function to check if the user exists
     // lambda: lambda_load_acc_url
-    const response = await fetch(`https://uk7ejxpi4gq65455ohd57um3ji0vpyoy.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const response = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
     const data = await response.json();
 
     console.log('Logged in User Email:', userEmail);
@@ -51,7 +51,7 @@ const Login = () => {
         // Make an HTTP request to the API Gateway endpoint
 
         // lambda: lambda_save_acc_url
-        const response = await fetch(`https://znqk4rd3ggnhtxzxy32ngswjve0lfuee.lambda-url.ca-central-1.on.aws/`, {
+        const response = await fetch(`https://zkss7valln5amj42fxnv25iopm0jhrfu.lambda-url.ca-central-1.on.aws/`, {
 
             method: "POST",
             body: formData, // Pass FormData directly as the body
@@ -75,7 +75,7 @@ const Login = () => {
     // Call lambda function to retrieve account details
   
     // lambda: lambda_load_acc_url
-    const accountResponse = await fetch(`https://uk7ejxpi4gq65455ohd57um3ji0vpyoy.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
+    const accountResponse = await fetch(`https://wb46rpkj5jkucexc7uykscr5jy0ltgti.lambda-url.ca-central-1.on.aws/?email=${userEmail}`);
     const accountData = await accountResponse.json();
 
     // Set the user object to state

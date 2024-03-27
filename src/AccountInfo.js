@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Flex, Button, Heading, Text, Box, Avatar, Container } from "@chakra-ui/react";
 import Header from './Header';
 import { AccountContext, useAccount } from "./AccountContext";
+import { set } from "lodash";
 
 function AccountInfo() {
   const [accountDetails, setAccountDetails] = useState(null);
@@ -10,6 +11,8 @@ function AccountInfo() {
   const [fileName, setFileName] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [bio, setBio] = useState("Add a bio");
+  const [BioSet, setBioSet] = useState(false);
   const { account } = useAccount();
   const { setAccount } = useContext(AccountContext);
 
@@ -91,19 +94,35 @@ function AccountInfo() {
 
   const handleEditName = () => {
     // Implement edit name functionality
-    const newName = prompt("Enter an updated name:");
+    const newName = prompt("Enter a new name:");
     if (newName) {
       handleEdit("name", newName);
     }
   };
 
-  const handleEditBio = () => {
-    // Implement edit bio functionality
-    const newBio = prompt("Enter your new bio:");
-    if (newBio) {
-      handleEdit("bio", newBio);
+  // const handleEditBio = () => {
+  //   // Implement edit bio functionality
+  //   const newBio = prompt("Enter your new bio:");
+  //   if (newBio) {
+  //     handleEdit("bio", newBio);
+  //   }
+  // };
+
+  const handleEditBio =(e) =>
+{   
+    setBio(e.target.value);
+    if(bio !== "Add a bio"){
+      handleEdit("bio", bio);
     }
-  };
+}
+ const handleSetBio = () =>{
+    setBioSet(true);
+    if (bio !== "Add a bio"){
+      setBioSet(false);
+      setBio("Add a bio");
+    }
+
+ }
 
   const handleEditPhoto = () => {
     setShowPopup(true);
@@ -116,43 +135,59 @@ function AccountInfo() {
   return (
     <>
       <Header />
-      <Flex direction="column" align="center">
-        <Heading mt={4}>Account Details</Heading>
+      <Flex direction="column" align="center" bg ="#f5f5f5" h="100vh">
+        <Heading mt={4} size={"4xl"}>Account Details</Heading>
         {accountDetails && (
-          <Box mt={4} p={4} borderWidth="1px" borderRadius="md">
-            <Avatar size="2xl" name={accountDetails.name} src={accountDetails.profile_picture} mb={4} />
-            <Text mt={2}>Name: {accountDetails.name}</Text>
-            <Text>Email: {accountDetails.email}</Text>
-            <Text mt={2}>Bio:</Text>
-            <Box p={4} borderWidth="1px" borderRadius="md" mt={2}>
-              {accountDetails.bio}
-            </Box>
-            <Button mt={4} onClick={handleEditName}>Edit Name</Button>
-            <Button mt={2} onClick={handleEditBio}>Edit Bio</Button>
-            <Flex direction="column" align="center" mt={4}>
+          <Box mt={4} p={4}  width={"80%"} display={"flex"} flexDirection={"column"} alignItems={"center"}>
+            <Avatar size="2xl" name={accountDetails.name} src={accountDetails.profile_picture} mb={4} position={"relative"} _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-5px"}} />
+            <Text mt={2} fontSize={"2xl"} fontStyle={"italic"} fontWeight={"bold"} >Name: {accountDetails.name}</Text>
+            <Text fontSize={"2xl"} fontStyle={"italic"} >Email: {accountDetails.email}</Text>
+            <Text fontSize={"3xl"} fontStyle={"italic"} fontWeight={"bold"} mt={2}>Bio:</Text>
+            <Box p={4} borderColor={"#282c34"} borderWidth="1px" borderRadius="md" mt={2}  width ={"80%"} height={"20vh"} textAlign={"center"} textShadow={"0px 1px 1px"} display={"flex"} flexDirection={"column"} alignItems={"center"} justifyContent={"space-evenly"} >
+              <Text fontSize={"2xl"} fontStyle={"italic"} >{accountDetails.bio}</Text> 
+              {BioSet && (
+              <Box display={"flex"} flexDirection={"row"} justifyContent={"space-evenly"}>
+              <input
+              type = "text"
+              onChange={handleEditBio}
+              ></input>
+              <Button onClick={handleSetBio}>Save</Button>
+              </Box>
+              )}
+              </Box>
+            <Box display={"flex"} flexDirection={"row"} justifyContent={"space-evenly"} width ={"80%"}>
+              <Button mt={4} onClick={handleEditName} color={'white'} bg={'#282c34'}  position={"relative"} _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-3px", bg: 'grey'}} >Edit Name</Button>
+              <Button mt={4} onClick={handleSetBio} color={'white'} bg={'#282c34'}  position={"relative"} _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-3px", bg: 'grey'}}>Edit Bio</Button>
+              <Flex direction="column" align="center" mt={4}>
               {/* <label htmlFor="file-input"> */}
-              <Button as="span" className="custom-file-upload" onClick={handleEditPhoto}>
+              <Button as="span" className="custom-file-upload" onClick={handleEditPhoto} color={'white'} bg={'#282c34'}  position={"relative"} _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-3px", bg: 'grey'}}>
                 Edit Photo
               </Button>
+              {showPopup && (
+                <Container p={4} boxShadow="lg" bg="white" borderRadius="md">
+                  <input
+                    id="file-input-popup"
+                    type="file"
+                    required
+                    accept="images/*"
+                    onChange={onFileChange}
+                  />
+                  {selectedFile && <Text mt={2}>({selectedFile.name})</Text>}
+                  <Button mt={2} onClick={handleSave}>Save</Button>
+                </Container>
+              )}
               {/* Popup */}
-            </Flex>
+              </Flex>
+            </Box>
+            
+            
           </Box>
         )}
-      </Flex>
-      <Button mt={4} onClick={handleGoBack}>Back</Button> {/* Add back button */}
-      {showPopup && (
-        <Container p={4} boxShadow="lg" bg="white" borderRadius="md">
-          <input
-            id="file-input-popup"
-            type="file"
-            required
-            accept="images/*"
-            onChange={onFileChange}
-          />
-          {selectedFile && <Text mt={2}>({selectedFile.name})</Text>}
-          <Button mt={2} onClick={handleSave}>Save</Button>
-        </Container>
-      )}
+
+        <Button mt={4} size ={"lg"} onClick={handleGoBack} variant={"outline"} color={'white'} bg={'#282c34'}  position={"relative"} _hover={{cursor: "pointer", boxShadow:"2px 2px 4px #000000", top : "-3px", bg: 'grey'}} >Return to Main</Button> {/* Add back button */}
+              
+        </Flex>
+      
 
     </>
     
