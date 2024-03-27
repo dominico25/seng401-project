@@ -22,6 +22,7 @@ function UploadItem() {
   const [style, setStyle] = useState(""); // Separate state for style
   const [type, setType] = useState(""); // Separate state for type
   const [classification, setClassification] = useState(""); // Separate state for classification
+  const [missingFieldError, setMissingFieldError] = useState(false); // State to track missing field error
   const navigate = useNavigate();
   const { account } = useAccount();
   const { setAccount } = useContext(AccountContext);
@@ -31,15 +32,6 @@ function UploadItem() {
     setFile(e.target.files[0])
     setFileName(e.target.files[0].name);
   };
-
-  window.addEventListener('load', async function() {
-    console.log("YOOOO", localStorage.getItem('account'))
-    setAccount(localStorage.getItem('account'));
-    setTimeout(() => {
-
-    }, 1500);
-    
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,33 +55,20 @@ function UploadItem() {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-  
-    // Convert the image file to base64
-    // const fileInput = document.getElementById("file-input");
-    // const file = fileInput.files[0];
-  
-    if (!file) {
-      // Handle error when no file is selected
+
+    // Check if any required field is empty
+    if (!file || !colour || !style || !type || !classification) {
+      setMissingFieldError(true);
       return;
     }
+
+    // Reset missing field error state
+    setMissingFieldError(false);
   
+    // Convert the image file to base64
     const reader = new FileReader();
     reader.onloadend = async () => {
       // Prepare data to send to the Lambda function
-      // const data = new FormData();
-      // const imageData = reader.result.split(",")[1];
-      // data.append("image", imageData); // Append image data to FormData
-      // Object.entries(formData).forEach(([key, value]) => {
-      //   data.append(key, value); // Append other form data to FormData
-      // });
-      // data.append("account_id", "rjugdev@gmail.com"); // Append account ID
-  
-      // Convert FormData to JSON
-      // const jsonData = {};
-      // for (const [key, value] of data.entries()) {
-      //   jsonData[key] = value;
-      // }
-  
       try {
         // Prepare data to send to the Lambda function
         const formData = new FormData();
@@ -103,7 +82,6 @@ function UploadItem() {
         // lambda: lambda_save_item_url
         const response = await fetch("https://woz7s32sqfjzgpdgevrni25x540dsfym.lambda-url.ca-central-1.on.aws/", {
             method: "POST",
-
             body: formData, // Pass FormData directly as the body
         });
 
@@ -135,8 +113,6 @@ function UploadItem() {
     <>
     <Header />
       <Container>
-        
-
         {uploadComplete ? (
           <Flex direction="column" align="center" mt={8}>
             <Heading>Upload Complete</Heading>
@@ -147,6 +123,12 @@ function UploadItem() {
         ) : (
           <Flex direction="column" align="center" mt={8}>
             <Heading>Upload Your Item</Heading>
+            {missingFieldError && (
+              <Alert status="error" mt={4}>
+                <AlertIcon />
+                Please fill in all required fields.
+              </Alert>
+            )}
             <form onSubmit={handleUpload}>
               <Flex direction="column" align="center" mt={4}>
                 <label htmlFor="file-input" className="custom-file-upload">
@@ -156,7 +138,7 @@ function UploadItem() {
                   id="file-input"
                   type="file"
                   required
-                  accept="images/*"
+                  accept="image/*"
                   onChange={(e) => onFileChange(e)}
                 />
                 {fileName && <Text mt={2}>({fileName})</Text>}
