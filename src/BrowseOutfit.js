@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useContext, useRef } from "react";
 import React from "react";
-import Navigation from './Navigation';
-import Display from './Display';
-import PreviewScreen from './PreviewScreen';
 import Header from "./Header";
 
 import { AccountContext } from "./AccountContext";
 import { useAccount} from './AccountContext';
-import { Select, Button, AlertDialog, AlertDialogOverlay, AlertDialogBody, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, Container, Alert, AlertIcon, Heading, Flex, Text, Box, Input, Wrap, WrapItem, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
+import { Select, Button, AlertDialog, AlertDialogOverlay, AlertDialogBody, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, Alert, AlertIcon, Heading, Flex, Box, Input, Wrap, WrapItem, Image, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react'
 
 function convertToOutfitsArray(outputArray) {
     const outfitsArray = outputArray.map(outfit => ({
@@ -43,8 +40,8 @@ function BrowseOutfit() {
     const [outfitToDelete, setOutfitToDelete] = useState('');
 
     // const [outfitsArray, setOutfitsArray] = useState([]);
-    const [outfitNames, setOutfitNames] = useState([]);
-    const [outfitItemIds, setOutfitItemIds] = useState({});
+    //const [outfitNames, setOutfitNames] = useState([]);
+    //const [outfitItemIds, setOutfitItemIds] = useState({});
     const [accountLoaded, setAccountLoaded] = useState(false);
     useEffect(() => {
         // Load account from local storage upon component mount
