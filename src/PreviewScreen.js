@@ -91,7 +91,7 @@ function PreviewScreen(props) {
             name: name
         });
         console.log("DATAAAAAAAAAAAA", data);
-        const res = await fetch(`https://fdrunt6caajb7gklgeq3ljoywm0yeugr.lambda-url.ca-central-1.on.aws/`,
+        const res = await fetch(`https://uymsg67qu4sbcbnh2ehnf3skgq0nklgr.lambda-url.ca-central-1.on.aws/`,
             {
                 method: 'POST',
                 body: data

@@ -45,7 +45,22 @@ function BrowseOutfit() {
     // const [outfitsArray, setOutfitsArray] = useState([]);
     const [outfitNames, setOutfitNames] = useState([]);
     const [outfitItemIds, setOutfitItemIds] = useState({});
+    const [accountLoaded, setAccountLoaded] = useState(false);
+    useEffect(() => {
+        // Load account from local storage upon component mount
+        const storedAccount = localStorage.getItem('account');
+        if (storedAccount) {
+            setAccount(storedAccount);
+            setAccountLoaded(true);
+        }
+    }, []); // Empty dependency array ensures it runs only once upon mounting
 
+    useEffect(() => {
+        if (accountLoaded) {
+            // Functionality to execute upon account load
+            loadBaseOutfits();
+        }
+    }, [accountLoaded]); 
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
         setAccount(localStorage.getItem('account'));
@@ -138,7 +153,7 @@ function BrowseOutfit() {
     const loadBaseOutfits = async () => {
 
         // ADD LOAD OUTFITS URL
-        const res = await fetch(`https://kqkzwvdmluvqldqaeiop6vbbau0vlsjt.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
+        const res = await fetch(`https://b54vgbqmgk7lmemnzxyb2tygk40cjsnj.lambda-url.ca-central-1.on.aws/?account_id=${account}`);
         if (res.status === 200) {
             const data = await res.json();
             setBaseOutfits(data);
@@ -149,7 +164,7 @@ function BrowseOutfit() {
     const loadOutfits = async () => {
         // ADD LOAD ITEM INFO URL
 
-        const res = await fetch(`https://q7wy5xphaman7o7zqctt46mkte0pzytj.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
+        const res = await fetch(`https://b3wx3bgb6uoppgrglekkxkxhj40wyjrg.lambda-url.ca-central-1.on.aws/?input_array=${encodeURIComponent(JSON.stringify(baseOutfits))}`);
         if (res.status === 200) {
             const data = await res.json();
             
@@ -165,7 +180,7 @@ function BrowseOutfit() {
 
     const deleteOutfit = async () => {
         try {
-            const res = await fetch(`https://rdfvkyicbfezfa3oepep2vphmi0jlywc.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=${outfitToDelete}`, {
+            const res = await fetch(`https://4u5k7xma5dmyvh2dhgcs3roxbm0hqurf.lambda-url.ca-central-1.on.aws/?account_id=${account}&outfit_id=${outfitToDelete}`, {
                 method: 'DELETE'
             });
             
