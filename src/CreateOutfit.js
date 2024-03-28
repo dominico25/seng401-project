@@ -256,7 +256,7 @@ function CreateOutfit() {
       
        if (category == "Top" && topHasOne===false){
            img.id = "clothing-pics-top"
-           img.setAttribute('uniqueid', image.id)
+           img.setAttribute('uniqueid', image.item_id)
            // Get the "displayedtops" div
            let displayedTopsDiv = document.getElementById('displayedtops');
            // Append the image to the "displayedtops" div
@@ -268,7 +268,7 @@ function CreateOutfit() {
        //don't forget to do the same thing for the other categories
        else if (category == "Bottom" && !bottomHasOne){
            img.id = "clothing-pics-bottom"
-           img.setAttribute('uniqueid', image.id)
+           img.setAttribute('uniqueid', image.item_id)
            const displayedBottomsDiv = document.getElementById('displayedbottoms');
            displayedBottomsDiv.appendChild(img);
            setShowBottomPlaceholder(false)
@@ -276,7 +276,7 @@ function CreateOutfit() {
        }
        else if (category == "Accessory" && !accessoriesHasOne){
            img.id = "clothing-pics-accessories"
-           img.setAttribute('uniqueid', image.id)
+           img.setAttribute('uniqueid', image.item_id)
            const displayedAccessoriesDiv = document.getElementById('displayedaccessories');
            displayedAccessoriesDiv.appendChild(img);
            setShowAccessoriesPlaceholder(false)
@@ -284,7 +284,7 @@ function CreateOutfit() {
        }
        else if (category == "Shoe" && !shoesHasOne){
            img.id = "clothing-pics-shoes"
-           img.setAttribute('uniqueid', image.id)
+           img.setAttribute('uniqueid', image.item_id)
            const displayedShoesDiv = document.getElementById('displayedshoes');
            displayedShoesDiv.appendChild(img);
            setShowShoesPlaceholder(false)
@@ -292,7 +292,7 @@ function CreateOutfit() {
        }
        else if (category == "Outerwear" && !outerwearHasOne){
         img.id = "clothing-pics-outerwear"
-        img.setAttribute('uniqueid', image.id)
+        img.setAttribute('uniqueid', image.item_id)
         const displayedOuterwearDiv = document.getElementById('displayedouterwear');
         displayedOuterwearDiv.appendChild(img);
         setShowOuterwearPlaceholder(false)
@@ -300,7 +300,7 @@ function CreateOutfit() {
         }
         else if (category == "Dress" && !dressesHasOne){
             img.id = "clothing-pics-dresses"
-            img.setAttribute('uniqueid', image.id)
+            img.setAttribute('uniqueid', image.item_id)
             const displayedDressesDiv = document.getElementById('displayeddresses');
             displayedDressesDiv.appendChild(img);
             setShowDressPlaceholder(false)
@@ -308,7 +308,7 @@ function CreateOutfit() {
         }
         else if (category == "Hat" && !hatsHasOne){
             img.id = "clothing-pics-hats"
-            img.setAttribute('uniqueid', image.id)
+            img.setAttribute('uniqueid', image.item_id)
             const displayedHatsDiv = document.getElementById('displayedhats');
             displayedHatsDiv.appendChild(img);
             setShowHatPlaceholder(false)
@@ -316,7 +316,7 @@ function CreateOutfit() {
         }
         else if (category == "Bag" && !bagsHasOne){
             img.id = "clothing-pics-bags"
-            img.setAttribute('uniqueid', image.id)
+            img.setAttribute('uniqueid', image.item_id)
             const displayedBagsDiv = document.getElementById('displayedbags');
             displayedBagsDiv.appendChild(img);
             setShowBagPlaceholder(false)
