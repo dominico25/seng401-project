@@ -17,7 +17,7 @@ function GenerateOutfit() {
     const [chosenDress, setChosenDress] = useState(null);
     const [chosenOuterwear, setChosenOuterwear] = useState(null);
     const [chosenAccessory, setChosenAccessory] = useState(null);
-    const [chosenShoe, setChosenShoe] = useState(null);
+    const [chosenShoes, setChosenShoes] = useState(null);
     const [chosenHat, setChosenHat] = useState(null);
     const [chosenBag, setChosenBag] = useState(null);
     const { setAccount } = useContext(AccountContext);
@@ -33,7 +33,7 @@ function GenerateOutfit() {
         dress: null,
         outerwear: null,
         accessory: null,
-        shoe: null,
+        shoes: null,
         hat: null,
         bag: null
     });
@@ -130,7 +130,7 @@ function GenerateOutfit() {
         setChosenDress(null);
         setChosenOuterwear(null);
         setChosenAccessory(null);
-        setChosenShoe(null);
+        setChosenShoes(null);
         setChosenHat(null);
         setChosenBag(null);
         setChosenItems({
@@ -139,7 +139,7 @@ function GenerateOutfit() {
             dress: null,
             outerwear: null,
             accessory: null,
-            shoe: null,
+            shoes: null,
             hat: null,
             bag: null
         });
@@ -183,7 +183,7 @@ function GenerateOutfit() {
         let dressItems = [];
         let outerwearItems = [];
         let accessoryItems = [];
-        let shoeItems = [];
+        let shoesItems = [];
         let hatItems = [];
         let bagItems = [];
         const formColour = colourOptions[values.colour];
@@ -198,7 +198,7 @@ function GenerateOutfit() {
             dressItems = items.filter(item => item.type === "Dress");
             outerwearItems = items.filter(item => item.type === "Outerwear");
             accessoryItems = items.filter(item => item.type === "Accessory");
-            shoeItems = items.filter(item => item.type === "Shoe");
+            shoesItems = items.filter(item => item.type === "Shoes");
             hatItems = items.filter(item => item.type === "Hat");
             bagItems = items.filter(item => item.type === "Bag");
         }
@@ -210,7 +210,7 @@ function GenerateOutfit() {
             dressItems = items.filter(item => item.type === "Dress" && item.colour === formColour);
             outerwearItems = items.filter(item => item.type === "Outerwear" && item.colour === formColour);
             accessoryItems = items.filter(item => item.type === "Accessory" && item.colour === formColour);
-            shoeItems = items.filter(item => item.type === "Shoe" && item.colour === formColour);
+            shoesItems = items.filter(item => item.type === "Shoes" && item.colour === formColour);
             hatItems = items.filter(item => item.type === "Hat" && item.colour === formColour);
             bagItems = items.filter(item => item.type === "Bag" && item.colour === formColour);
         }
@@ -221,7 +221,7 @@ function GenerateOutfit() {
             dressItems = items.filter(item => item.type === "Dress" && item.style === formStyle);
             outerwearItems = items.filter(item => item.type === "Outerwear" && item.style === formStyle);
             accessoryItems = items.filter(item => item.type === "Accessory" && item.style === formStyle);
-            shoeItems = items.filter(item => item.type === "Shoe" && item.style === formStyle);
+            shoesItems = items.filter(item => item.type === "Shoes" && item.style === formStyle);
             hatItems = items.filter(item => item.type === "Hat" && item.style === formStyle);
             bagItems = items.filter(item => item.type === "Bag" && item.style === formStyle);
         }
@@ -232,7 +232,7 @@ function GenerateOutfit() {
             dressItems = items.filter(item => item.type === "Dress" && item.style === formStyle && item.colour === formColour);
             outerwearItems = items.filter(item => item.type === "Outerwear" && item.style === formStyle && item.colour === formColour);
             accessoryItems = items.filter(item => item.type === "Accessory" && item.style === formStyle && item.colour === formColour);
-            shoeItems = items.filter(item => item.type === "Shoe" && item.style === formStyle && item.colour === formColour);
+            shoesItems = items.filter(item => item.type === "Shoes" && item.style === formStyle && item.colour === formColour);
             hatItems = items.filter(item => item.type === "Hat" && item.style === formStyle && item.colour === formColour);
             bagItems = items.filter(item => item.type === "Bag" && item.style === formStyle && item.colour === formColour);
         }
@@ -244,7 +244,7 @@ function GenerateOutfit() {
             dressItems = dressItems.filter(item => item.classification === formClassification);
             outerwearItems = outerwearItems.filter(item => item.classification === formClassification);
             accessoryItems = accessoryItems.filter(item => item.classification === formClassification);
-            shoeItems = shoeItems.filter(item => item.classification === formClassification);
+            shoesItems = shoesItems.filter(item => item.classification === formClassification);
             hatItems = hatItems.filter(item => item.classification === formClassification);
             bagItems = bagItems.filter(item => item.classification === formClassification);
         }
@@ -254,7 +254,7 @@ function GenerateOutfit() {
         console.log("Dress items:", dressItems);
         console.log("Outerwear items:", outerwearItems);
         console.log("Accessory items:", accessoryItems);
-        console.log("Shoe items:", shoeItems);
+        console.log("Shoes items:", shoesItems);
         console.log("Hat items:", hatItems);
         console.log("Bag items:", bagItems);
 
@@ -269,7 +269,7 @@ function GenerateOutfit() {
         const dressItemsLength = dressItems?.length ?? 0;
         const outerwearItemsLength = outerwearItems?.length ?? 0;
         const accessoryItemsLength = accessoryItems?.length ?? 0;
-        const shoeItemsLength = shoeItems?.length ?? 0;
+        const shoesItemsLength = shoesItems?.length ?? 0;
         const hatItemsLength = hatItems?.length ?? 0;
         const bagItemsLength = bagItems?.length ?? 0;
         
@@ -337,9 +337,9 @@ function GenerateOutfit() {
             chosenItems.accessory = chooseRandomItem(accessoryItems);
         }
 
-        if ((Math.floor(Math.random() * 2)) === 1 && shoeItemsLength !== 0) {
-            setChosenShoe(chooseRandomItem(shoeItems));
-            chosenItems.shoe = chooseRandomItem(shoeItems);
+        if ((Math.floor(Math.random() * 2)) === 1 && shoesItemsLength !== 0) {
+            setChosenShoes(chooseRandomItem(shoesItems));
+            chosenItems.shoes = chooseRandomItem(shoesItems);
         }
 
         if ((Math.floor(Math.random() * 2)) === 1 && hatItemsLength !== 0) {
@@ -440,7 +440,7 @@ function GenerateOutfit() {
                     chosenDress={chosenDress}
                     chosenOuterwear={chosenOuterwear}
                     chosenAccessory={chosenAccessory}
-                    chosenShoe={chosenShoe}
+                    chosenShoes={chosenShoes}
                     chosenHat={chosenHat}
                     chosenBag={chosenBag}
                     saveOutfit={saveOutfit}
@@ -451,7 +451,7 @@ function GenerateOutfit() {
                 />
             )}
             {displayScreen && <Display formValues={formValues} setDisplayScreen={setDisplayScreen} chosenTop={chosenTop} chosenBottom={chosenBottom}
-            chosenDress={chosenDress} chosenOuterwear={chosenOuterwear} chosenAccessory={chosenAccessory} chosenShoe={chosenShoe} chosenHat={chosenHat}
+            chosenDress={chosenDress} chosenOuterwear={chosenOuterwear} chosenAccessory={chosenAccessory} chosenShoes={chosenShoes} chosenHat={chosenHat}
             chosenBag={chosenBag} />}
                 
             <footer style={{ position: "fixed", bottom: "0", width: "100%", padding: "10px 0", textAlign: "center" }}>

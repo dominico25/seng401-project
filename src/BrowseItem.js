@@ -219,7 +219,7 @@ function BrowseItem() {
         "type3": "Dress",
         "type4": "Outerwear",
         "type5": "Accessory",
-        "type6": "Shoe",
+        "type6": "Shoes",
         "type7": "Hat",
         "type8": "Bag",
     };
@@ -518,7 +518,7 @@ function BrowseItem() {
                             <option value="Dress">Dress</option>
                             <option value="Outerwear">Outerwear</option>
                             <option value="Accessory">Accessory</option>
-                            <option value="Shoe">Shoe</option>
+                            <option value="Shoes">Shoes</option>
                             <option value="Hat">Hat</option>
                             <option value="Bag">Bag</option>
                         </Select>
