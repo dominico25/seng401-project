@@ -96,8 +96,10 @@ function CreateOutfit() {
                     }
                 );
                 console.log(res.body);
-                console.log('outfits have been saved')   
-                navigate('/BrowseOutfit');
+                console.log('outfits have been saved')
+                setTimeout(() => {
+                    navigate('/BrowseOutfit');
+                }, 500);
             
             
             
