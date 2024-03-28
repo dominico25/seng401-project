@@ -28,6 +28,7 @@ function CreateOutfit() {
     const [showNotification, setShowNotification] = useState(false);
     const [showOutfitSaved, setShowOutfitSaved] = useState(false);
     const [showEmptyNotification, setShowEmptyNotification] = useState(false);
+    const navigate = useNavigate();
 
     window.addEventListener('load', async function() {
         console.log("YOOOO", localStorage.getItem('account'))
@@ -366,6 +367,7 @@ function CreateOutfit() {
         setTimeout(() => {
         setShowOutfitSaved(false);
     }, 3000);
+    navigate('/BrowseOutfit');
     
 
 };
