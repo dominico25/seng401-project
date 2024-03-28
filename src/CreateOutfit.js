@@ -89,7 +89,7 @@ function CreateOutfit() {
                             shoes_id: shoes_id,
                             hat_id: hat_id,
                             bag_id: bag_id,
-                            account_id: '1234',
+                            account_id: account,
                             name:outfitName
                         })
                     }
@@ -105,18 +105,18 @@ function CreateOutfit() {
 
    
 
-   const testoutfit = {
-        top_id: "001",
-        bottom_id: '002',
-        dress_id: '003',
-        outerwear_id: '004',
-        accessories_id : '005',
-        shoes_id: '006',
-        hat_id: '007',
-        bag_id : '008',
-        account_id: '1234'
+   // const testoutfit = {
+   //      top_id: "001",
+   //      bottom_id: '002',
+   //      dress_id: '003',
+   //      outerwear_id: '004',
+   //      accessories_id : '005',
+   //      shoes_id: '006',
+   //      hat_id: '007',
+   //      bag_id : '008',
+   //      account_id: '1234'
 
-   }
+   // }
 
    async function loadItemsFromRemote() {
     try {
