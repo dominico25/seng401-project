@@ -96,7 +96,9 @@ function CreateOutfit() {
                     }
                 );
                 console.log(res.body);
-                console.log('outfits have been saved')
+                console.log('outfits have been saved')   
+                navigate('/BrowseOutfit');
+            
             
             
             
@@ -366,8 +368,9 @@ function CreateOutfit() {
         setShowOutfitSaved(true);
         setTimeout(() => {
         setShowOutfitSaved(false);
+    
     }, 3000);
-    navigate('/BrowseOutfit');
+
     
 
 };
@@ -398,7 +401,7 @@ const handlefirstSaveClick = () => {
         setTimeout(() => {
             setShowEmptyNotification(false);
         }, 3000);
-        // Reset saveOutfitClicked state
+        // Reset Clicked state
         setsaveOutfitClicked(false);
     }
     
