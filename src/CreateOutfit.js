@@ -2,7 +2,7 @@
 import { useState, useRef, useContext } from "react";
 import React from "react";
 import Navigation from './Navigation';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './create-outfit.css';
 import Header from "./Header";
 import { useEffect } from 'react';
