@@ -287,7 +287,7 @@ function CreateOutfit() {
            setShowAccessoriesPlaceholder(false)
            setAccessoriesHasOne(true)
        }
-       else if (category == "Shoe" && !shoesHasOne){
+       else if (category == "Shoes" && !shoesHasOne){
            img.id = "clothing-pics-shoes"
            img.setAttribute('uniqueid', image.item_id)
            const displayedShoesDiv = document.getElementById('displayedshoes');
@@ -453,7 +453,7 @@ const handlefirstSaveClick = () => {
                {showTopModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Tops</Text>{displayOptions("Top")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleTopModal}>Close</Button></div></div></div> }
                {showBottomModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Bottoms</Text>{displayOptions("Bottom")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleBottomModal}>Close</Button></div></div></div> }
                {showAccessoriesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Accessories</Text>{displayOptions("Accessory")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleAccessoriesModal}>Close</Button></div></div></div> }
-               {showShoesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Shoes</Text>{displayOptions("Shoe")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleShoesModal}>Close</Button></div></div></div> }
+               {showShoesModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Shoes</Text>{displayOptions("Shoes")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleShoesModal}>Close</Button></div></div></div> }
                {showDressModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Dresses</Text>{displayOptions("Dress")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleDressModal}>Close</Button></div></div></div> }
                {showOuterwearModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Outerwear</Text>{displayOptions("Outerwear")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleOuterwearModal}>Close</Button></div></div></div> }
                {showHatModal && <div className = "modal-overlay" ><div className = "modal-background" ><div className = "modal-content"><Text fontSize='3xl'>Your Hats</Text>{displayOptions("Hat")}<Button className ='closemodal' colorScheme='blue' mr={3} onClick={toggleHatModal}>Close</Button></div></div></div> }

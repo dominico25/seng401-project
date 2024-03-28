@@ -131,8 +131,8 @@ function PreviewScreen(props) {
                         <Image boxSize='200px' src={props.chosenItems.bag['image_url']} alt='Bag' />
                     )}
                     {/* <h1>Shoes</h1> */}
-                    {props.chosenShoe!==null && props.chosenShoe!== undefined && (
-                        <Image boxSize='200px' src={props.chosenItems.shoe['image_url']} alt='Shoes' />
+                    {props.chosenShoes!==null && props.chosenShoes!== undefined && (
+                        <Image boxSize='200px' src={props.chosenItems.shoes['image_url']} alt='Shoes' />
                     )}
                     {/* <h1>Accessory</h1> */}
                     {props.chosenAccessory!==null && props.chosenAccessory!== undefined && (
